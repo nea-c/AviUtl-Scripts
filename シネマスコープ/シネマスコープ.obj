@@ -6,7 +6,7 @@
 
 local zoomsize = 100 / obj.getvalue("zoom")
 local alpha = 1 / obj.getvalue("alpha")
-local h = -obj.track3/100 * obj.screen_h
+local h = -obj.track3 / 100 * obj.screen_h
 local cxp = obj.track0
 local cyp = obj.track1
 local half = obj.screen_h / 2
