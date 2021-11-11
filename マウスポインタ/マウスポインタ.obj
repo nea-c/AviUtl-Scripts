@@ -240,4 +240,4 @@ local function get_data(p_type,o,m)
 end
 
 
-dotdrawer.draw_dots(get_data(obj.track1,col0,col1), obj.track0)
+dotdrawer.draw_dots(get_data(obj.track1, col0, col1), obj.track0)
