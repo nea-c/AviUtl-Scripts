@@ -4,7 +4,7 @@
 --track3:r,0,10000,100
 --dialog:ï™äÑêî,NN=100;
 
-local pw,ph=obj.getpixel()
+local pw,ph = obj.getpixel()
 obj.setoption("dst","tmp",pw,ph)
 obj.setoption("blend","alpha_add")
 local check0=obj.track0
