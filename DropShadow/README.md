@@ -2,9 +2,9 @@
 
 DropShadowを疑似的に再現したスクリプトです。精度はあまりよくないです。あと重い。
 
-ティム氏の[回転ブラー](https://tim3.web.fc2.com/sidx.htm#RotBlur)、[縁取りT](https://tim3.web.fc2.com/sidx.htm#Framing)内に同梱されている`dll`を使用しています。
+ティム氏の[回転ブラー](https://tim3.web.fc2.com/sidx.htm#RotBlur)、[縁取りT](https://tim3.web.fc2.com/sidx.htm#Framing)内に同梱されている`.dll`を使用しています。
 
-上記の.dllをそれぞれexedit.aufがある階層に置いてください。
+上記の`.dll`をそれぞれexedit.aufがある階層に置いてください。
 
 
 ## 最新 / Latest
