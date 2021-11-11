@@ -33,7 +33,7 @@ pxは処理の都合上、追加でエフェクトをかけたりすると動作
 
 ## クレジット / Credit
 
-- supported by th3_n00b13
+- Supported by th3_n00b13
 
 ## 変更履歴 / Change log
 
