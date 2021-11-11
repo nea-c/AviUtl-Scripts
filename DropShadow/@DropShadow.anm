@@ -25,7 +25,6 @@ else
 
 
 
-
     local dx = LightX[light_number] - obj.x - obj.ox
     local dy = LightY[light_number] - obj.y - obj.oy
 
