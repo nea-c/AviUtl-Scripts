@@ -4,7 +4,7 @@
 --track0:X,-3600,3600,0,.01
 --track1:Y,-3600,3600,0,.01
 --track2:Z,-3600,3600,0,.01
---dialog:目標中心回転/chk,_1=0;(未実装)/chk,_2=0;
+--dialog:目標中心回転/chk,_1=0;自身を基準にする/chk,_2=0;
 
 local t0 = math.rad(obj.track0)
 local t1 = math.rad(obj.track1 + 90)
