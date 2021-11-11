@@ -3,7 +3,9 @@
 
 中心位置を変更するスクリプトです。
 
-最新 : **v1.5**
+## 最新 / Latest
+
+**version 1.5**
 
 ◇◇◇◇機能◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇
 
@@ -11,8 +13,9 @@
 
 ### Alignment
 
+- トラックバー
 ```markdown
-`トラックバー`
+
 　X位置(%)：
 　　　　X位置を%で操作します。
 
@@ -22,14 +25,14 @@
 　配置固定：
 　　　　0にすると中心位置が相対座標0,0に固定されます。
 ```
-
+- チェックボックス
 ```markdown
-**チェックボックス**
 　Info：
 　　　　中心位置を可視化します。
 ```
+- ダイアログ
 ```markdown
-**ダイアログ**
+
 　出力時描画しない：
 　　　　Infoを出力時に描画させなくします。
 
@@ -76,24 +79,19 @@
 
 
 
-◆履歴
+## 変更履歴 / Change log
 
-   2019/12/2 21:35　Alignment v1.5
-	バグを修正
+- Alignment v1.5 - Alignment(px)のを修正
 
-   2019/11/30 ?　Alignment v1.4
-	バグを修正
+- Alignment v1.4 - Alignment(px)の円移動が正常に動作しない問題を修正
 
-　2019/3/15 1:09　Alignment v1.3
-	Alignment(px)に円移動の項目を追加
+- Alignment v1.3 - Alignment(px)に円移動の項目を追加
 
-　2018/12/12 21:54　Alignment v1.2
-	Alignment(px)を追加
+- Alignment v1.2 - Alignment(px)を追加
 
-　2018/12/12 21:54　Alignment v1.1
-	出力時描画しない設定の追加
+- Alignment v1.1 - 出力時描画しない設定の追加
 
-　2018/12/12 14:32　Alignment v1.0
+- Alignment v1.0 - リリース
 
 
 　Developed by ねあ
