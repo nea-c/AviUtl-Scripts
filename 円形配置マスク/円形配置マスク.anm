@@ -1,0 +1,43 @@
+--track0:円周,0,800,100,0.01
+--track1:半径,-2000,2000,100
+--track2:回転,-3600,3600,0
+--dialog:数,num=4;回転なし/chk,rot=0;シフトX,tx=0;シフトY,ty=0;個別回転,trz=0;サイズ,masize=100;縦横比,asp=0;ぼかし,bl=0;*種類[1-6],fig="2";
+
+
+require("rikky_module")
+if rikky_module then
+    rikky_module.list(9,{"円","四角形","三角形","五角形","六角形","星形"})
+end
+
+local t0=obj.track0
+local t1=obj.track1
+local t2=obj.track2
+local t3=obj.track3
+
+
+
+local i
+local number = num or 4
+local no_rotate = rot or 0
+local shift_x = tx or 0
+local shift_y = ty or 0
+local shift_rz = trz or 0
+local mask_size = masize or 100
+local aspect = asp or 0
+local blur = bl or 0
+local figure = tonumber(fig) or 2
+
+
+for i=1,num do
+	local x = 0
+	local y = 0
+	local rz = shift_rz
+	local r = ((i-(num+1)/2)*t0/50/num + t2/180)*math.pi
+	x =  math.sin(r)*t1
+	y = -math.cos(r)*t1
+    r = r*180/math.pi
+	if( no_rotate == 0 ) then
+		rz = rz+r
+    end
+    obj.effect("マスク","type",figure,"X",x+shift_x,"Y",y+shift_y,"回転",rz,"サイズ",mask_size,"縦横比",aspect,"ぼかし",blur,"マスクの反転",1)
+end

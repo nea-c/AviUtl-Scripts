@@ -1,0 +1,223 @@
+------------------------------------------------------------------------------------------------------------
+@Alignment
+------------------------------------------------------------------------------------------------------------
+--track0:Xà íu(%),-9000,9000,0,0.01
+--track1:Yà íu(%),-9000,9000,0,0.01
+--track2:îzíuå≈íË,0,1,1,1
+--check0:Info,1
+--dialog:èoóÕéûï`âÊÇµÇ»Ç¢/chk,_1=1;Info Color/col,_2="0xff0000";Info Size,_3=20;Info Weight,_4=3;
+
+local function toBoolean(a)
+	if a == 1 then
+		return true
+	else
+		return false
+	end
+end
+
+local zoomsize = 100 / obj.getvalue("zoom")
+local alpha = 1 / obj.getvalue("alpha")
+local xpos = obj.track0 / 100
+local ypos = obj.track1 / 100
+local PositionLock = toBoolean(obj.track2)
+local InfoOn = obj.check0
+local w, h = obj.w, obj.h
+w, h = w / 2, h / 2
+local dcx, dcy = obj.cx, obj.cy
+local cx, cy = 0, 0
+local zoom = obj.getvalue("zoom") / 100
+
+
+
+local SavingRemove = toBoolean(_1)
+local col = _2
+local InfoSize = _3
+local InfoWeight = _4
+
+cx =  w * xpos
+cy =  h * ypos
+cx = cx / zoom
+cy = cy / zoom
+obj.cx =  cx
+obj.cy =  cy
+if (PositionLock) then
+    cx = cx * zoom
+    cy = cy * zoom
+    obj.ox = (obj.ox+(cx-dcx))
+    obj.oy = (obj.oy+(cy-dcy))
+end
+
+if(not obj.getinfo("saving")) or (not SavingRemove) then
+    if (InfoOn) then
+        obj.effect()
+        obj.draw()
+        if (PositionLock) then
+            obj.load("figure","éläpå`",col,InfoWeight)
+            obj.effect("óÃàÊägí£","è„",InfoSize,"â∫",InfoSize,"ìhÇËÇ¬Ç‘Çµ",1)
+            obj.draw(cx,cy,0,zoomsize,alpha,0,0,0)
+            obj.load("figure","éläpå`",col,InfoWeight)
+            obj.effect("óÃàÊägí£","ç∂",InfoSize,"âE",InfoSize,"ìhÇËÇ¬Ç‘Çµ",1)
+            obj.draw(cx,cy,0,zoomsize,alpha,0,0,0)
+        else
+            obj.load("figure","éläpå`",col,InfoWeight)
+            obj.effect("óÃàÊägí£","è„",InfoSize,"â∫",InfoSize,"ìhÇËÇ¬Ç‘Çµ",1)
+            obj.draw(0,0,0,zoomsize,alpha,0,0,0)
+            obj.load("figure","éläpå`",col,InfoWeight)
+            obj.effect("óÃàÊägí£","ç∂",InfoSize,"âE",InfoSize,"ìhÇËÇ¬Ç‘Çµ",1)
+            obj.draw(0,0,0,zoomsize,alpha,0,0,0)
+        end
+
+    end
+end
+
+
+------------------------------------------------------------------------------------------------------------
+@Alignment(ä»à’)
+------------------------------------------------------------------------------------------------------------
+--track0:Xà íu(%),-90,90,0,1
+--track1:Yà íu(%),-90,90,0,1
+--track2:îzíuå≈íË,0,1,1,1
+--check0:Info,1
+--dialog:èoóÕéûï`âÊÇµÇ»Ç¢/chk,_1=1;Info Color/col,_2="0xff0000";Info Size,_3=20;Info Weight,_4=3;
+
+local function toBoolean(a)
+	if a == 1 then
+		return true
+	else
+		return false
+	end
+end
+
+local zoomsize = 100 / obj.getvalue("zoom")
+local alpha = 1 / obj.getvalue("alpha")
+local xpos = obj.track0
+local ypos = obj.track1
+local PositionLock = toBoolean(obj.track2)
+local InfoOn = obj.check0
+local w, h = obj.w, obj.h
+w, h = w / 2, h / 2
+local dcx, dcy = obj.cx, obj.cy
+local cx, cy = 0, 0
+local zoom = obj.getvalue("zoom") / 100
+
+
+local SavingRemove = toBoolean(_1)
+local col = _2
+local InfoSize = _3
+local InfoWeight = _4
+
+cx =  w * xpos
+cy =  h * ypos
+cx = cx / zoom
+cy = cy / zoom
+obj.cx =  cx
+obj.cy =  cy
+if (PositionLock) then
+    cx = cx * zoom
+    cy = cy * zoom
+    obj.ox = (obj.ox+(cx-dcx))
+    obj.oy = (obj.oy+(cy-dcy))
+end
+
+
+if(not obj.getinfo("saving")) or (not SavingRemove) then
+    if (InfoOn) then
+        obj.effect()
+        obj.draw()
+        if (PositionLock) then
+            obj.load("figure","éläpå`",col,InfoWeight)
+            obj.effect("óÃàÊägí£","è„",InfoSize,"â∫",InfoSize,"ìhÇËÇ¬Ç‘Çµ",1)
+            obj.draw(cx,cy,0,zoomsize,alpha,0,0,0)
+            obj.load("figure","éläpå`",col,InfoWeight)
+            obj.effect("óÃàÊägí£","ç∂",InfoSize,"âE",InfoSize,"ìhÇËÇ¬Ç‘Çµ",1)
+            obj.draw(cx,cy,0,zoomsize,alpha,0,0,0)
+        else
+            obj.load("figure","éläpå`",col,InfoWeight)
+            obj.effect("óÃàÊägí£","è„",InfoSize,"â∫",InfoSize,"ìhÇËÇ¬Ç‘Çµ",1)
+            obj.draw(0,0,0,zoomsize,alpha,0,0,0)
+            obj.load("figure","éläpå`",col,InfoWeight)
+            obj.effect("óÃàÊägí£","ç∂",InfoSize,"âE",InfoSize,"ìhÇËÇ¬Ç‘Çµ",1)
+            obj.draw(0,0,0,zoomsize,alpha,0,0,0)
+        end
+
+    end
+end
+
+
+------------------------------------------------------------------------------------------------------------
+@Alignment(px)
+------------------------------------------------------------------------------------------------------------
+--track0:Xà íu,-9000,9000,0,0.01
+--track1:Yà íu,-9000,9000,0,0.01
+--track2:îzíuå≈íË,0,1,1,1
+--track3:â~à⁄ìÆ,-360,360,0,0.01
+--check0:Info,1
+--dialog:èoóÕéûï`âÊÇµÇ»Ç¢/chk,_1=1;Info Color/col,_2="0xff0000";Info Size,_3=20;Info Weight,_4=3;
+
+local function toBoolean(a)
+	if a == 1 then
+		return true
+	else
+		return false
+	end
+end
+
+local zoomsize = 100 / obj.getvalue("zoom")
+local alpha = 1 / obj.getvalue("alpha")
+local xpos = obj.track0
+local ypos = obj.track1
+local PositionLock = toBoolean(obj.track2)
+local deg = obj.track3
+local InfoOn = obj.check0
+local dcx, dcy = obj.cx, obj.cy
+local cx, cy = 0, 0
+local zoom = obj.getvalue("zoom")/100
+local xyrad = math.atan2(ypos,xpos)
+local l = xpos * math.cos(xyrad) + ypos * math.sin(xyrad)
+
+local SavingRemove = toBoolean(_1)
+local col = _2
+local InfoSize = _3
+local InfoWeight = _4
+
+
+if (obj.track3 == 0) then
+    cx = xpos
+    cy = ypos
+else
+    cx = l * math.cos(xyrad + math.rad(deg))
+    cy = l * math.sin(xyrad + math.rad(deg))
+end
+cx = cx / zoom
+cy = cy / zoom
+obj.cx =  cx
+obj.cy =  cy
+if (PositionLock) then
+    cx = cx * zoom
+    cy = cy * zoom
+    obj.ox = (obj.ox+(cx-dcx))
+    obj.oy = (obj.oy+(cy-dcy))
+end
+
+if(not obj.getinfo("saving")) or (not SavingRemove) then
+    if (InfoOn) then
+        obj.effect()
+        obj.draw()
+        if (PositionLock) then
+            obj.load("figure","éläpå`",col,InfoWeight)
+            obj.effect("óÃàÊägí£","è„",InfoSize,"â∫",InfoSize,"ìhÇËÇ¬Ç‘Çµ",1)
+            obj.draw(cx,cy,0,zoomsize,alpha,0,0,0)
+            obj.load("figure","éläpå`",col,InfoWeight)
+            obj.effect("óÃàÊägí£","ç∂",InfoSize,"âE",InfoSize,"ìhÇËÇ¬Ç‘Çµ",1)
+            obj.draw(cx,cy,0,zoomsize,alpha,0,0,0)
+        else
+            obj.load("figure","éläpå`",col,InfoWeight)
+            obj.effect("óÃàÊägí£","è„",InfoSize,"â∫",InfoSize,"ìhÇËÇ¬Ç‘Çµ",1)
+            obj.draw(0,0,0,zoomsize,alpha,0,0,0)
+            obj.load("figure","éläpå`",col,InfoWeight)
+            obj.effect("óÃàÊägí£","ç∂",InfoSize,"âE",InfoSize,"ìhÇËÇ¬Ç‘Çµ",1)
+            obj.draw(0,0,0,zoomsize,alpha,0,0,0)
+        end
+
+    end
+end

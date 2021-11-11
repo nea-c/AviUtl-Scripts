@@ -1,0 +1,195 @@
+--track0:雲個数,1,5,5,1
+--track1:繋ぎ太さ,0,4000,110,0.1
+--track2:雲高さ,1,200,40,0.1
+--track3:繋ぎ高さ,1,200,40,0.1
+--check0:高さ統一,1
+--dialog:色/col,_1="0xffffff";アンカー補正/chk,_2=0;---,anchor={-301,-180,121,-140,34,-140,-137,-100,386,-60,149,-60,-241,-20,245,20,-146,20,-386,60,165,100,-7,100,-194,140,326,180};
+
+require("rikky_module")
+
+local function toBoolean(a)
+	if a == 1 then
+		return true
+	else
+		return false
+	end
+end
+
+local col = _1
+local anchor_rev = toBoolean(_2)
+
+local anchorN = 2 + ((obj.track0 - 1) * 3)
+local cloud = obj.track0
+local cloudh = obj.track2
+local connech = obj.track3
+local y_zure = y_zure or 0
+local line = obj.track1 / 2
+local size = 0
+local c
+
+obj.setanchor("anchor", anchorN)
+c = anchor
+if (obj.check0) then
+	for i = 4, anchorN * 2, 2 do
+		if (i == 6 * math.floor(i / 6)) then
+			c[i] = c[i - 2]
+		elseif (i == 8) or (i == 14) or (i == 20) or (i == 26) then
+			c[i] = c[i - 2] + connech
+		else
+			c[i] = c[i - 2] + cloudh
+		end
+	end
+	c[2] = -(c[anchorN * 2] - c[2]) / 2
+	for i = 4, anchorN * 2, 2 do
+		if (i == 6 * math.floor(i / 6)) then
+			c[i] = c[i - 2]
+		elseif (i == 8) or (i == 14) or (i == 20) or (i == 26) then
+			c[i] = c[i - 2] + connech
+		else
+			c[i] = c[i - 2] + cloudh
+		end
+	end
+
+	local x_min, x_max = c[1], c[1]
+	for i = 3, anchorN * 2, 2 do
+		x_min = math.min(c[i], x_min)
+		x_max = math.max(c[i], x_max)
+	end
+	x_avg = x_max - ((x_max - x_min) / 2)
+	for i = 1, anchorN * 2, 2 do
+		c[i] = c[i] - x_avg
+	end
+end
+if (anchor_rev) then
+	rikky_module.setdialogparamCS("anchor_rev", 0)
+	rikky_module.setdialogparamCS("anchor", c)
+end
+
+local buffersize_w, buffersize_h = 0, 0
+for i = 1, anchorN * 2, 2 do
+	buffersize_w = math.max(buffersize_w, math.abs(c[i]))
+	buffersize_h = math.max(buffersize_h, math.abs(c[i + 1]))
+end
+
+local maxsize = 0
+for i = 1, anchorN * 2, 6 do
+	size = math.abs(c[i + 1] - c[i + 3]) + 2
+	maxsize = math.max(maxsize, size)
+end
+
+obj.setoption("drawtarget", "tempbuffer", buffersize_w * 2 + maxsize + 100, buffersize_h * 2 + 100)
+
+for i = 1, anchorN * 2, 6 do
+	size = math.abs(c[i + 1] - c[i + 3]) + 2
+	maxsize = math.max(maxsize, size)
+	obj.load("figure", "円", col, size)
+	obj.draw(c[i], (c[i + 1] - c[i + 3]) / 2 + c[i + 3], 0)
+	obj.draw(c[i + 2], (c[i + 1] - c[i + 3]) / 2 + c[i + 3], 0)
+end
+
+for i = 1, anchorN * 2, 6 do
+	obj.load("figure", "四角形", col, 100)
+	obj.drawpoly(c[i], c[i + 1], 0, c[i + 2], c[i + 1], 0, c[i + 2], c[i + 3], 0, c[i], c[i + 3], 0)
+end
+
+local flag = {}, plus, minus
+if (cloud >= 2) then
+	for i = 5, anchorN * 2, 6 do
+		flag[i] = 0
+		obj.load("figure", "四角形", col, 100)
+		plus = math.min(c[i - 2], c[i + 4])
+		minus = math.max(c[i - 4], c[i + 2])
+		if (plus - minus < line * 2) then
+			flag[i] = 1
+			obj.drawpoly(minus, c[i - 1] - 1, 0, plus, c[i - 1] - 1, 0, plus, c[i + 3] + 1, 0, minus, c[i + 3] + 1, 0)
+		elseif (c[i] - line < c[i - 4]) or (c[i] - line < c[i + 2]) then
+			c[i] = minus + line
+		elseif (c[i] + line > c[i - 2]) or (c[i] + line > c[i + 4]) then
+			c[i] = plus - line
+		end
+		if flag[i] == 0 then
+			obj.drawpoly(
+				c[i] - line,
+				c[i - 1] - 1,
+				0,
+				c[i] + line,
+				c[i - 1] - 1,
+				0,
+				c[i] + line,
+				c[i + 3] + 1,
+				0,
+				c[i] - line,
+				c[i + 3] + 1,
+				0
+			)
+		end
+	end
+end
+obj.load("tempbuffer")
+
+obj.effect("境界ぼかし", "範囲", 2, "透明度の境界をぼかす", 1)
+
+if (cloud >= 2 and not (line * 2 == 0)) then
+	for i = 5, anchorN * 2, 6 do
+		if flag[i] == 0 then
+			obj.effect(
+				"マスク",
+				"type",
+				1,
+				"マスクの反転",
+				1,
+				"X",
+				c[i] - line,
+				"Y",
+				(c[i - 1] - c[i + 3]) / 2 + c[i + 3],
+				"サイズ",
+				-(c[i - 1] - c[i + 3]) + 3
+			)
+			obj.effect(
+				"マスク",
+				"type",
+				1,
+				"マスクの反転",
+				1,
+				"X",
+				c[i] + line,
+				"Y",
+				(c[i - 1] - c[i + 3]) / 2 + c[i + 3],
+				"サイズ",
+				-(c[i - 1] - c[i + 3]) + 3
+			)
+		else
+			plus = math.min(c[i - 2], c[i + 4])
+			minus = math.max(c[i - 4], c[i + 2])
+			obj.effect(
+				"マスク",
+				"type",
+				1,
+				"マスクの反転",
+				1,
+				"X",
+				minus,
+				"Y",
+				(c[i - 1] - c[i + 3]) / 2 + c[i + 3],
+				"サイズ",
+				-(c[i - 1] - c[i + 3]) + 3
+			)
+			obj.effect(
+				"マスク",
+				"type",
+				1,
+				"マスクの反転",
+				1,
+				"X",
+				plus,
+				"Y",
+				(c[i - 1] - c[i + 3]) / 2 + c[i + 3],
+				"サイズ",
+				-(c[i - 1] - c[i + 3]) + 3
+			)
+		end
+	end
+end
+if obj.check0 == false then
+	obj.oy = obj.oy + y_zure
+end

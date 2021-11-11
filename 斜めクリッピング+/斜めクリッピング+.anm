@@ -1,0 +1,25 @@
+--track0:中心X,-10000,10000,0,1
+--track1:中心Y,-10000,10000,0,1
+--track2:角度,-10000,10000,0,0.1
+--track3:幅,-10000,10000,0,1
+--check0:帯,1
+--dialog:ぼかし,local blur=0;Mode/chk,local mode=0;
+
+mode = mode + 1
+local x = obj.track0
+local y = obj.track1
+local rad = obj.track2
+local h = obj.track3
+
+if (obj.check0) then
+      if (math.abs(h) > 0) then
+            obj.effect("斜めクリッピング", "中心X", x, "中心Y", y, "角度", rad, "幅", h, "ぼかし", blur)
+      else
+            if (mode == 2) then
+                  obj.effect("斜めクリッピング", "中心X", x, "中心Y", y, "角度", rad, "幅", h, "ぼかし", blur)
+                  obj.effect("斜めクリッピング", "中心X", x-1, "中心Y", y + 1, "角度", rad + 180, "幅", h, "ぼかし", blur)
+            end
+      end
+else
+      obj.effect("斜めクリッピング", "中心X", x, "中心Y", y, "角度", rad, "幅", h, "ぼかし", blur)
+end

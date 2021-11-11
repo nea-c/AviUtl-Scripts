@@ -1,0 +1,50 @@
+@px
+--track0:上,-2000,2000,0,0.01
+--track1:下,-2000,2000,0,0.01
+--track2:左,-2000,2000,0,0.01
+--track3:右,-2000,2000,0,0.01
+local top = obj.track0
+local bottom = obj.track1
+local left = obj.track2
+local right = obj.track3
+local xp = obj.w / 2
+local yp = obj.h / 2
+obj.drawpoly(-xp - left, -yp - top, 0, xp + right, -yp - top, 0, xp + right, yp + bottom, 0, -xp - left, yp + bottom, 0)
+
+
+@per
+--track0:上,-100,1000,100,.01
+--track1:下,-100,1000,100,.01
+--track2:左,-100,1000,100,.01
+--track3:右,-100,1000,100,.01
+--check0:補間なし,0
+local w,h = obj.w , obj.h
+local zoom = obj.zoom
+local a,b,c,d=(obj.track1-obj.track0),(obj.track3-obj.track2),(obj.track1+obj.track0),(obj.track3+obj.track2)
+local e,f=math.max(0,(w - h)/2),math.max(0,(h - w)/2)
+local zu_y,zu_x=a / (400 / w) * zoom / (w / h) , b / (400 / h) * zoom / (h / w)
+
+local deg = obj.rz
+local xpos,ypos=obj.ox,obj.oy
+
+local zoom=obj.getvalue("zoom")/100
+local xyrad=math.atan2(ypos,xpos)
+local l=xpos*math.cos(xyrad)+ypos*math.sin(xyrad)
+local cx,cy=0,0
+local dcx,dcy=obj.cx,obj.cy
+
+if(deg==0)then
+    cx =  xpos - zu_x
+    cy =  ypos - zu_y
+else
+    cx=l*math.cos(xyrad+math.rad(deg)) - zu_x
+    cy=l*math.sin(xyrad+math.rad(deg)) - zu_y
+end
+
+cx = cx / zoom
+cy = cy / zoom
+obj.cx =  cx
+obj.cy =  cy
+
+obj.effect("リサイズ","Y",(c)/2,"X",(d)/2,"補間なし",obj.check0 and 1 or 0)
+
