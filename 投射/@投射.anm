@@ -263,7 +263,7 @@ if (US == "–{‘Ì@“ŠŽË")==false then
 end
 
 
-if (Wcam==1) then
+if (Wcam == 1) then
    obj.setoption("billboard",3)
 else
    obj.setoption("billboard",0)
