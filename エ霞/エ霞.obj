@@ -22,7 +22,7 @@ local anchorN = 2 + ((obj.track0 - 1) * 3)
 local cloud = obj.track0
 local cloudh = obj.track2
 local connech = obj.track3
-y_zure = y_zure or 0
+local y_zure = y_zure or 0
 local line = obj.track1 / 2
 local size = 0
 local c
