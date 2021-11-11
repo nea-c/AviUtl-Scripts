@@ -6,8 +6,8 @@ local w_cam = obj.track3
 obj.setoption("billboard",w_cam)
 
 local function f()
-	local xn,yn=obj.track0,1
-	local RM=require"rikky_module"
+	local n = obj.track0
+	local RM = require"rikky_module"
 	if(RM.getinfo("version",2)<"1.4")then error"バージョン1.4以上のRikkyModuleを使用すること"end
 	local objdata={}
 	local keys={"ox","oy","oz","rx","ry","rz","zoom","alpha"}
@@ -15,17 +15,15 @@ local function f()
 		objdata[v]=obj[v]
 	end
 	local ox,oy,oz=obj.ox,obj.oy,obj.oz
-	for y=0,yn-1 do
-		for x=0,xn-1 do
-			for k,v in pairs(keys)do
-				obj[v]=objdata[v]
-			end
-			obj.ox=ox
-			obj.oy=oy
-			obj.oz=oz
-			RM.effect(x+y*xn,xn*yn)
-			obj.draw()
+	for i=0,n-1 do
+		for k,v in pairs(keys)do
+			obj[v]=objdata[v]
 		end
+		obj.ox=ox
+		obj.oy=oy
+		obj.oz=oz
+		RM.effect(i,n)
+		obj.draw()
 	end
 end
 local a,b=pcall(f)
