@@ -16,8 +16,6 @@ local t3=obj.track3
 
 
 
-
-
 local i
 local number = num or 4
 local no_rotate = rot or 0
