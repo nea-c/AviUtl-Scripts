@@ -7,7 +7,7 @@
 
 #### 参考
 
-- [スクリプトの導入方法(ePi氏著)](https://scrapbox.io/aviutl/スクリプトの導入方法)
+- [スクリプトの導入方法(AviUtl Scrapbox)](https://scrapbox.io/aviutl/スクリプトの導入方法)
 
 
 ## 注意
