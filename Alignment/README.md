@@ -61,7 +61,7 @@
 
 
 
-### Alignment(px)
+### Alignment(px) ~~　　　　　~~
 
 ---
 
