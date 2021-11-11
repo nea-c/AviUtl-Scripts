@@ -65,7 +65,3 @@
 - v1.1 - 出力時描画しない設定の追加
 
 - v1.0 - リリース
-
-
-　Developed by ねあ
-　twitter：@NeAc_
