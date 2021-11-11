@@ -52,14 +52,6 @@
 | 円移動 | 変更前中心位置を基準として中心を円移動させます。 |
 
 
-## 導入方法 / How to install
-
-[ここ](https://github.com/nea-c/AviUtl-Scripts/blob/dev/README.md)に記載
-
-## ライセンス / License
-
-[ここ](https://github.com/nea-c/AviUtl-Scripts/blob/master/LICENSE)に記載
-
 ## 変更履歴 / Change log
 
 - v1.5 - Alignment(px)の円移動で発生したバグを修正
