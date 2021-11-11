@@ -1,0 +1,142 @@
+--track0:固定モード,0,3,1,1
+--track1:モード,1,2,1,1
+--track2:D,0,10000,1300
+--track3:r,0,10000,100
+--dialog:分割数,NN=100;
+
+local pw,ph=obj.getpixel()
+obj.setoption("dst","tmp",pw,ph)
+obj.setoption("blend","alpha_add")
+local check0=obj.track0
+local mode=obj.track1
+local D=obj.track2
+local r=obj.track3
+local Nw=NN
+local Nh=NN
+local W=obj.w/Nw
+local H=obj.h/Nh
+
+local I={}
+local J={}
+local x={}
+local y={}
+local z={}
+local X={}
+local Y={}
+local Z={}
+local R={}
+
+local YMAX=0
+local XMAX=0
+local RMAX=0
+
+local ZOOM=obj.zoom
+
+--MAX用に一回計算
+for i=0,Nw-1 do
+for j=0,Nh-1 do
+
+I[0]=i
+I[1]=i+1
+I[2]=i+1
+I[3]=i
+
+J[0]=j
+J[1]=j
+J[2]=j+1
+J[3]=j+1
+
+for k=0,3 do
+
+x[k]=I[k]*W-obj.w/2
+y[k]=J[k]*H-obj.h/2
+z[k]=0
+
+if(mode==1)then
+X[k]=r*x[k]/math.sqrt(D^2+x[k]^2+y[k]^2)
+Y[k]=r*y[k]/math.sqrt(D^2+x[k]^2+y[k]^2)
+Z[k]=0
+elseif(mode==2)then
+X[k]=D*math.tan(math.pi/2-math.atan2(math.sqrt(r^2-(x[k]^2+y[k]^2)),math.sqrt(x[k]^2+y[k]^2)))*math.cos(math.atan2(y[k],x[k]))
+Y[k]=D*math.tan(math.pi/2-math.atan2(math.sqrt(r^2-(x[k]^2+y[k]^2)),math.sqrt(x[k]^2+y[k]^2)))*math.sin(math.atan2(y[k],x[k]))
+Z[k]=0
+end
+
+if(i==0 and j==0 and k==0)then
+RMAX=math.sqrt(X[k]^2+Y[k]^2)
+end
+if(X[k]>XMAX)then
+XMAX=math.abs(X[k])
+end
+if(Y[k]>YMAX)then
+YMAX=math.abs(Y[k])
+end
+
+end
+end
+end
+
+
+--ここから画像変形
+for i=0,Nw-1 do
+for j=0,Nh-1 do
+
+I[0]=i
+I[1]=i+1
+I[2]=i+1
+I[3]=i
+
+J[0]=j
+J[1]=j
+J[2]=j+1
+J[3]=j+1
+
+for k=0,3 do
+
+x[k]=I[k]*W-obj.w/2
+y[k]=J[k]*H-obj.h/2
+z[k]=0
+
+if(mode==1)then
+X[k]=r*x[k]/math.sqrt(D^2+x[k]^2+y[k]^2)
+Y[k]=r*y[k]/math.sqrt(D^2+x[k]^2+y[k]^2)
+Z[k]=0
+elseif(mode==2)then
+X[k]=D*math.tan(math.pi/2-math.atan2(math.sqrt(r^2-(x[k]^2+y[k]^2)),math.sqrt(x[k]^2+y[k]^2)))*math.cos(math.atan2(y[k],x[k]))
+Y[k]=D*math.tan(math.pi/2-math.atan2(math.sqrt(r^2-(x[k]^2+y[k]^2)),math.sqrt(x[k]^2+y[k]^2)))*math.sin(math.atan2(y[k],x[k]))
+Z[k]=0
+end
+
+if(check0==1)then
+X[k]=X[k]*(obj.screen_h/2)/YMAX
+Y[k]=Y[k]*(obj.screen_h/2)/YMAX
+Z[k]=Z[k]*(obj.screen_h/2)/YMAX
+elseif(check0==2)then
+X[k]=X[k]*(obj.screen_w/2)/XMAX
+Y[k]=Y[k]*(obj.screen_w/2)/XMAX
+Z[k]=Z[k]*(obj.screen_w/2)/XMAX
+elseif(check0==3)then
+X[k]=X[k]*math.sqrt((obj.screen_h/2)^2+(obj.screen_w/2)^2)/RMAX
+Y[k]=Y[k]*math.sqrt((obj.screen_h/2)^2+(obj.screen_w/2)^2)/RMAX
+Z[k]=Z[k]*math.sqrt((obj.screen_h/2)^2+(obj.screen_w/2)^2)/RMAX
+end
+
+end
+
+obj.drawpoly(
+
+X[0],Y[0],Z[0],
+X[1],Y[1],Z[1],
+X[2],Y[2],Z[2],
+X[3],Y[3],Z[3],         
+              
+I[0]*W,J[0]*H,
+I[1]*W,J[1]*H,
+I[2]*W,J[2]*H,
+I[3]*W,J[3]*H)
+
+end
+end
+
+obj.zoom=ZOOM
+obj.copybuffer("obj","tmp")

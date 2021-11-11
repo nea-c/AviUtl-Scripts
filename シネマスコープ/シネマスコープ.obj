@@ -1,0 +1,47 @@
+--track0:íÜêSX,-10000,10000,0,0.1
+--track1:íÜêSY,-10000,10000,0,0.1
+--track2:äpìx,-10000,10000,0,0.0.1
+--track3:ïù,0,500,0,0.01
+--dialog:ë—êF/col,local col="0x000000";
+
+local zoomsize = 100 / obj.getvalue("zoom")
+local alpha = 1 / obj.getvalue("alpha")
+local h = -obj.track3/100 * obj.screen_h
+local cxp = obj.track0
+local cyp = obj.track1
+local half = obj.screen_h / 2
+local deg = obj.track2
+local rad = math.rad(deg)
+local xyrad=math.atan2(h,0)
+local l=h/2*math.sin(xyrad)
+
+local lp1 = 1000
+local rp1 = 1000
+local dp1 = 1000
+local lp2 = 1000
+local rp2 = 1000
+local up2 = 1000
+
+local x1=-l*math.cos(xyrad+math.rad(deg))+cxp
+local y1=-l*math.sin(xyrad+math.rad(deg))+cyp
+
+
+local x2=l*math.cos(xyrad+math.rad(deg))+cxp
+local y2=l*math.sin(xyrad+math.rad(deg))+cyp
+
+
+--obj.setoption("drawtarget","tempbuffer",obj.screen_w,obj.screen_h)
+
+if (h==0) then
+    obj.load("figure","îwåi",col,1)
+    obj.draw(0,0,0,zoomsize,alpha,0,0,0)
+else
+    obj.load("figure","éläpå`",col,1)
+    obj.effect("óÃàÊägí£","ìhÇËÇ¬Ç‘Çµ" ,1 , "â∫", dp1, "ç∂", lp1, "âE", rp1)
+    obj.draw(x1,y1,0,zoomsize,alpha,0,0,deg)
+    obj.load("figure","éläpå`",col,1)
+    obj.effect("óÃàÊägí£","ìhÇËÇ¬Ç‘Çµ" ,1 , "è„", up2, "ç∂", lp2, "âE", rp2)
+    obj.draw(x2,y2,0,zoomsize,alpha,0,0,deg)
+end
+
+--obj.load("tempbuffer")

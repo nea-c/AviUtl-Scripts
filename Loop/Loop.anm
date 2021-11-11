@@ -1,0 +1,185 @@
+--track0:X個数,-4000,4000,3,1
+--track1:Y個数,-4000,4000,3,1
+--track2:Xｵﾌｾｯﾄ,-10000,10000,0
+--track3:Yｵﾌｾｯﾄ,-10000,10000,0
+--check0:個別オブジェクト,0
+--dialog:*X整列[1-3],_1=3;*Y整列[1-3],_2=3;*Z整列[1-3],_3=3;X反転,_4=0;Y反転,_5=0;Z反転,_6=0;X数0以下時 -2,_7=0;Y数0以下時 -2,_8=0;Z数0以下時 -2,_9=0;X間隔,_10=100;Y間隔,_11=100;Z間隔,_12=100;Z個数,_13=1;Zｵﾌｾｯﾄ,_14=0;Zサイズ,_15=1;個別基準,_16=0;
+
+local function f()
+local RM = require("rikky_module")
+if(RM.getinfo("version",2)<"1.4")then error"バージョン1.4以上のRikkyModuleを使用すること"end
+if RM then
+    RM.checkbox(4,5,6,7,8,9,16)
+    RM.list(1,{"無効","1列目で中央揃え","全体で中央揃え"})
+    RM.list(2,{"無効","1列目で中央揃え","全体で中央揃え"})
+    RM.list(3,{"無効","1列目で中央揃え","全体で中央揃え"})
+end
+local objdata = {}
+local keys = {"ox","oy","oz","rx","ry","rz","zoom","alpha"}
+for k, v in pairs(keys) do
+	objdata[v] = obj[v]
+end
+
+local function Inversion(a)
+	if a then
+		return false
+	else
+		return true
+	end
+end
+
+local function toBoolean(a)
+	if a == 1 then
+		return true
+	else
+		return false
+	end
+end
+
+local alignX = _1
+local alignY = _2
+local alignZ = _3
+
+local reverseX = toBoolean(_4)
+local reverseY = toBoolean(_5)
+local reverseZ = toBoolean(_6)
+
+local ZeroBorderX = toBoolean(_7)
+local ZeroBorderY = toBoolean(_8)
+local ZeroBorderZ = toBoolean(_9)
+
+local nz = _13
+local IndMode = toBoolean(_16)
+
+local indiv_objects = obj.check0
+local nx = obj.track0
+local ny = obj.track1
+local offsetX = obj.track2 / 100
+local offsetY = obj.track3 / 100
+local offsetZ = _14 / 100
+local gx, gy, gz
+local x, y, z = 0, 0, 0
+local def = {0,0,0}
+local ox, oy, oz = obj.ox, obj.oy, obj.oz
+local cx,cy,cz = 0,0,0
+
+if not indiv_objects then
+  obj.effect()
+end
+
+--描画しない条件
+if not (ZeroBorderX and ZeroBorderY and ZeroBorderZ) then
+  if nx * ny * nz == 0 or _15 <= 0 then
+    obj.draw(0,0,0,0,0)
+    return
+  end
+end
+
+if nx <= 0 then
+  if ZeroBorderX then
+    nx = nx - 2
+  end
+	reverseX = Inversion(reverseX)
+end
+if ny <= 0 then
+  if ZeroBorderY then
+    ny = ny - 2
+  end
+	reverseY = Inversion(reverseY)
+end
+if nz <= 0 then
+  if ZeroBorderZ then
+    nz = nz - 2
+  end
+	reverseZ = Inversion(reverseZ)
+end
+
+local nx, ny, nz = math.abs(nx), math.abs(ny), math.abs(nz)
+
+if IndMode then
+  gx = _10
+  gy = _11
+  gz = _12
+  
+else
+  local w = obj.w
+  local h = obj.h
+  gx = _10 / 100 * w
+  gy = _11 / 100 * h
+  gz = _12 / 100 * _15
+end
+
+for nzi = 0, nz - 1 do
+  for nyi = 0, ny - 1 do
+    for nxi = 0, nx - 1 do
+      
+      
+      if alignX >= 2 then
+        x = ox + gx * (nxi - (nx - 1) / 2)
+      else
+        x = ox + nxi * gx
+      end
+
+      if reverseX then
+        x = x * -1
+      end
+      
+
+      if alignY >= 2 then
+        y = oy + gy * (nyi - (ny - 1) / 2)
+      else
+        y = oy + nyi * gy
+      end
+      
+      if reverseY then
+        y = y * -1
+      end
+      
+
+      if alignZ >= 2 then
+        z = oz + gz * (nzi - (nz - 1) / 2)
+      else
+        z = oz + nzi * gz
+      end
+      
+            
+      if alignX==3 then
+  			cx = gx * (offsetX * (ny - 1)) / 2
+			end
+			if alignY==3 then
+        cy = gy * (offsetY * (nx - 1)) / 2
+	  	end
+		  if alignZ==3 then
+			  cz = gz * (offsetZ * (nx + ny - 2) / 2) / 2
+			end
+
+      
+      def[1] = x + gx * (offsetX * nyi) - cx
+      def[2] = y + gy * (offsetY * nxi) - cy
+      def[3] = z + gz * (offsetZ * (nxi + nyi) / 2) - cz
+        
+      if reverseZ == 1 then
+        def[3] = def[3] * -1
+      end
+
+      if indiv_objects then
+		    for k, v in pairs(keys) do
+			    obj[v] = objdata[v]
+		    end
+		    obj.ox = obj.ox + def[1]
+		    obj.oy = obj.oy + def[2]
+		    obj.oz = obj.oz + def[3]
+		    RM.effect((nxi + nyi * nx) * (nzi + 1), nx * ny * nz)
+		    obj.draw()
+      else
+        obj.draw(def[1], def[2], def[3])
+      end
+    end
+  end
+end
+end
+local a,b=pcall(f)
+if a then return end
+setfont("メイリオ",30)
+obj.load("text","Error:\n"..b:match("%[.+%]:(%d+:.*)"))
+obj.draw(0,0,0,math.min(obj.screen_w/obj.w*0.7,1))

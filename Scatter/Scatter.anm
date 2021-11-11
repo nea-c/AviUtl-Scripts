@@ -1,0 +1,25 @@
+--track0:progress,0,100,0,0.01
+--track3:scale,-9000,9000,100,0.01
+--dialog:x,_1={-160,160}; y,_2={-90,90}; z,_3={0,0}; rx,_4={0,0}; ry,_5={0,0}; rz,_6={-50,50}; zoom,_7={0,0}; seed,_8=0;
+
+local x_range = _1
+local y_range = _2
+local z_range = _3
+local x_rotate_range = _4
+local y_rotate_range = _5
+local z_rotate_range = _6
+local zoom_range = _7
+local seed = _8
+
+local per_scale = obj.track3 / 100
+local per = obj.track0 / 100
+
+obj.ox = obj.ox + per * obj.rand(x_range[1], x_range[2], obj.index, seed) * per_scale
+obj.oy = obj.oy + per * obj.rand(y_range[1], y_range[2], obj.index, seed + 1) * per_scale
+obj.oz = obj.oz + per * obj.rand(z_range[1], z_range[2], obj.index, seed + 2) * per_scale
+
+obj.rx = obj.rx + per * obj.rand(x_rotate_range[1], x_rotate_range[2], obj.index, seed + 3) * per_scale
+obj.ry = obj.ry + per * obj.rand(y_rotate_range[1], y_rotate_range[2], obj.index, seed + 4) * per_scale
+obj.rz = obj.rz + per * obj.rand(z_rotate_range[1], z_rotate_range[2], obj.index, seed + 5) * per_scale
+
+obj.zoom = math.max(0, obj.zoom + per * obj.rand(zoom_range[1], zoom_range[2], obj.index, seed + 6) / 100 * per_scale)

@@ -1,0 +1,282 @@
+--/////////////////////////////////////////////////////////////////////////////
+--@TA-Normal(random)
+--/////////////////////////////////////////////////////////////////////////////
+--track0:in/out,-100,100,0,0.01
+--track1:ズレ,0,100,10,0.01
+--track2:seed(in),0,9000,0,1
+--track3:seed(out),0,9000,0,1
+--dialog:easing,local ease={0, 0};座標,local vector={100,100};フェード/chk,local fd=0;in/out非表示/chk,local io_d=1;拡大率,local zm=0;ぼかし,local bl=0;order[0/4],local ord={0,0};
+--check0:seed(out)を(in)に同期,1;
+local function clamp(x)
+      return (x <= 0 and 0) or (x >= 1 and 1) or x
+end
+local function lerp(t, a, b)
+      return t * (b - a) + a
+end
+local function linear(t, a, b, A, B)
+      return clamp((t - a) / (b - a)) * (B - A) + A
+end
+local function smooth(x)
+      return x * x * (3 - 2 * x)
+end
+local function sequence(t, delay, index, num)
+      if (t < 0) then
+            t, index = -t, num - index
+      end
+      return clamp(t * (1 + delay * num) - delay * index)
+end
+
+local function shuffle_tbl(tbl, seed)
+      local count = #tbl
+      math.randomseed(seed or 0)
+      local j
+      for i = count, 2, -1 do
+            j = math.random(i)
+            tbl[i], tbl[j] = tbl[j], tbl[i]
+      end
+      return tbl
+end
+
+local function TA_spd(g)
+      g = g or 0
+      local l, i, t = obj.layer, obj.index, obj.time
+      local rate = 1 / obj.framerate
+      local k = {obj.x * g + obj.ox, obj.y * g + obj.oy, 0, obj.rz}
+      SPD = SPD or {}
+      SPD[l] = SPD[l] or {t = 0}
+      if SPD[l][i] == nil then
+            SPD[l][i] = k
+      end
+      local s = SPD[l][i][3]
+      local r = SPD[l][i][4]
+      local ending = (obj.time == obj.totaltime) and (SPD[l].t <= t)
+      if ending or (SPD[l].t < t) then
+            local x, y = k[1] - SPD[l][i][1], k[2] - SPD[l][i][2]
+            s = math.sqrt(x * x + y * y)
+            s = math.log(s / 10 + 1, 10)
+            if (s > 0) then
+                  r = math.deg(math.atan2(y, x)) + 90
+            end
+            SPD[l][i] = {k[1], k[2], s, r}
+            if (i == obj.num - 1) then
+                  SPD[l].t = t
+            end
+      elseif (SPD[l].t > t) then
+            SPD[l][i] = k
+            if (i == obj.num - 1) then
+                  SPD[l].t = t
+            end
+      end
+      return s, r
+end
+
+local Order = {
+      [0] = function()
+            return obj.index
+      end,
+      function()
+            return (obj.num - 1) - obj.index
+      end,
+      function()
+            return math.abs((obj.num) - obj.index * 2 - 1)
+      end,
+      function()
+            return obj.num - math.abs((obj.num) - obj.index * 2 - 1)
+      end,
+      function(seed)
+            local id = {}
+            for i = 1, obj.num do
+                  id[i] = i - 1
+            end
+            return shuffle_tbl(id, seed)[obj.index + 1]
+      end
+}
+
+local colorize = {0xd5e6ca, 0xa10a31, 0x5ba6a5, 0x170f1f, 0xdfdfd9}
+
+if not tostring(ease):find("table:") then
+      ease = {ease, ease}
+end
+local easein = ease[1]
+local easeout = (ease[2] or ease[1])
+
+local function easing(x)
+      return x * x * (3 - 2 * x)
+end
+if (easein > 0 or easeout > 0) then
+      local E = require("easing")
+      local easelist = {
+            "linear", -- 1
+            "inSine",
+            "outSine",
+            "inOutSine",
+            "outInSine", -- 2,3,4,5
+            "inQuad",
+            "outQuad",
+            "inOutQuad",
+            "outInQuad", -- 6,7,8,9
+            "inCubic",
+            "outCubic",
+            "inOutCubic",
+            "outInCubic", -- 10,11,12,13
+            "inQuart",
+            "outQuart",
+            "inOutQuart",
+            "outInQuart", -- 14,15,16,17
+            "inQuint",
+            "outQuint",
+            "inOutQuint",
+            "outInQuint", -- 18,19,20,21
+            "inExpo",
+            "outExpo",
+            "inOutExpo",
+            "outInExpo", -- 22,23,24,25
+            "inCirc",
+            "outCirc",
+            "inOutCirc",
+            "outInCirc", -- 26,27,28,29
+            "inElastic",
+            "outElastic",
+            "inOutElastic",
+            "outInElastic", -- 30,31,32,33
+            "inBack",
+            "outBack",
+            "inOutBack",
+            "outInBack", -- 34,35,36,37
+            "inBounce",
+            "outBounce",
+            "inOutBounce",
+            "outInBounce" -- 28,39,40,41
+      }
+      easing = function(x, n)
+            return E[easelist[n]](x, 0, 1, 1)
+      end
+end
+
+local function multi_bezier(x)
+      return x * x * (3 - 2 * x)
+end
+if (Bezier_flow and Bezier_flow.time) then
+      multi_bezier = function(x, n)
+            return Bezier_flow.time(-n, x)
+      end
+end
+
+if not tostring(pos):find("table:") then
+      pos = {pos, 0, 0}
+end
+if not tostring(rot):find("table:") then
+      rot = {rot, 0, 0}
+end
+if not tostring(poso):find("table:") then
+      poso = {poso, 0, 0}
+end
+if not tostring(roto):find("table:") then
+      roto = {roto, 0, 0}
+end
+if not tostring(ord):find("table:") then
+      ord = {ord, ord}
+end
+if not tostring(sd):find("table:") then
+      sd = {sd, sd}
+end
+if not tostring(zm):find("table:") then
+      zm = {zm, zm}
+end
+
+local default = {0, 0, 0}
+setmetatable(pos, {__index = default})
+setmetatable(rot, {__index = default})
+setmetatable(poso, {__index = pos})
+setmetatable(roto, {__index = rot})
+setmetatable(ord, {__index = default})
+
+local prog = obj.track0 * 0.01
+local st = (prog < 0 and prog) or 0
+local ed = (prog > 0 and prog) or 0
+local delay = obj.track1 * 0.01
+local seedin = obj.track2
+local seedout = obj.track3
+if (obj.check0) then
+      seedout = seedin
+end
+local sd = {seedin, seedout}
+math.randomseed((seed or 0))
+
+local vs, ve = 0, 0
+if (st <= 1) then
+      vs = sequence(st, delay, Order[ord[1] % 5](sd[1]), obj.num - 1)
+      if (easein > 0) then
+            vs = 1 - easing(1 - vs, easein)
+      elseif (easein < 0) then
+            vs = 1 - multi_bezier(1 - vs, easein)
+      end
+end
+
+if (ed > 0) then
+      ed = -(1 - ed)
+      ve = sequence(ed, delay, Order[ord[2] % 5](sd[2] or sd[1]), obj.num - 1)
+      if (easeout > 0) then
+            ve = 1 - easing(ve, easeout)
+      elseif (easeout < 0) then
+            ve = 1 - multi_bezier(ve, easeout)
+      else
+            ve = 1 - ve
+      end
+end
+local r, ro
+r = obj.rand(0, 2, sd[1], obj.index)
+ro = obj.rand(0, 2, sd[2], obj.index)
+if (obj.index ~= 0) then
+      if (r >= TANRand[1]) then
+            r = r + 1
+      end
+      if (ro >= TANRand[2]) then
+            ro = ro + 1
+      end
+end
+local a = r * math.pi / 2
+local ao = ro * math.pi / 2
+TANRand = {r, ro}
+local pos = {math.cos(a) * vector[1], math.sin(a) * vector[1], 0}
+local poso = {math.cos(ao) * -vector[2], math.sin(ao) * -vector[2], 0}
+
+local va = 1 - (1 - vs) * (1 - ve)
+obj.ox = obj.ox + pos[1] * vs + poso[1] * ve
+obj.oy = obj.oy + pos[2] * vs + poso[2] * ve
+obj.oz = obj.oz + pos[3] * vs + poso[3] * ve
+obj.rx = obj.rx
+obj.ry = obj.ry
+obj.rz = obj.rz + rot[1] * vs + rot[2] * ve
+obj.zoom = obj.zoom + zm[1] * 0.01 * va * vs + zm[2] * 0.01 * ve
+obj.alpha = obj.alpha * ((fd == 1) and (1 - math.abs(va)) or ((io_d == 1) and (1 - ((math.abs(va) < 1) and 0 or 1) ) or 1))
+
+if (bl > 0) and (va > 0) then
+      obj.effect("ぼかし", "範囲", bl * va)
+elseif (bl < 0) then
+      local s, r = TA_spd(1)
+      local va0 = 1
+      obj.effect("色ずれ", "type", 4, "ずれ幅", -bl * 0.75 * va0, "強さ", s * 100, "角度", r)
+      obj.effect("方向ブラー", "範囲", -bl * s * va0, "角度", r)
+end
+
+-- 座標情報をPOSで垂れ流し
+if (obj.index == 0) then
+      POS = {}
+      POS.v = {}
+      -- 文字がスペースや特定の記号だと処理が飛ぶフォントがあり、
+      -- テーブルにnilが入るためシーケンスでなくなってしまう(=indexが連続していない)
+      -- なので適当な変数を用意してobj.indexの代わりに使う
+      i_index = 0
+end
+if (obj.ox) then
+      -- obj.indexより大きくならないようにする(スクリプト複数付けた場合の対策)
+      i_index = (i_index <= obj.index and (i_index + 1)) or i_index
+      POS[i_index * 3 - 2] = (obj.x + obj.ox)
+      POS[i_index * 3 - 1] = (obj.y + obj.oy)
+      POS[i_index * 3] = (obj.z + obj.oz)
+      POS.v[i_index] = {obj.x + obj.ox, obj.y + obj.oy, obj.z + obj.oz}
+end
+
+-- 結果を垂れ流し
+TA_N = va

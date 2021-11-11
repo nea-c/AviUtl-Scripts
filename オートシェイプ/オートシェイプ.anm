@@ -1,0 +1,127 @@
+--track0:変形サイズ,0,100,5,0.01
+--track1:変形ﾀｲﾌﾟ,1,2,1,1
+--track2:変形回転,0,1,0,1
+--check0:縦横比変形,0
+--dialog:速度係数,local speed=50;
+
+local mode = obj.track2 + 1
+local mbase = (obj.track1 - 1) * 90
+
+--=========================================93氏の作成したオートブラー+から大半の処理を引用===============================================
+-- 速度は B_T[obj.layer][obj.index].V で取り出せる
+-- r_st[obj.layer][obj.index]で角度を取り出せる
+
+speed = speed * .01
+local blur = obj.track0
+local i, l, f, gv = obj.index, obj.layer, obj.frame + 1, obj.getvalue
+local s_n = obj.getpoint("num") - 2
+local rate = 1 / obj.framerate
+local t = math.max(0, obj.time - rate)
+
+local sin, cos, tan = function(a)
+            return math.sin(math.rad(a))
+      end, function(a)
+            return math.cos(math.rad(a))
+      end, function(a)
+            return math.tan(math.rad(a))
+      end
+
+if (C_T == nil) then
+      C_T = {}
+end
+if (C_T[l] == nil) then
+      C_T[l] = {}
+end
+C_T[l][i] = obj.time
+
+if (r_sr == nil) then
+      r_sr = {}
+end
+if (r_sr[l] == nil) then
+      r_sr[l] = {}
+end
+if (r_sr[l][i] == nil) then
+      r_sr[l][i] = 0
+end
+
+if (B_T == nil) then
+      B_T = {}
+end
+if (B_T[l] == nil) then
+      B_T[l] = {}
+end
+if (B_T[l][i] == nil) then
+      B_T[l][i] = {obj.ox, obj.oy, obj.oz, time = obj.time}
+end
+
+local v = B_T[l][i]
+local gap = (C_T[l][i] - v.time) / rate
+local gapABS = math.abs(gap)
+if (gapABS < 1) then
+      gapABS = 1
+end
+
+local vc = {gv("x") + obj.ox, gv("y") + obj.oy, gv("z") + obj.oz}
+local vl = {gv("x", t) + v[1], gv("y", t) + v[2], gv("z", t) + v[3]}
+
+local x, y, z = vl[1] - vc[1], vl[2] - vc[2], vl[3] - vc[3]
+
+local V = math.sqrt(x * x + y * y) / gapABS
+V = V * speed
+B_T[l][i] = {obj.ox, obj.oy, obj.oz, time = obj.time, V = V}
+
+local r = 180 - mbase - obj.rz + math.deg(math.atan2(y, x))
+local snp
+local oTF
+for snp = 0, s_n, 1 do
+      oTF = obj.getpoint("time", snp) * obj.framerate + 2
+      if (f == oTF) then
+            r_sr[l][i] = r  
+      end
+end
+local r_s = r_sr[l][i]
+if (r_s >= 360) then
+      r_s = r_s - 360
+end
+local Blur = V * blur * .1
+Blur = math.min(Blur, blur * 2)
+if mode % 2 == 0 then
+      Blur = -Blur
+end
+
+if obj.check0 then
+      if (r_s < 225 and r_s >= 45) then
+            if ((r < 315 and r >= 225) and (r_s < 315 and r_s >= 135)) then
+                  Blur = -Blur
+            end
+            if ((r < 45 or r >= 315) and (r_s < 135 or r_s >= 315)) then
+                  Blur = -Blur
+            end
+      else
+            Blur = -Blur
+            if ((r < 135 and r >= 45) and (r_s < 135 or r_s >= 315)) then
+                  Blur = -Blur
+            end
+            if ((r < 225 and r >= 135) and (r_s < 315 and r_s >= 135)) then
+                  Blur = -Blur
+            end
+      end
+
+      local xp1 = -(cos(r) * Blur)
+      local yp1 = -(sin(r) * Blur)
+      local xp2 = -(cos(r) * Blur)
+      local yp2 = -(sin(r) * Blur)
+      obj.effect("リサイズ", "X", 100 + xp1 + xp2 + yp1 + yp2, "Y", 100 - xp1 - xp2 - yp1 - yp2)
+else
+      local xp1 = -obj.w / 2 - (cos(r) * Blur)
+      local yp1 = -obj.h / 2 - (sin(r) * Blur)
+      local xp2 = -obj.w / 2 + (cos(r) * Blur)
+      local yp2 = obj.h / 2 - (sin(r) * Blur)
+      obj.drawpoly(xp1, yp1, 0, -xp2, -yp2, 0, -xp1, -yp1, 0, xp2, yp2, 0)
+end
+
+--=============================================================================================
+--------AUL編集画面へのデバッグ出力用--------------
+--[[obj.setfont("メイリオ",26,4,0xffffff,0x231d1e)
+obj.load(string.format(""))
+obj.draw(0,0,0,zoomsize,alpha,0,0,0)]] --
