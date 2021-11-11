@@ -62,7 +62,7 @@
 
 ## 変更履歴 / Change log
 
-- v1.5 - Alignment(px)のを修正
+- v1.5 - Alignment(px)の円移動で発生したバグを修正
 
 - v1.4 - Alignment(px)の円移動が正常に動作しない問題を修正
 
