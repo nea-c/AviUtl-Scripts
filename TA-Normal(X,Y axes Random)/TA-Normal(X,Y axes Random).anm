@@ -212,7 +212,6 @@ if (st <= 1) then
             vs = 1 - multi_bezier(1 - vs, easein)
       end
 end
-
 if (ed > 0) then
       ed = -(1 - ed)
       ve = sequence(ed, delay, Order[ord[2] % 5](sd[2] or sd[1]), obj.num - 1)
