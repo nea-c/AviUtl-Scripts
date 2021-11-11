@@ -1,13 +1,12 @@
 
 # Alignment
 
-中心位置を変更するスクリプトです。
+中心位置を変更するスクリプトです。主に回転に影響します。
 
 ## 最新 / Latest
 
-**version 1.5**
+**v1.5**
 
-◇◇◇◇機能◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇
 
 ## @Alignment
 
@@ -77,21 +76,27 @@
 
 ◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇
 
+## 導入方法 / How to install
 
+[ここ](https://github.com/nea-c/AviUtl-Scripts/blob/dev/README.md)に記載
+
+## ライセンス / License
+
+[ここ](https://github.com/nea-c/AviUtl-Scripts/blob/master/LICENSE)に記載
 
 ## 変更履歴 / Change log
 
-- Alignment v1.5 - Alignment(px)のを修正
+- v1.5 - Alignment(px)のを修正
 
-- Alignment v1.4 - Alignment(px)の円移動が正常に動作しない問題を修正
+- v1.4 - Alignment(px)の円移動が正常に動作しない問題を修正
 
-- Alignment v1.3 - Alignment(px)に円移動の項目を追加
+- v1.3 - Alignment(px)に円移動の項目を追加
 
-- Alignment v1.2 - Alignment(px)を追加
+- v1.2 - Alignment(px)を追加
 
-- Alignment v1.1 - 出力時描画しない設定の追加
+- v1.1 - 出力時描画しない設定の追加
 
-- Alignment v1.0 - リリース
+- v1.0 - リリース
 
 
 　Developed by ねあ

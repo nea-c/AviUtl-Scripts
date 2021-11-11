@@ -1,11 +1,11 @@
-# AviUtl Scripts  developed by ねあ
+# AviUtl Scripts - developed by ねあ
 
 ねあが作成したAviUtlスクリプト群です。
 
 
-## 導入方法 / how to install
+## 導入方法 / How to install
 
-参考:
+#### 参考
 
 - [スクリプトの導入方法(ePi氏著)](https://scrapbox.io/aviutl/スクリプトの導入方法)
 
@@ -21,6 +21,6 @@
 
 issueを立ち上げてください。
 
-## ライセンス
+## ライセンス / License
 
-MIT Licenceに基づく
+[MIT Licence](https://github.com/nea-c/AviUtl-Scripts/blob/master/LICENSE)に基づく
