@@ -19,7 +19,7 @@
 
 ## バグや意見など
 
-[issue](https://github.com/nea-c/AviUtl-Scripts/issues/new)を立ち上げてください。
+[issueを立ち上げてください。](https://github.com/nea-c/AviUtl-Scripts/issues/new)
 
 ## ライセンス / License
 
