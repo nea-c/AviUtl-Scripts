@@ -143,13 +143,13 @@ for nzi = 0, nz - 1 do
       end
       
             
-      if alignX==3 then
+      if alignX == 3 then
   			cx = gx * (offsetX * (ny - 1)) / 2
 			end
-			if alignY==3 then
+			if alignY == 3 then
         cy = gy * (offsetY * (nx - 1)) / 2
 	  	end
-		  if alignZ==3 then
+		  if alignZ == 3 then
 			  cz = gz * (offsetZ * (nx + ny - 2) / 2) / 2
 			end
 
