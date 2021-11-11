@@ -1,6 +1,6 @@
-# AviUtl Scripts  developed by NeAc
+# AviUtl Scripts  developed by ねあ
 
-NeAcが作成したAviUtlスクリプト群です。
+ねあが作成したAviUtlスクリプト群です。
 
 
 ## 導入方法 / how to install
