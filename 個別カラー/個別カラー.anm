@@ -27,7 +27,7 @@ for i = 1, 10 do
 end
 
 if blendmode==13 then
-    obj.effect("単色化","強さ",amount,"color",color,"輝度を保持する",1)
+    obj.effect("単色化", "強さ", amount, "color", color, "輝度を保持する", 1)
 else
-    obj.effect("グラデーション","blend",blendmode,"強さ",amount,"color",color, "color2",color)
+    obj.effect("グラデーション", "blend", blendmode, "強さ", amount, "color", color, "color2", color)
 end
