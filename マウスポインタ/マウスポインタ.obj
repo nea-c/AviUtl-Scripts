@@ -1,8 +1,10 @@
 --track0:サイズ,  1, 100, 10,  1
 --track1:タイプ,  1,  10,  1,  1
---dialog:色1/col,local col0=0xffffff;色2/col,local col1=0x000000;
+--dialog:色/col,_1=0xffffff;縁色/col,_2=0x000000;
 
 local dotdrawer = require("dotdrawer")
+local col0 = _1
+local col1 = _2
 
 local function get_data(p_type,o,m)
   local data = {}
@@ -240,4 +242,4 @@ local function get_data(p_type,o,m)
 end
 
 
-dotdrawer.draw_dots(get_data(obj.track1, col0, col1), obj.track0)
+dotdrawer.draw_dots(get_data(obj.track1,col0,col1), obj.track0)
