@@ -5,9 +5,9 @@
 
 個別オブジェクトやオフセット等ほとんどの機能に対応しています。
 
-[rikky_module](https://hazumurhythm.com/wev/amazon/?script=rikkymodulea2Z)必須
+- [rikky_module](https://hazumurhythm.com/wev/amazon/?script=rikkymodulea2Z)必須
 
-[汎用トラックバー](https://scrapbox.io/ePi5131/汎用トラックバー)使用推奨
+- [汎用トラックバー](https://scrapbox.io/ePi5131/汎用トラックバー)使用推奨
 
 
 ## 最新 / Latest
