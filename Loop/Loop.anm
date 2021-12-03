@@ -6,7 +6,7 @@ local function f()
   if(RM.getinfo("version",2)<"1.4")then error"バージョン1.4以上のRikkyModuleを使用すること"end
   if RM then
       RM.checkbox(8)
-      RM.list(2,{"これは説明です。OKしないこと。","1  無効","2  1列目で中央揃え","3  全体で中央揃え"})
+      RM.list(2,{"これは説明です。OKしないこと。","(1)無効","(2)1列目で中央揃え","(3)全体で中央揃え"})
   end
   local objdata = {}
   local keys = {"ox","oy","oz","rx","ry","rz","zoom","alpha"}
