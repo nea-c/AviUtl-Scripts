@@ -156,7 +156,18 @@ end
 local function multi_bezier(x)
       return x * x * (3 - 2 * x)
 end
-if (Bezier_flow and Bezier_flow.time) then
+local function f()
+      return require"マルチベジエ軌道"
+end
+local a,MBLua = pcall(f)
+if (a) then
+      multi_bezier = function(x, n)
+            local Time = MBLua.calc(MBLua.get(-n))
+            if not (Time) then return x end
+		local i,t = math.modf(x * #Time)
+		return ((Time[i+1] or 1) - Time[i]) * t + Time[i]
+	end
+elseif (Bezier_flow and Bezier_flow.time) then
       multi_bezier = function(x, n)
             return Bezier_flow.time(-n, x)
       end
@@ -212,6 +223,7 @@ if (st <= 1) then
             vs = 1 - multi_bezier(1 - vs, easein)
       end
 end
+
 if (ed > 0) then
       ed = -(1 - ed)
       ve = sequence(ed, delay, Order[ord[2] % 5](sd[2] or sd[1]), obj.num - 1)
