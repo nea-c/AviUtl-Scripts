@@ -88,7 +88,7 @@ local function f()
   end
   
   --ï`âÊÇµÇ»Ç¢èåè
-  if not (ZeroBorder[1] and ZeroBorder[2] and ZeroBorder[3]) then
+  if not (ZeroBorder[1] or ZeroBorder[2] or ZeroBorder[3]) then
     if nx * ny * nz == 0 or sizeZ <= 0 then
       obj.draw(0,0,0,0,0)
       return
