@@ -1,5 +1,7 @@
 --track0:Xｱｽﾍﾟｸﾄ,1,100,4,1
 --track1:Yｱｽﾍﾟｸﾄ,1,100,3,1
+
+--track3:文字ｻｲｽﾞ,0,1000,50,1
 --dialog:色/col,local col="0x000000";サイズ表示/chk,local sizeVisible = 0;
 
 local zoomsize = 100 / obj.getvalue("zoom")
@@ -56,7 +58,7 @@ obj.effect("領域拡張", "塗りつぶし", 1, "上", updown, "下", updown, "右", leftri
 obj.draw(0, 0, 0, 1, alpha, 0, 0, -rz)
 
 if (sizeVisible == 1) then
-    obj.setfont("メイリオ",46,4,0xffffff,0x231d1e)
+    obj.setfont("メイリオ",obj.track3,4,0xffffff,0x231d1e)
     obj.load(string.format("%d,%d",leftright*2,updown*2))
     obj.draw(0, 0, 0, zoomsize, alpha, 0, 0, -rz)
 end
