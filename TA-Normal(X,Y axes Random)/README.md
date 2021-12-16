@@ -1,4 +1,4 @@
-# TA-Normal
+# TA-Normal(X,Y axes Random)
 
 93氏の[@TA-Track](https://www.dropbox.com/sh/u73uud29hcxlply/AABH9ZhzL1P1kX-bWrL4asdDa?dl=0&preview=%40TA-Track.anm)に含まれる、TA-Normalの改変です。
 
@@ -10,7 +10,7 @@ X,Yの登場方向が1つ前と被りのない4方向(X,-X,Y,-Y)ランダムに�
 
 **v1.0**
 
-## TA-Normal
+## TA-Normal(X,Y axes Random)
 
 ※元スクリプトと異なる部分のみ記載
 
