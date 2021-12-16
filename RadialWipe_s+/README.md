@@ -1,7 +1,7 @@
 
 # RadialWipe_s+
 
-[RadialWipe_s](https://drive.google.com/file/d/1Ol1FObGWG7O7rMnccja4-D94ajHNw94r/edit)をブラインドに対応したスクリプト。
+星野なたね氏の[RadialWipe_s](https://drive.google.com/file/d/1Ol1FObGWG7O7rMnccja4-D94ajHNw94r/edit)をブラインドに対応したスクリプト。
 
 [RadialWipe_s](https://drive.google.com/file/d/1Ol1FObGWG7O7rMnccja4-D94ajHNw94r/edit)に同梱のdllが必要です。
 
