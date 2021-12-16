@@ -5,7 +5,7 @@
 
 もしかしたらいろいろ書き方に問題があるかもしれないです。
 
-[ease]](https://scrapbox.io/ePi5131/ease)に同梱のdllとluaが必要です。
+[ease](https://scrapbox.io/ePi5131/ease)に同梱のdllとluaが必要です。
 
 ## 最新 / Latest
 
