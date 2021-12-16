@@ -11,10 +11,12 @@ local z_rotate_range = _6
 local zoom_range = _7
 local seed = _8
 
+_1=nil _2=nil _3=nil _4=nil _5=nil _6=nil _7=nil _8=nil
+
 local per_scale = obj.track3 / 100
 local per = obj.track0 / 100
 
-obj.ox = obj.ox + per * obj.rand(x_range[1], x_range[2], obj.index, seed + 0) * per_scale
+obj.ox = obj.ox + per * obj.rand(x_range[1], x_range[2], obj.index, seed) * per_scale
 obj.oy = obj.oy + per * obj.rand(y_range[1], y_range[2], obj.index, seed + 1) * per_scale
 obj.oz = obj.oz + per * obj.rand(z_range[1], z_range[2], obj.index, seed + 2) * per_scale
 

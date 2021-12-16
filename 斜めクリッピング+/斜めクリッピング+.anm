@@ -3,13 +3,18 @@
 --track2:Šp“x,-10000,10000,0,0.1
 --track3:•,-10000,10000,0,1
 --check0:‘Ñ,1
---dialog:‚Ú‚©‚µ,local blur=0;Mode/chk,local mode=0;
+--dialog:‚Ú‚©‚µ,_1=0;Mode/chk,_2=0;
 
-mode = mode + 1
+local blur = _1
+local mode = _2 + 1
+
+_1=nil _2=nil
+
 local x = obj.track0
 local y = obj.track1
 local rad = obj.track2
 local h = obj.track3
+
 
 if (obj.check0) then
       if (math.abs(h) > 0) then

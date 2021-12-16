@@ -10,7 +10,7 @@ local t2 = obj.track2/100
 local t3 = obj.track3/100
 local check
 
-local w,h = obj.w, obj.h
+local w,h = obj.w,obj.h
 
 local up = h * t0
 local down = h * t1

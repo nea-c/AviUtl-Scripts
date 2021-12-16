@@ -1,0 +1,39 @@
+--track0:基準角,-1080,1080,0,.1
+--track1:分割数,1,30,1,1
+--track2:進行度,-1000,1000,0,.1
+--track3:位置ずれ,-100,100,0
+--check0:タイプ変更,0;
+--dialog:中心座標,_1={0,0};seed,_2=0;位置ずれ適応,_3={}
+
+local RadialWipe_s = require("RadialWipe_s")
+obj.setanchor("_1",1)
+
+local pos = _1
+local seed = _2
+local shift_num = _3 or nil
+local shift = {}
+
+_1=nil _2=nil _3=nil
+
+if shift_num~=nil then
+  for i=1,#shift_num do
+    local a = shift_num[i]
+    shift[a] = true
+  end
+end
+
+local num = obj.track1
+local max_angle = 360 / num
+local angle = max_angle * obj.track2 / 100
+local start_angle
+local rand_p = obj.track3
+
+
+for i=1,num do
+  start_angle = obj.track0 + max_angle * (i - 1)
+  if shift[i] then
+    local b = (math.floor(obj.rand(0,1,seed,i)) == 0) and -1 or 1
+    start_angle = start_angle + b * rand_p
+  end
+  RadialWipe_s.RadialWipe(start_angle, angle, pos[1], pos[2], obj.check0)
+end

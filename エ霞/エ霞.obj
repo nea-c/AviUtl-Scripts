@@ -3,7 +3,7 @@
 --track2:雲高さ,1,200,40,0.1
 --track3:繋ぎ高さ,1,200,40,0.1
 --check0:高さ統一,1
---dialog:色/col,_1="0xffffff";アンカー補正/chk,_2=0;---,anchor={-301,-180,121,-140,34,-140,-137,-100,386,-60,149,-60,-241,-20,245,20,-146,20,-386,60,165,100,-7,100,-194,140,326,180};
+--dialog:色/col,_1="0xffffff";アンカー補正/chk,_2=0;---,_3={-301,-180,121,-140,34,-140,-137,-100,386,-60,149,-60,-241,-20,245,20,-146,20,-386,60,165,100,-7,100,-194,140,326,180};
 
 require("rikky_module")
 
@@ -17,18 +17,23 @@ end
 
 local col = _1
 local anchor_rev = toBoolean(_2)
+local anchor = _3
+
+_1=nil _2=nil _3=nil
 
 local anchorN = 2 + ((obj.track0 - 1) * 3)
 local cloud = obj.track0
 local cloudh = obj.track2
 local connech = obj.track3
-local y_zure = y_zure or 0
+y_zure = y_zure or 0
 local line = obj.track1 / 2
 local size = 0
 local c
 
-obj.setanchor("anchor", anchorN)
+_3 = anchor
+obj.setanchor("_3", anchorN)
 c = anchor
+_3=nil
 if (obj.check0) then
 	for i = 4, anchorN * 2, 2 do
 		if (i == 6 * math.floor(i / 6)) then

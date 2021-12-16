@@ -2,9 +2,10 @@
 --track1:ƒ‚[ƒh,1,2,1,1
 --track2:D,0,10000,1300
 --track3:r,0,10000,100
---dialog:•ªŠ„”,NN=100;
+--dialog:•ªŠ„”,_1=100;
 
-local pw,ph = obj.getpixel()
+local NN=_1 _1=nil
+local pw,ph=obj.getpixel()
 obj.setoption("dst","tmp",pw,ph)
 obj.setoption("blend","alpha_add")
 local check0=obj.track0

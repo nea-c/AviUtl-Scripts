@@ -30,6 +30,8 @@ end
 local center = toBoolean(_1)
 local relative = toBoolean(_2)
 
+_1=nil _2=nil
+
 if (center) and (relative) then
 	local vx,vy,vz
 	local r,s,c
@@ -150,6 +152,7 @@ end
 local parallel = toBoolean(_1)
 local relative = toBoolean(_2)
 
+_1=nil _2=nil
 
 local cam = obj.getoption("camera_param")
 

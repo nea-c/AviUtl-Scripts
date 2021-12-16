@@ -4,6 +4,8 @@
 
 X,Yの登場方向が1つ前と被りのない4方向(X,-X,Y,-Y)ランダムになります。
 
+[これ](https://github.com/nea-c/AviUtl-Scripts/tree/master/マルチベジェ起動Fix%20and%20other)があるとrikky氏の[パーツ分割](https://hazumurhythm.com/a/pA2/)等でも動作するようになります。
+
 ## 最新 / Latest
 
 **v1.0**
@@ -16,6 +18,11 @@ X,Yの登場方向が1つ前と被りのない4方向(X,-X,Y,-Y)ランダムに�
 | -: | :- |
 | 座標 | in,outの距離をtableで指定します。 |
 | in/out非表示 | 100&状態のとき非表示にします。 |
+
+## クレジット / Credit
+
+- Supported by ePi
+
 
 ## 変更履歴 / Change log
 

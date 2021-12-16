@@ -2,11 +2,12 @@
 --track1:中心Y,-10000,10000,0,0.1
 --track2:角度,-10000,10000,0,0.0.1
 --track3:幅,0,500,0,0.01
---dialog:帯色/col,local col="0x000000";
+--dialog:帯色/col,_1="0x000000";
 
+local col=_1 _1=nil
 local zoomsize = 100 / obj.getvalue("zoom")
 local alpha = 1 / obj.getvalue("alpha")
-local h = -obj.track3 / 100 * obj.screen_h
+local h = -obj.track3/100 * obj.screen_h
 local cxp = obj.track0
 local cyp = obj.track1
 local half = obj.screen_h / 2
