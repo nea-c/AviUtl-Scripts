@@ -6,28 +6,28 @@
 local ease = require "ease"
 local common = require "ease_common"
 
-local function copy_clipboard()
-	obj.setfont("メイリオ",30)
-	local mes="LuaJIT非導入下であるためこの機能は使えません"
-	obj.load("text",mes)
-	obj.draw(0,0,0,obj.screen_w/obj.getpixel()*0.8)
-	error("[ease_graph] "..mes,0)
-end
-if (common.ffi) then
-	local ffi = common.ffi
-	local C = ffi.C
+local copy_clipboard
+if(common.ffi)then
+	local ffi=common.ffi
+	local C=ffi.C
 
-	copy_clipboard = function(str)
-		if (C.OpenClipboard(0) == 0) then
-			return
-		end
+	copy_clipboard=function(str)
+		if(C.OpenClipboard(0)==0)then return end
 		C.EmptyClipboard()
-		local hg = C.GlobalAlloc(0x2042, #str + 1)
-		local buf = C.GlobalLock(hg)
-		ffi.copy(buf, str)
+		local hg=C.GlobalAlloc(0x2042,#str+1)
+		local buf=C.GlobalLock(hg)
+		ffi.copy(buf,str)
 		C.GlobalUnlock(hg)
-		C.SetClipboardData(1, hg)
+		C.SetClipboardData(1,hg)
 		C.CloseClipboard()
+	end
+else
+	copy_clipboard=function()
+		obj.setfont("メイリオ",30)
+		local mes="LuaJIT非導入下であるためこの機能は使えません"
+		obj.load("text",mes)
+		obj.draw(0,0,0,obj.screen_w/obj.getpixel()*0.8)
+		error("[ease_graph] "..mes,0)
 	end
 end
 local floor = math.floor
@@ -200,3 +200,5 @@ obj.draw(x2af, y2af, 0, 0.8)
 
 obj.load("tempbuffer")
 --obj.setoption("focus_mode","fixed_size")
+
+_1=nil _2=nil _3=nil

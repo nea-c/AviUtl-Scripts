@@ -2,7 +2,12 @@
 --track1:Yｱｽﾍﾟｸﾄ,1,100,3,1
 
 --track3:文字ｻｲｽﾞ,0,1000,50,1
---dialog:色/col,local col="0x000000";サイズ表示/chk,local sizeVisible = 0;
+--dialog:色/col,_1="0x000000";サイズ表示/chk,_2= 0;
+
+local col=_1
+local sizeVisible=_2
+
+_1=nil _2=nil
 
 local zoomsize = 100 / obj.getvalue("zoom")
 local alpha = 1 / obj.getvalue("alpha")

@@ -27,6 +27,8 @@ local z_range = _8
 local zoom_range = _9
 local seed = _10
 
+_1=nil _2=nil _3=nil _4=nil _5=nil _6=nil _7=nil _8=nil _9=nil _10=nil
+
 if (obj.getinfo("saving")) then
     skip = 100 / out_density
 end
@@ -62,12 +64,14 @@ end
 @StraightColorOptions
 --track0:ìKâûêFêî,2,10,3,1
 --track1:seed,1,10000,1,1
---dialog:color1,local color1=0x1fffcb;color2,local color2=0xff531f;color3,local color3=0xff1f54;color4,local color4=0x0;color5,local color5=0x0;color6,local color6=0x0;color7,local color7=0x0;color8,local color8=0x0;color9,local color9=0x0;color10,local color10=0x0;
+--dialog:color1,_1=0x1fffcb;color2,_2=0xff531f;color3,_3=0xff1f54;color4,_4=0x0;color5,_5=0x0;color6,_6=0x0;color7,_7=0x0;color8,_8=0x0;color9,_9=0x0;color10,_10=0x0;
 
 
 
 require("rikky_module")
 rikky_module.colordialogCS( 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 
-nrcl = {color1 , color2 , color3 , color4 , color5, color6 , color7 , color8 , color9 , color10}
+nrcl = {_1 , _2 , _3 , _4 , _5, _6 , _7 , _8 , _9 , _10}
 nrcp = {obj.track0 , obj.track1}
+
+_1=nil _2=nil _3=nil _4=nil _5=nil _6=nil _7=nil _8=nil _9=nil _10=nil

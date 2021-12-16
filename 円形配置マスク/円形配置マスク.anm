@@ -1,13 +1,25 @@
 --track0:円周,0,800,100,0.01
 --track1:半径,-2000,2000,100
 --track2:回転,-3600,3600,0
---dialog:数,num=4;回転なし/chk,rot=0;シフトX,tx=0;シフトY,ty=0;個別回転,trz=0;サイズ,masize=100;縦横比,asp=0;ぼかし,bl=0;図形/fig,fig="四角形";
+--dialog:数,_1=4;回転なし/chk,_2=0;シフト,_3={0,0};個別回転,_4=0;サイズ,_5=100;縦横比,_6=0;ぼかし,_7=0;図形/fig,_8="四角形";
 
 
 local t0=obj.track0
 local t1=obj.track1
 local t2=obj.track2
 local t3=obj.track3
+
+local num=_1 or 4
+local rot=_2
+local tx=_3[1]
+local ty=_3[2]
+local trz=_4
+local masize=_5
+local asp=_6
+local bl=_7
+local fig=_8
+
+_1=nil _2=nil _3=nil _4=nil _5=nil _6=nil _7=nil _8=nil
 
 if (fig=="背景") then fig = "四角形" end
 
@@ -30,8 +42,6 @@ else
 end
 
 
-local i
-local number = num or 4
 local no_rotate = rot or 0
 local shift_x = tx or 0
 local shift_y = ty or 0

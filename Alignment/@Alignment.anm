@@ -34,6 +34,8 @@ local col = _2
 local InfoSize = _3
 local InfoWeight = _4
 
+_1=nil _2=nil _3=nil _4=nil
+
 cx =  w * xpos
 cy =  h * ypos
 cx = cx / zoom
@@ -105,6 +107,8 @@ local SavingRemove = toBoolean(_1)
 local col = _2
 local InfoSize = _3
 local InfoWeight = _4
+
+_1=nil _2=nil _3=nil _4=nil
 
 cx =  w * xpos
 cy =  h * ypos
@@ -180,6 +184,7 @@ local col = _2
 local InfoSize = _3
 local InfoWeight = _4
 
+_1=nil _2=nil _3=nil _4=nil
 
 if (obj.track3 == 0) then
     cx = xpos

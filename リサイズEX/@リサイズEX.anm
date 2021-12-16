@@ -3,10 +3,10 @@
 --track1:下,-2000,2000,0,0.01
 --track2:左,-2000,2000,0,0.01
 --track3:右,-2000,2000,0,0.01
-local top = obj.track0
-local bottom = obj.track1
-local left = obj.track2
-local right = obj.track3
+local top=obj.track0
+local bottom=obj.track1
+local left=obj.track2
+local right=obj.track3
 local xp = obj.w / 2
 local yp = obj.h / 2
 obj.drawpoly(-xp - left, -yp - top, 0, xp + right, -yp - top, 0, xp + right, yp + bottom, 0, -xp - left, yp + bottom, 0)
@@ -48,3 +48,11 @@ obj.cy =  cy
 
 obj.effect("リサイズ","Y",(c)/2,"X",(d)/2,"補間なし",obj.check0 and 1 or 0)
 
+
+
+
+--[[=============================================================================
+製作
+px　　　猫愛《ねあ》　　　@NeAc_
+per　　　th3_n00b13　　　@TN00b13
+]]--

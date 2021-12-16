@@ -5,8 +5,19 @@
 --track1:ズレ,0,100,10,0.01
 --track2:seed(in),0,9000,0,1
 --track3:seed(out),0,9000,0,1
---dialog:easing,local ease={0, 0};座標,local vector={100,100};フェード/chk,local fd=0;in/out非表示/chk,local io_d=1;拡大率,local zm=0;ぼかし,local bl=0;order[0/4],local ord={0,0};
+--dialog:easing,_1={0, 0};座標,_2={100,100};フェード/chk,_3=0;in/out非表示/chk,_4=1;拡大率,_5=0;ぼかし,_6=0;order[0/4],_7={0,0};
 --check0:seed(out)を(in)に同期,1;
+
+local ease=_1
+local vector=_2
+local fd=_3
+local io_d=_4
+local zm=_5
+local bl=_6
+local ord=_7
+
+_1=nil _2=nil _3=nil _4=nil _5=nil _6=nil _7=nil
+
 local function clamp(x)
       return (x <= 0 and 0) or (x >= 1 and 1) or x
 end

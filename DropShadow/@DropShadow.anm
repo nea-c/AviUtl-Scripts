@@ -3,7 +3,15 @@
 --track1:基準位置,-100,100,100,0.1
 --track2:Number,1,1000,1,1
 --check0:高精度,0
---dialog:影のみ/chk,local shadow_only=0;color/col,local shadowcol=0x747474;グラデーション/chk,local Grad=1;GradColor/col,local gradcol=0xdddddd;出力時高精度化/chk,local saving_hi_grade=1;
+--dialog:影のみ/chk,_1=0;color/col,_2=0x747474;グラデーション/chk,_3=1;GradColor/col,_4=0xdddddd;出力時高精度化/chk,_5=1;
+
+local shadow_only=_1
+local shadowcol=_2
+local Grad=_3
+local gradcol=_4
+local saving_hi_grade=_5
+
+_1=nil _2=nil _3=nil _4=nil _5=nil
 
 if shadow_only==1 then obj.effect("単色化","color",shadowcol,"輝度を保持する",0) end
 obj.copybuffer("cache:OBX", "obj")
@@ -22,6 +30,7 @@ elseif (obj.num>1) then
     obj.effect("拡大率","拡大率",0)
     obj.draw()
 else
+
 
 
 
@@ -135,10 +144,17 @@ end
 --track2:Number,1,1000,1,1
 --track3:円移動,-3600,3600,0,0.01
 --check0:Info,1
---dialog:出力時描画しない/chk,local SavingRemove=1;Info Color/col,local col="0xff0000";Info Size,local InfoSize=20;Info Weight,local InfoWeight=3;
+--dialog:出力時描画しない/chk,_1=1;Info Color/col,_2="0xff0000";Info Size,_3=20;Info Weight,_4=3;
 
 obj.effect("拡大率","拡大率",0)
 obj.draw()
+
+local SavingRemove=_1
+local col=_2
+local InfoSize=_3
+local InfoWeight=_4
+
+_1=nil _2=nil _3=nil _4=nil
 
 local xpos=obj.track0
 local ypos=obj.track1

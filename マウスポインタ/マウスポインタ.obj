@@ -6,6 +6,8 @@ local dotdrawer = require("dotdrawer")
 local col0 = _1
 local col1 = _2
 
+_1=nil _2=nil
+
 local function get_data(p_type,o,m)
   local data = {}
   local i = "nil"
