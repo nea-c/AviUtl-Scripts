@@ -5,7 +5,7 @@
 
 ## 最新 / Latest
 
-**v1.6**
+**v1.7**
 
 
 ## @Alignment
