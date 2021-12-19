@@ -36,16 +36,24 @@ local InfoWeight = _4
 
 _1=nil _2=nil _3=nil _4=nil
 
-cx =  w * xpos / zoom + dcx
-cy =  h * ypos / zoom + dcy
-obj.cx =  cx
-obj.cy =  cy
-local cp = {x=cx -dcx,y=cy -dcy}
+cx =  w * xpos
+cy =  h * ypos
+obj.cx =  cx / zoom + dcx
+obj.cy =  cy / zoom + dcy
+local cp = {
+    x = obj.ox + cx,
+    y = obj.oy + cy
+}
+local k ={
+    x = obj.ox - dcx,
+    y = obj.oy - dcy
+}
 if (PositionLock) then
-    cx = cx * zoom
-    cy = cy * zoom
-    obj.ox = (obj.ox+(cp.x))
-    obj.oy = (obj.oy+(cp.y))
+    obj.ox = cp.x
+    obj.oy = cp.y
+else
+    obj.ox = k.x
+    obj.oy = k.y
 end
 
 if(not obj.getinfo("saving")) or (not SavingRemove) then
@@ -62,10 +70,10 @@ if(not obj.getinfo("saving")) or (not SavingRemove) then
         else
             obj.load("figure","éläpå`",col,InfoWeight)
             obj.effect("óÃàÊägí£","è„",InfoSize,"â∫",InfoSize,"ìhÇËÇ¬Ç‘Çµ",1)
-            obj.draw(0,0,0,zoomsize,alpha,0,0,0)
+            obj.draw(k.x,k.y,0,zoomsize,alpha,0,0,0)
             obj.load("figure","éläpå`",col,InfoWeight)
             obj.effect("óÃàÊägí£","ç∂",InfoSize,"âE",InfoSize,"ìhÇËÇ¬Ç‘Çµ",1)
-            obj.draw(0,0,0,zoomsize,alpha,0,0,0)
+            obj.draw(k.x,k.y,0,zoomsize,alpha,0,0,0)
         end
 
     end
@@ -109,18 +117,25 @@ local InfoWeight = _4
 
 _1=nil _2=nil _3=nil _4=nil
 
-cx =  w * xpos / zoom + dcx
-cy =  h * ypos / zoom + dcy
-obj.cx =  cx
-obj.cy =  cy
-local cp = {x=cx -dcx,y=cy -dcy}
+cx =  w * xpos
+cy =  h * ypos
+obj.cx =  cx / zoom + dcx
+obj.cy =  cy / zoom + dcy
+local cp = {
+    x = obj.ox + cx,
+    y = obj.oy + cy
+}
+local k ={
+    x = obj.ox - dcx,
+    y = obj.oy - dcy
+}
 if (PositionLock) then
-    cx = cx * zoom
-    cy = cy * zoom
-    obj.ox = (obj.ox+(cp.x))
-    obj.oy = (obj.oy+(cp.y))
+    obj.ox = cp.x
+    obj.oy = cp.y
+else
+    obj.ox = k.x
+    obj.oy = k.y
 end
-
 
 if(not obj.getinfo("saving")) or (not SavingRemove) then
     if (InfoOn) then
@@ -136,10 +151,10 @@ if(not obj.getinfo("saving")) or (not SavingRemove) then
         else
             obj.load("figure","éläpå`",col,InfoWeight)
             obj.effect("óÃàÊägí£","è„",InfoSize,"â∫",InfoSize,"ìhÇËÇ¬Ç‘Çµ",1)
-            obj.draw(0,0,0,zoomsize,alpha,0,0,0)
+            obj.draw(k.x,k.y,0,zoomsize,alpha,0,0,0)
             obj.load("figure","éläpå`",col,InfoWeight)
             obj.effect("óÃàÊägí£","ç∂",InfoSize,"âE",InfoSize,"ìhÇËÇ¬Ç‘Çµ",1)
-            obj.draw(0,0,0,zoomsize,alpha,0,0,0)
+            obj.draw(k.x,k.y,0,zoomsize,alpha,0,0,0)
         end
 
     end
@@ -166,6 +181,7 @@ end
 
 local zoomsize = 100 / obj.getvalue("zoom")
 local alpha = 1 / obj.getvalue("alpha")
+local pw,ph=obj.getpixel()
 local xpos = obj.track0
 local ypos = obj.track1
 local PositionLock = toBoolean(obj.track2)
@@ -191,16 +207,22 @@ else
     cx = l * math.cos(xyrad + math.rad(deg))
     cy = l * math.sin(xyrad + math.rad(deg))
 end
-cx = cx / zoom + dcx
-cy = cy / zoom + dcy
-obj.cx =  cx
-obj.cy =  cy
-local cp = {x=cx -dcx,y=cy -dcy}
+obj.cx = cx / zoom + dcx
+obj.cy = cy / zoom + dcy
+local cp = {
+    x=obj.ox + cx,
+    y=obj.oy + cy
+}
+local k ={
+    x = obj.ox - dcx,
+    y = obj.oy - dcy
+}
 if (PositionLock) then
-    cx = cx * zoom
-    cy = cy * zoom
-    obj.ox = (obj.ox+(cp.x))
-    obj.oy = (obj.oy+(cp.y))
+    obj.ox = cp.x
+    obj.oy = cp.y
+else
+    obj.ox = k.x-cx*zoom
+    obj.oy = k.y-cy*zoom
 end
 
 if(not obj.getinfo("saving")) or (not SavingRemove) then
@@ -217,10 +239,83 @@ if(not obj.getinfo("saving")) or (not SavingRemove) then
         else
             obj.load("figure","éläpå`",col,InfoWeight)
             obj.effect("óÃàÊägí£","è„",InfoSize,"â∫",InfoSize,"ìhÇËÇ¬Ç‘Çµ",1)
-            obj.draw(0,0,0,zoomsize,alpha,0,0,0)
+            obj.draw(k.x,k.y,0,zoomsize,alpha,0,0,0)
             obj.load("figure","éläpå`",col,InfoWeight)
             obj.effect("óÃàÊägí£","ç∂",InfoSize,"âE",InfoSize,"ìhÇËÇ¬Ç‘Çµ",1)
-            obj.draw(0,0,0,zoomsize,alpha,0,0,0)
+            obj.draw(k.x,k.y,0,zoomsize,alpha,0,0,0)
+        end
+
+    end
+end
+
+------------------------------------------------------------------------------------------------------------
+@Alignment(ÉIÉuÉWÉFÉNÉgíÜêS)
+------------------------------------------------------------------------------------------------------------
+--track2:îzíuå≈íË,0,1,1,1
+--check0:Info,1
+--dialog:èoóÕéûï`âÊÇµÇ»Ç¢/chk,_1=1;Info Color/col,_2="0xff0000";Info Size,_3=20;Info Weight,_4=3;
+
+local function toBoolean(a)
+	if a == 1 then
+		return true
+	else
+		return false
+	end
+end
+
+local zoomsize = 100 / obj.getvalue("zoom")
+local alpha = 1 / obj.getvalue("alpha")
+local PositionLock = toBoolean(obj.track2)
+local InfoOn = obj.check0
+local dcx, dcy = obj.cx, obj.cy
+local cx, cy = 0, 0
+local zoom = obj.getvalue("zoom") / 100
+
+
+
+local SavingRemove = toBoolean(_1)
+local col = _2
+local InfoSize = _3
+local InfoWeight = _4
+
+_1=nil _2=nil _3=nil _4=nil
+
+obj.cx =  cx / zoom
+obj.cy =  cy / zoom
+local cp = {
+    x=obj.ox + cx -dcx,
+    y=obj.oy + cy -dcy
+}
+local k ={
+    x = obj.ox ,
+    y = obj.oy 
+}
+if (PositionLock) then
+    obj.ox = cp.x
+    obj.oy = cp.y
+else
+    obj.ox = k.x
+    obj.oy = k.y
+end
+
+if(not obj.getinfo("saving")) or (not SavingRemove) then
+    if (InfoOn) then
+        obj.effect()
+        obj.draw()
+        if (PositionLock) then
+            obj.load("figure","éläpå`",col,InfoWeight)
+            obj.effect("óÃàÊägí£","è„",InfoSize,"â∫",InfoSize,"ìhÇËÇ¬Ç‘Çµ",1)
+            obj.draw(cp.x,cp.y,0,zoomsize,alpha,0,0,0)
+            obj.load("figure","éläpå`",col,InfoWeight)
+            obj.effect("óÃàÊägí£","ç∂",InfoSize,"âE",InfoSize,"ìhÇËÇ¬Ç‘Çµ",1)
+            obj.draw(cp.x,cp.y,0,zoomsize,alpha,0,0,0)
+        else
+            obj.load("figure","éläpå`",col,InfoWeight)
+            obj.effect("óÃàÊägí£","è„",InfoSize,"â∫",InfoSize,"ìhÇËÇ¬Ç‘Çµ",1)
+            obj.draw(k.x,k.y,0,zoomsize,alpha,0,0,0)
+            obj.load("figure","éläpå`",col,InfoWeight)
+            obj.effect("óÃàÊägí£","ç∂",InfoSize,"âE",InfoSize,"ìhÇËÇ¬Ç‘Çµ",1)
+            obj.draw(k.x,k.y,0,zoomsize,alpha,0,0,0)
         end
 
     end
