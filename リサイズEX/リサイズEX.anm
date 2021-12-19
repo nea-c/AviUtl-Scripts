@@ -1,0 +1,75 @@
+
+--track0:上,-2000,2000,100,0.01
+--track1:下,-2000,2000,100,0.01
+--track2:左,-2000,2000,100,0.01
+--track3:右,-2000,2000,100,0.01
+--check0:補間なし,0
+--dialog:%モード/chk,_1=0;
+
+local function toBoolean(a)
+	if a == 1 then
+		return true
+	else
+		return false
+	end
+end
+
+local perMode = toBoolean(_1) _1=nil
+
+local w,h = obj.w , obj.h
+local zoom=obj.getvalue("zoom")/100
+
+local track
+
+if perMode then
+    track = {
+        n0=obj.track0*2,
+        n1=obj.track1*2,
+        n2=obj.track2*2,
+        n3=obj.track3*2
+    }
+else
+    w = w / zoom
+    h = h / zoom
+    track = {
+        n0=obj.track0*200/h,
+        n1=obj.track1*200/h,
+        n2=obj.track2*200/w,
+        n3=obj.track3*200/w
+    }
+end
+
+local a,b,c,d=(track.n1-track.n0),(track.n3-track.n2),(track.n1+track.n0),(track.n3+track.n2)
+local e,f=math.max(0,(w - h)/2),math.max(0,(h - w)/2)
+local zu_y,zu_x=a / (400 / w) * zoom / (w / h) , b / (400 / h) * zoom / (h / w)
+
+local deg = obj.rz
+local xpos,ypos=obj.ox,obj.oy
+
+local xyrad=math.atan2(ypos,xpos)
+local l=xpos*math.cos(xyrad)+ypos*math.sin(xyrad)
+local cx,cy=0,0
+local dcx,dcy=obj.cx,obj.cy
+
+if(deg==0)then
+    cx =  xpos - zu_x
+    cy =  ypos - zu_y
+else
+    cx=l*math.cos(xyrad+math.rad(deg)) - zu_x
+    cy=l*math.sin(xyrad+math.rad(deg)) - zu_y
+end
+
+cx = cx / zoom
+cy = cy / zoom
+obj.cx =  cx
+obj.cy =  cy
+
+obj.effect("リサイズ","Y",(c)/2 ,"X",(d)/2 ,"補間なし",obj.check0 and 1 or 0)
+
+
+
+--[[=============================================================================
+製作
+px　　　猫愛《ねあ》　　　@NeAc_
+per　　　th3_n00b13　　　@TN00b13
+]]--

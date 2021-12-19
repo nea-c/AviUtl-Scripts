@@ -36,17 +36,16 @@ local InfoWeight = _4
 
 _1=nil _2=nil _3=nil _4=nil
 
-cx =  w * xpos
-cy =  h * ypos
-cx = cx / zoom
-cy = cy / zoom
+cx =  w * xpos / zoom + dcx
+cy =  h * ypos / zoom + dcy
 obj.cx =  cx
 obj.cy =  cy
+local cp = {x=cx -dcx,y=cy -dcy}
 if (PositionLock) then
     cx = cx * zoom
     cy = cy * zoom
-    obj.ox = (obj.ox+(cx-dcx))
-    obj.oy = (obj.oy+(cy-dcy))
+    obj.ox = (obj.ox+(cp.x))
+    obj.oy = (obj.oy+(cp.y))
 end
 
 if(not obj.getinfo("saving")) or (not SavingRemove) then
@@ -56,10 +55,10 @@ if(not obj.getinfo("saving")) or (not SavingRemove) then
         if (PositionLock) then
             obj.load("figure","éläpå`",col,InfoWeight)
             obj.effect("óÃàÊägí£","è„",InfoSize,"â∫",InfoSize,"ìhÇËÇ¬Ç‘Çµ",1)
-            obj.draw(cx,cy,0,zoomsize,alpha,0,0,0)
+            obj.draw(cp.x,cp.y,0,zoomsize,alpha,0,0,0)
             obj.load("figure","éläpå`",col,InfoWeight)
             obj.effect("óÃàÊägí£","ç∂",InfoSize,"âE",InfoSize,"ìhÇËÇ¬Ç‘Çµ",1)
-            obj.draw(cx,cy,0,zoomsize,alpha,0,0,0)
+            obj.draw(cp.x,cp.y,0,zoomsize,alpha,0,0,0)
         else
             obj.load("figure","éläpå`",col,InfoWeight)
             obj.effect("óÃàÊägí£","è„",InfoSize,"â∫",InfoSize,"ìhÇËÇ¬Ç‘Çµ",1)
@@ -110,17 +109,16 @@ local InfoWeight = _4
 
 _1=nil _2=nil _3=nil _4=nil
 
-cx =  w * xpos
-cy =  h * ypos
-cx = cx / zoom
-cy = cy / zoom
+cx =  w * xpos / zoom + dcx
+cy =  h * ypos / zoom + dcy
 obj.cx =  cx
 obj.cy =  cy
+local cp = {x=cx -dcx,y=cy -dcy}
 if (PositionLock) then
     cx = cx * zoom
     cy = cy * zoom
-    obj.ox = (obj.ox+(cx-dcx))
-    obj.oy = (obj.oy+(cy-dcy))
+    obj.ox = (obj.ox+(cp.x))
+    obj.oy = (obj.oy+(cp.y))
 end
 
 
@@ -131,10 +129,10 @@ if(not obj.getinfo("saving")) or (not SavingRemove) then
         if (PositionLock) then
             obj.load("figure","éläpå`",col,InfoWeight)
             obj.effect("óÃàÊägí£","è„",InfoSize,"â∫",InfoSize,"ìhÇËÇ¬Ç‘Çµ",1)
-            obj.draw(cx,cy,0,zoomsize,alpha,0,0,0)
+            obj.draw(cp.x,cp.y,0,zoomsize,alpha,0,0,0)
             obj.load("figure","éläpå`",col,InfoWeight)
             obj.effect("óÃàÊägí£","ç∂",InfoSize,"âE",InfoSize,"ìhÇËÇ¬Ç‘Çµ",1)
-            obj.draw(cx,cy,0,zoomsize,alpha,0,0,0)
+            obj.draw(cp.x,cp.y,0,zoomsize,alpha,0,0,0)
         else
             obj.load("figure","éläpå`",col,InfoWeight)
             obj.effect("óÃàÊägí£","è„",InfoSize,"â∫",InfoSize,"ìhÇËÇ¬Ç‘Çµ",1)
@@ -193,15 +191,16 @@ else
     cx = l * math.cos(xyrad + math.rad(deg))
     cy = l * math.sin(xyrad + math.rad(deg))
 end
-cx = cx / zoom
-cy = cy / zoom
+cx = cx / zoom + dcx
+cy = cy / zoom + dcy
 obj.cx =  cx
 obj.cy =  cy
+local cp = {x=cx -dcx,y=cy -dcy}
 if (PositionLock) then
     cx = cx * zoom
     cy = cy * zoom
-    obj.ox = (obj.ox+(cx-dcx))
-    obj.oy = (obj.oy+(cy-dcy))
+    obj.ox = (obj.ox+(cp.x))
+    obj.oy = (obj.oy+(cp.y))
 end
 
 if(not obj.getinfo("saving")) or (not SavingRemove) then
@@ -211,10 +210,10 @@ if(not obj.getinfo("saving")) or (not SavingRemove) then
         if (PositionLock) then
             obj.load("figure","éläpå`",col,InfoWeight)
             obj.effect("óÃàÊägí£","è„",InfoSize,"â∫",InfoSize,"ìhÇËÇ¬Ç‘Çµ",1)
-            obj.draw(cx,cy,0,zoomsize,alpha,0,0,0)
+            obj.draw(cp.x,cp.y,0,zoomsize,alpha,0,0,0)
             obj.load("figure","éläpå`",col,InfoWeight)
             obj.effect("óÃàÊägí£","ç∂",InfoSize,"âE",InfoSize,"ìhÇËÇ¬Ç‘Çµ",1)
-            obj.draw(cx,cy,0,zoomsize,alpha,0,0,0)
+            obj.draw(cp.x,cp.y,0,zoomsize,alpha,0,0,0)
         else
             obj.load("figure","éläpå`",col,InfoWeight)
             obj.effect("óÃàÊägí£","è„",InfoSize,"â∫",InfoSize,"ìhÇËÇ¬Ç‘Çµ",1)
