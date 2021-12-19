@@ -1,10 +1,10 @@
 
---track0:上,-2000,2000,100,0.01
---track1:下,-2000,2000,100,0.01
---track2:左,-2000,2000,100,0.01
---track3:右,-2000,2000,100,0.01
+--track0:上,-10000,10000,100,0.01
+--track1:下,-10000,10000,100,0.01
+--track2:左,-10000,10000,100,0.01
+--track3:右,-10000,10000,100,0.01
 --check0:補間なし,0
---dialog:%モード/chk,_1=1;
+--dialog:pxモード/chk,_1=0;
 
 local function toBoolean(a)
 	if a == 1 then
@@ -22,13 +22,6 @@ local zoom=obj.getvalue("zoom")/100
 local track
 
 if perMode then
-    track = {
-        n0=obj.track0*2,
-        n1=obj.track1*2,
-        n2=obj.track2*2,
-        n3=obj.track3*2
-    }
-else
     w = w / zoom
     h = h / zoom
     track = {
@@ -36,6 +29,13 @@ else
         n1=obj.track1*200/h,
         n2=obj.track2*200/w,
         n3=obj.track3*200/w
+    }
+else
+    track = {
+        n0=obj.track0*2,
+        n1=obj.track1*2,
+        n2=obj.track2*2,
+        n3=obj.track3*2
     }
 end
 
