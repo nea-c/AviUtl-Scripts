@@ -4,7 +4,7 @@
 --track2:左,-2000,2000,100,0.01
 --track3:右,-2000,2000,100,0.01
 --check0:補間なし,0
---dialog:%モード/chk,_1=0;
+--dialog:%モード/chk,_1=1;
 
 local function toBoolean(a)
 	if a == 1 then
