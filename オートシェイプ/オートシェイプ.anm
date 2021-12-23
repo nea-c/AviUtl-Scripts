@@ -119,7 +119,11 @@ else
       local yp1 = -obj.h / 2 - (sin(r) * Blur)
       local xp2 = -obj.w / 2 + (cos(r) * Blur)
       local yp2 = obj.h / 2 - (sin(r) * Blur)
+      local pw=math.max(math.abs(xp1),math.abs(xp2))*2
+      local ph=math.max(math.abs(yp1),math.abs(yp2))*2
+      obj.setoption("drawtarget","tmp",pw,ph)
       obj.drawpoly(xp1, yp1, 0, -xp2, -yp2, 0, -xp1, -yp1, 0, xp2, yp2, 0)
+      obj.copybuffer("obj","tmp")
 end
 
 --=============================================================================================
