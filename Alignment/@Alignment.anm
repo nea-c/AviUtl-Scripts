@@ -221,8 +221,8 @@ if (PositionLock) then
     obj.ox = cp.x
     obj.oy = cp.y
 else
-    obj.ox = k.x-cx*zoom
-    obj.oy = k.y-cy*zoom
+    obj.ox = k.x
+    obj.oy = k.y
 end
 
 if(not obj.getinfo("saving")) or (not SavingRemove) then
