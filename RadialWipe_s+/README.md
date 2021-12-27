@@ -1,9 +1,9 @@
 
 # RadialWipe_s+
 
-星野なたね氏の[RadialWipe_s](https://drive.google.com/file/d/1Ol1FObGWG7O7rMnccja4-D94ajHNw94r/edit)をブラインドに対応したスクリプト。
+[SEED264](https://github.com/SEED264)氏の[RadialWipe_s](https://drive.google.com/file/d/1Ol1FObGWG7O7rMnccja4-D94ajHNw94r/edit)を扇ブラインドの感じにしたスクリプト。
 
-[RadialWipe_s](https://drive.google.com/file/d/1Ol1FObGWG7O7rMnccja4-D94ajHNw94r/edit)に同梱のdllが必要です。
+[RadialWipe_s](https://drive.google.com/file/d/1Ol1FObGWG7O7rMnccja4-D94ajHNw94r/edit)に同梱の`dll`が必要です。
 
 ## 最新 / Latest
 
