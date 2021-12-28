@@ -66,8 +66,11 @@ if (obj.check0) then
 	end
 end
 if (anchor_rev) then
-	rikky_module.setdialogparamCS("anchor_rev", 0)
-	rikky_module.setdialogparamCS("anchor", c)
+	_2 = anchor_rev
+	_3 = anchor
+	rikky_module.setdialogparamCS("_2", 0)
+	rikky_module.setdialogparamCS("_3", c)
+	_2=nil _3=nil
 end
 
 local buffersize_w, buffersize_h = 0, 0
