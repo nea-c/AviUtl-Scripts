@@ -4,7 +4,7 @@
 
 X,Yの登場方向が1つ前と被りのない4方向(X,-X,Y,-Y)ランダムになります。
 
-[これ](https://github.com/nea-c/AviUtl-Scripts/tree/master/マルチベジェ起動Fix%20and%20other)があるとrikky氏の[パーツ分割](https://hazumurhythm.com/a/pA2/)等でも動作するようになります。
+rikky氏の[パーツ分割](https://hazumurhythm.com/a/pA2/)等でも動作させたい場合は[patch.aul](https://scrapbox.io/ePi5131/patch.aul)を導入しましょう。~~というかしろ。~~
 
 ## 最新 / Latest
 
