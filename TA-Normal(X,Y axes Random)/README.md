@@ -8,7 +8,7 @@ rikky氏の[パーツ分割](https://hazumurhythm.com/a/pA2/)等でも動作さ�
 
 ## 最新 / Latest
 
-**v1.0**
+**v1.1**
 
 ## TA-Normal(X,Y axes Random)
 
@@ -25,6 +25,8 @@ rikky氏の[パーツ分割](https://hazumurhythm.com/a/pA2/)等でも動作さ�
 
 
 ## 変更履歴 / Change log
+
+- v1.1 - 1オブジェクトに複数個付与すると正常に動作しない問題の修正
 
 - v1.0 - リリース
 

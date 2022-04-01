@@ -239,16 +239,19 @@ local r, ro
 r = obj.rand(0, 2, sd[1], obj.index)
 ro = obj.rand(0, 2, sd[2], obj.index)
 if (obj.index ~= 0) then
-      if (r >= TANRand[1]) then
+      if (r >= NeAc_TANormalRand[obj.index-1][obj.layer][sd[1].."-"..sd[2]][1]) then
             r = r + 1
       end
-      if (ro >= TANRand[2]) then
+      if (ro >= NeAc_TANormalRand[obj.index-1][obj.layer][sd[1].."-"..sd[2]][2]) then
             ro = ro + 1
       end
 end
 local a = r * math.pi / 2
 local ao = ro * math.pi / 2
-TANRand = {r, ro}
+if NeAc_TANormalRand == nil then NeAc_TANormalRand = {} end
+if NeAc_TANormalRand[obj.index] == nil then NeAc_TANormalRand[obj.index] = {} end
+if NeAc_TANormalRand[obj.index][obj.layer] == nil then NeAc_TANormalRand[obj.index][obj.layer] = {} end
+NeAc_TANormalRand[obj.index][obj.layer][sd[1].."-"..sd[2]] = {r, ro}
 local pos = {math.cos(a) * vector[1], math.sin(a) * vector[1], 0}
 local poso = {math.cos(ao) * -vector[2], math.sin(ao) * -vector[2], 0}
 
