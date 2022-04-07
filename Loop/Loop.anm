@@ -189,7 +189,7 @@ for nzi = 0, nz - 1 do
 		    obj.ox = obj.ox + def[1]
 		    obj.oy = obj.oy + def[2]
 		    obj.oz = obj.oz + def[3]
-		    RM.effect((nxi + nyi * nx) * (nzi + 1), nx * ny * nz)
+		    RM.effect(((nxi) + (nyi * nx) + (nzi * nx * ny)), nx * ny * nz)
 		    obj.draw()
       else
         obj.draw(def[1], def[2], def[3])
