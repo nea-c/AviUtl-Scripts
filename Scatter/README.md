@@ -2,6 +2,8 @@
 
 個別オブジェクトを拡散させるスクリプト。
 
+- [patch.aul](https://github.com/ePi5131/patch.aul)必須
+
 ## 最新 / Latest
 
 **v1.2**
