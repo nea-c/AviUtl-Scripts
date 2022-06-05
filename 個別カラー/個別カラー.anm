@@ -17,7 +17,7 @@ local amount = obj.track2
 local blendmode = obj.track3
 
 
-local randColor = obj.rand(1, adaptQuantity, obj.index, seed)
+local randColor = obj.randex(obj.index, seed)(1, adaptQuantity)
 local color
 
 
