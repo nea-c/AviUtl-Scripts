@@ -2,8 +2,7 @@
 
 個別オブジェクトでランダムに色をつけるスクリプト。
 
-- [rikky_module](https://hazumurhythm.com/wev/amazon/?script=rikkymodulea2Z)必須
-- [patch.aul](https://github.com/ePi5131/patch.aul)必須
+- [rikky_module](https://hazumurhythm.com/wev/amazon/?script=rikkymodulea2Z) , [patch.aul](https://github.com/ePi5131/patch.aul)必須
 
 ## 最新 / Latest
 
