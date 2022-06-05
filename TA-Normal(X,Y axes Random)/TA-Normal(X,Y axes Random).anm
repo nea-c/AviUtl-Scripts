@@ -109,58 +109,24 @@ if not tostring(ease):find("table:") then
       ease = {ease, ease}
 end
 local easein = ease[1]
-local easeout = (ease[2] or ease[1])
+local easeout = ease[2] or ease[1]
 
-local function easing(x)
+ease = {type(easein),type(easeout)}
+
+easein = tonumber(easein)
+easeout = tonumber(easeout)
+
+local function Ease(x)
       return x * x * (3 - 2 * x)
 end
-if (easein > 0 or easeout > 0) then
-      local E = require("easing")
-      local easelist = {
-            "linear", -- 1
-            "inSine",
-            "outSine",
-            "inOutSine",
-            "outInSine", -- 2,3,4,5
-            "inQuad",
-            "outQuad",
-            "inOutQuad",
-            "outInQuad", -- 6,7,8,9
-            "inCubic",
-            "outCubic",
-            "inOutCubic",
-            "outInCubic", -- 10,11,12,13
-            "inQuart",
-            "outQuart",
-            "inOutQuart",
-            "outInQuart", -- 14,15,16,17
-            "inQuint",
-            "outQuint",
-            "inOutQuint",
-            "outInQuint", -- 18,19,20,21
-            "inExpo",
-            "outExpo",
-            "inOutExpo",
-            "outInExpo", -- 22,23,24,25
-            "inCirc",
-            "outCirc",
-            "inOutCirc",
-            "outInCirc", -- 26,27,28,29
-            "inElastic",
-            "outElastic",
-            "inOutElastic",
-            "outInElastic", -- 30,31,32,33
-            "inBack",
-            "outBack",
-            "inOutBack",
-            "outInBack", -- 34,35,36,37
-            "inBounce",
-            "outBounce",
-            "inOutBounce",
-            "outInBounce" -- 28,39,40,41
-      }
-      easing = function(x, n)
-            return E[easelist[n]](x, 0, 1, 1)
+if (easein > 0) or (easeout > 0) then
+      local E = require("ease_common")
+      Ease = function(x, n)
+            if 0 < n and n <= 41 then
+                  return E.auto(x, 0, 1, -n)
+            else
+                  return E.auto(x, 0, 1, n)
+            end
       end
 end
 
@@ -218,7 +184,7 @@ local vs, ve = 0, 0
 if (st <= 1) then
       vs = sequence(st, delay, Order[ord[1] % 5](sd[1]), obj.num - 1)
       if (easein > 0) then
-            vs = 1 - easing(1 - vs, easein)
+            vs = 1 - Ease(1 - vs, easein)
       elseif (easein < 0) then
             vs = 1 - multi_bezier(1 - vs, easein)
       end
@@ -228,7 +194,7 @@ if (ed > 0) then
       ed = -(1 - ed)
       ve = sequence(ed, delay, Order[ord[2] % 5](sd[2] or sd[1]), obj.num - 1)
       if (easeout > 0) then
-            ve = 1 - easing(ve, easeout)
+            ve = 1 - Ease(ve, easeout)
       elseif (easeout < 0) then
             ve = 1 - multi_bezier(ve, easeout)
       else
@@ -236,8 +202,8 @@ if (ed > 0) then
       end
 end
 local r, ro
-r = obj.rand(0, 2, sd[1], obj.index)
-ro = obj.rand(0, 2, sd[2], obj.index)
+r = obj.randex(sd[1], obj.index)(0, 2)
+ro = obj.randex(sd[2], obj.index)(0, 2)
 if (obj.index ~= 0) then
       if (r >= NeAc_TANormalRand[obj.index-1][obj.layer][sd[1].."-"..sd[2]][1]) then
             r = r + 1

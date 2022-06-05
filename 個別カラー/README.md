@@ -2,11 +2,11 @@
 
 個別オブジェクトでランダムに色をつけるスクリプト。
 
-- [rikky_module](https://hazumurhythm.com/wev/amazon/?script=rikkymodulea2Z)必須
+- [rikky_module](https://hazumurhythm.com/wev/amazon/?script=rikkymodulea2Z) , [patch.aul](https://github.com/ePi5131/patch.aul)必須
 
 ## 最新 / Latest
 
-**v1.1**
+**v1.2**
 
 ## 個別カラー
 
@@ -23,7 +23,12 @@
 
 ## 変更履歴 / Change log
 
-- v1.1 - 最大色数を10から16に変更
+- v1.2
+    - 正確な乱数を提供してくれるものを使用するように変更
 
-- v1.0 - リリース
+- v1.1
+    - 最大色数を10から16に変更
+
+- v1.0
+    - リリース
 
