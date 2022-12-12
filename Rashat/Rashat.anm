@@ -1,6 +1,3 @@
---/////////////////////////////////////////////////////////////////////////////
---@TA-Normal(random)
---/////////////////////////////////////////////////////////////////////////////
 --track0:in/out,-100,100,0,0.01
 --track1:ƒYƒŒ,0,100,10,0.01
 --track2:seed(in),0,9000,0,1
@@ -27,7 +24,40 @@ function split(str, delim)
       table.insert(result, string.sub(str, lastPos))
       return result
 end
-local enableAxes = split(_3, ",")
+
+function sortDirection(list)
+
+      local data = {}
+      local data_return = {}
+
+      for index,key in pairs(list) do
+            data[key] = true
+      end
+
+      if data["x"] then
+            table.insert(data_return,"x")
+      end
+      if data["-x"] then
+            table.insert(data_return,"-x")
+      end
+      if data["y"] then
+            table.insert(data_return,"y")
+      end
+      if data["-y"] then
+            table.insert(data_return,"-y")
+      end
+      if data["z"] then
+            table.insert(data_return,"z")
+      end
+      if data["-z"] then
+            table.insert(data_return,"-z")
+      end
+
+      return data_return
+end
+
+local enableDirection = sortDirection(split(_3, ","))
+
 
 local same_b = (_4 == 1) and true or false
 local fd=_5
@@ -210,17 +240,17 @@ if (ed > 0) then
       end
 end
 local r, ro, a, ao
-r = obj.randex(sd[1], obj.index)(1, math.max(#enableAxes,1))
-ro = obj.randex(sd[2], obj.index)(1, math.max(#enableAxes,1))
-a, ao = enableAxes[r], enableAxes[ro]
+r = obj.randex(sd[1], obj.index)(1, math.max(#enableDirection,1))
+ro = obj.randex(sd[2], obj.index)(1, math.max(#enableDirection,1))
+a, ao = enableDirection[r], enableDirection[ro]
 if (obj.index ~= 0) then
       if (a == NeAc_TANormalRand[obj.index-1][obj.layer][sd[1].."-"..sd[2]][1] and not same_b) then
-            r = ((r + 1) > #enableAxes) and 1 or r+1
-            a = enableAxes[r]
+            r = ((r + 1) > #enableDirection) and 1 or r+1
+            a = enableDirection[r]
       end
       if (ao == NeAc_TANormalRand[obj.index-1][obj.layer][sd[1].."-"..sd[2]][2] and not same_b) then
-            ro = ((ro + 1) > #enableAxes) and 1 or ro+1
-            ao = enableAxes[ro]
+            ro = ((ro + 1) > #enableDirection) and 1 or ro+1
+            ao = enableDirection[ro]
       end
 end
 if NeAc_TANormalRand == nil then NeAc_TANormalRand = {} end
