@@ -4,7 +4,7 @@
 
 1つ前と被りのないランダムで登場/移動するアニメーション効果
 
-- [patch.aul](https://github.com/ePi5131/patch.aul), [Curve Editor](https://github.com/mimaraka/aviutl-plugin-curve_editor) 必須
+- [patch.aul](https://github.com/ePi5131/patch.aul) , [Curve Editor](https://github.com/mimaraka/aviutl-plugin-curve_editor) 必須
 
 ## 最新 / Latest
 
