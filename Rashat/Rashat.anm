@@ -2,7 +2,7 @@
 --track1:ズレ,0,100,10,0.01
 --track2:seed(in),0,9000,0,1
 --track3:seed(out),0,9000,0,1
---dialog:CurveID[in/out],_1={0, 0};移動距離[in/out],_2={100,100};有効方向指定,_3="x,-x,y,-y";被りあり/chk,_4=0;フェード/chk,_5=0;in/out非表示/chk,_6=1;拡大率,_7=0;ぼかし,_8=0;order[0/4],_9={0,0};
+--dialog:CurveEditor,_1={{1,0}, {1,0}};移動距離,_2={100,100};有効方向指定,_3="x,-x,y,-y";被りあり/chk,_4=0;フェード/chk,_5=0;in/out非表示/chk,_6=1;拡大率,_7=0;ぼかし,_8=0;order[0/4],_9={0,0};
 --check0:seed(out)を(in)に同期,1;
 
 
@@ -59,7 +59,7 @@ end
 local enableDirection = sortDirection(split(_3, ","))
 
 
-local same_b = (_4 == 1) and true or false
+local same_b = (_4 == 1)
 local fd=_5
 local io_d=_6
 local zm=_7
@@ -157,30 +157,48 @@ local Order = {
 
 local colorize = {0xd5e6ca, 0xa10a31, 0x5ba6a5, 0x170f1f, 0xdfdfd9}
 
-if not tostring(ease):find("table:") then
-      ease = {ease, ease}
+if tostring(ease):find("table:") then
+      if not tostring(ease[1]):find("table:") then
+            ease = {ease, ease}
+      end
+else
+      return
 end
+
+if not tostring(vector):find("table:") then
+      vector = {vector, vector}
+end
+
 local easein = ease[1]
 local easeout = ease[2] or ease[1]
 
 ease = {type(easein),type(easeout)}
 
-easein = tonumber(easein)
-easeout = tonumber(easeout)
-
-local function Ease(x)
-      return x * x * (3 - 2 * x)
+local module_name = "curve_editor"
+if not package.loaded[module_name] then
+      package.preload[module_name] = package.loadlib(module_name .. ".auf", "luaopen_" .. module_name)
+      require(module_name)
+      package.preload[module_name] = nil
 end
-if (easein > 0) or (easeout > 0) then
-      local module_name = "curve_editor"
-      if not package.loaded[module_name] then
-            package.preload[module_name] = package.loadlib(module_name .. ".auf", "luaopen_" .. module_name)
-            require(module_name)
-            package.preload[module_name] = nil
+Ease = function(x, n)
+      local load_type = (n[1] == 1 or n[1] == 2) and n[1] or 1
+      local par = n[2]
+      local ratio = x
+      local st, ed = -0.0001, 1
+      if load_type == 1 then
+            if (-2147483647 <= par and par <= -12368443) or (12368443 <= par and par <= 2147483646) then
+                  return curve_editor.getcurve(0,par,ratio,st,ed)
+            elseif 1 <= par and par <= 1024 then
+                  return curve_editor.getcurve(1,par,ratio,st,ed)
+            end
+      elseif load_type == 2 then
+            if (-10211201 <= par and par <= -1) or (1 <= par and par <= 10211201) then
+                  return curve_editor.getcurve(3,par,ratio,st,ed)
+            elseif (-11213202 <= par and par <= -10211202) or (10211202 <= par and par <= 11213202) then
+                  return curve_editor.getcurve(4,par,ratio,st,ed)
+            end
       end
-      Ease = function(x, n)
-            return curve_editor.get_result(n, x, -0.0001, 1)
-      end
+      return x
 end
 
 if not tostring(pos):find("table:") then
@@ -233,11 +251,7 @@ end
 if (ed > 0) then
       ed = -(1 - ed)
       ve = sequence(ed, delay, Order[ord[2] % 5](sd[2] or sd[1]), obj.num - 1)
-      if (easeout > 0) then
-            ve = 1 - Ease(ve, easeout)
-      else
-            ve = 1 - ve
-      end
+      ve = 1 - Ease(ve, easeout)
 end
 local r, ro, a, ao
 r = obj.randex(sd[1], obj.index)(1, math.max(#enableDirection,1))
