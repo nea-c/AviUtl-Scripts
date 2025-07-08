@@ -1,0 +1,193 @@
+
+-------------------------------------------------------
+@本体
+-------------------------------------------------------
+--track0:投射角度,-180,180,0,0.01
+--track1:初速度,0,1000,120,0.01
+--track2:重力,0,1000,9.80,0.01
+--check0:ガイド表示,0
+
+local GrA=35
+local ot = 0
+local zoomsize = 100 / obj.getvalue("zoom")
+local alpha = 1 / obj.getvalue("alpha") * 0.7
+local rz = -obj.rz
+local drawX,drawY = 0,0
+local sin,cos,tan =
+	function(a) return math.sin(a/180*math.pi) end,
+	function(a) return math.cos(a/180*math.pi) end,
+	function(a) return math.tan(a/180*math.pi) end
+local manual,position,Z_angle,gravitydirection = false,0,0,1
+
+if TSCO then
+   if TSCO[obj.layer] then
+      local td = TSCO[obj.layer]
+      manual,position,Z_angle,gravitydirection = td.COmanual,td.COposition,td.COangle,td.COgravitydirection
+   end
+end
+
+if manual==false then
+   ot = obj.time * GrA
+else
+   ot = position
+end
+
+if gravitydirection == 1 then  ----重力方向[下]
+   obj.ox = obj.ox + (obj.track1 * cos(-obj.track0 + 90) * cos(Z_angle) * ot)
+   obj.oy = obj.oy + (-((obj.track1 * sin(-obj.track0 + 90) * cos(Z_angle) * ot) - ((obj.track2 / 2) * (ot ^ 2))))
+   obj.oz = obj.oz + (obj.track1 * sin(Z_angle) * ot)
+elseif gravitydirection == 2 then  ----重力方向[上]
+   obj.ox = obj.ox + (obj.track1 * cos(-obj.track0 + 90) * cos(Z_angle) * ot)
+   obj.oy = obj.oy + (-((obj.track1 * sin(-obj.track0 + 90) * cos(Z_angle) * ot) + ((obj.track2 / 2) * (ot ^ 2))))
+   obj.oz = obj.oz + (obj.track1 * sin(Z_angle) * ot)
+elseif gravitydirection == 3 then  ----重力方向[左]
+   obj.ox = obj.ox + ((obj.track1 * cos(-obj.track0 + 90) * cos(Z_angle) * ot) - ((obj.track2 / 2) * (ot ^ 2)))
+   obj.oy = obj.oy + (-(obj.track1 * sin(-obj.track0 + 90) * cos(Z_angle) * ot))
+   obj.oz = obj.oz + (obj.track1 * sin(Z_angle) * ot)
+elseif gravitydirection == 4 then  ----重力方向[右]
+   obj.ox = obj.ox + ((obj.track1 * cos(-obj.track0 + 90) * cos(Z_angle) * ot) + ((obj.track2 / 2) * (ot ^ 2)))
+   obj.oy = obj.oy + (-(obj.track1 * sin(-obj.track0 + 90) * cos(Z_angle) * ot))
+   obj.oz = obj.oz + (obj.track1 * sin(Z_angle) * ot)
+elseif gravitydirection == 5 then  ----重力方向[前]
+   obj.ox = obj.ox + (obj.track1 * cos(-obj.track0 + 90) * cos(Z_angle) * ot)
+   obj.oy = obj.oy + (-(obj.track1 * sin(-obj.track0 + 90) * cos(Z_angle) * ot))
+   obj.oz = obj.oz + ((obj.track1 * sin(Z_angle) * ot) - ((obj.track2 / 2) * (ot ^ 2)))
+elseif gravitydirection == 6 then  ----重力方向[奥]
+   obj.ox = obj.ox + (obj.track1 * cos(-obj.track0 + 90) * cos(Z_angle) * ot)
+   obj.oy = obj.oy + (-(obj.track1 * sin(-obj.track0 + 90) * cos(Z_angle) * ot))
+   obj.oz = obj.oz + ((obj.track1 * sin(Z_angle) * ot) + ((obj.track2 / 2) * (ot ^ 2)))
+end
+
+
+local S = 400
+
+   
+
+
+
+-------------------ガイドオン時---------------------------------
+if(obj.check0) then
+   obj.draw()
+
+   --obj.load("figure","四角形",0x000000,S*5)
+   --obj.draw(0,0,0,zoomsize,alpha,0,0,rz)
+
+   obj.load("figure","円",0xffffff,90)
+   obj.draw(0,0,0,zoomsize,alpha,0,0,rz)
+
+   obj.setfont("メイリオ",46,4,0xffffff,0x231d1e)
+   if gravitydirection == 1 then
+      obj.load(string.format("下"))
+   elseif gravitydirection == 2 then
+      obj.load(string.format("上"))
+   elseif gravitydirection == 3 then
+      obj.load(string.format("左"))
+   elseif gravitydirection == 4 then
+      obj.load(string.format("右"))
+   elseif gravitydirection == 5 then
+      obj.load(string.format("前"))
+   elseif gravitydirection == 6 then
+      obj.load(string.format("奥"))
+   end
+   obj.draw(0,0,0,zoomsize,alpha,0,0,rz)
+
+
+
+   obj.setoption("billboard",3)
+   -----------------------------斜線描画-----------------------------------
+   obj.load("figure","円",0xff471c,3)
+   for t=0,2.57,0.001 do
+      x = (obj.track1 * cos(-obj.track0 + 90) * cos(Z_angle) * t)
+      y = -(obj.track1 * sin(-obj.track0 + 90) * cos(Z_angle) * t)
+      z = (obj.track1 * sin(Z_angle) * t)
+      obj.draw(x,y,z,zoomsize,alpha,0,0,rz)
+   end
+   
+   ------------------------------------------------------------------------
+
+
+
+   obj.load("figure","円",0x00ff00,5)
+
+   if gravitydirection == 1 then  ----重力方向[下]
+      for t=0,200,0.5 do
+         x = (obj.track1 * cos(-obj.track0 + 90) * cos(Z_angle) * t)
+         y = -((obj.track1 * sin(-obj.track0 + 90) * cos(Z_angle) * t) - ((obj.track2 / 2) * (t ^ 2)))
+         z = (obj.track1 * sin(Z_angle) * t)
+         obj.draw(x,y,z,zoomsize,alpha+3,0,0,rz)
+      end
+   elseif gravitydirection == 2 then  ----重力方向[上]
+      for t=0,200,0.5 do
+         x = (obj.track1 * cos(-obj.track0 + 90) * cos(Z_angle) * t)
+         y = -((obj.track1 * sin(-obj.track0 + 90) * cos(Z_angle) * t) + ((obj.track2 / 2) * (t ^ 2)))
+         z = (obj.track1 * sin(Z_angle) * t)
+         obj.draw(x,y,z,zoomsize,alpha+3,0,0,rz)
+      end
+   elseif gravitydirection == 3 then  ----重力方向[左]
+      for t=0,200,0.5 do
+         x = ((obj.track1 * cos(-obj.track0 + 90) * cos(Z_angle) * t) - ((obj.track2 / 2) * (t ^ 2)))
+         y = -(obj.track1 * sin(-obj.track0 + 90) * cos(Z_angle) * t)
+         z = (obj.track1 * sin(Z_angle) * t)
+         obj.draw(x,y,z,zoomsize,alpha+3,0,0,rz)
+      end
+   elseif gravitydirection == 4 then  ----重力方向[右]
+      for t=0,200,0.5 do
+         x = ((obj.track1 * cos(-obj.track0 + 90) * cos(Z_angle) * t) + ((obj.track2 / 2) * (t ^ 2)))
+         y = -(obj.track1 * sin(-obj.track0 + 90) * cos(Z_angle) * t)
+         z = (obj.track1 * sin(Z_angle) * t)
+         obj.draw(x,y,z,zoomsize,alpha+3,0,0,rz)
+      end
+   elseif gravitydirection == 5 then  ----重力方向[前]
+      for t=0,200,0.5 do
+         x = (obj.track1 * cos(-obj.track0 + 90) * cos(Z_angle) * t)
+         y = -(obj.track1 * sin(-obj.track0 + 90) * cos(Z_angle) * t)
+         z = ((obj.track1 * sin(Z_angle) * t) - ((obj.track2 / 2) * (t ^ 2)))
+         obj.draw(x,y,z,zoomsize,alpha+3,0,0,rz)
+      end
+   elseif gravitydirection == 6 then  ----重力方向[奥]
+      for t=0,200,0.5 do
+         x = (obj.track1 * cos(-obj.track0 + 90) * cos(Z_angle) * t)
+         y = -(obj.track1 * sin(-obj.track0 + 90) * cos(Z_angle) * t)
+         z = ((obj.track1 * sin(Z_angle) * t) + ((obj.track2 / 2) * (t ^ 2)))
+         obj.draw(x,y,z,zoomsize,alpha+3,0,0,rz)
+      end
+   end
+end
+
+-------------------------------------------------------
+@オプション
+-------------------------------------------------------
+--track0:移動量,0,20000000,0,0.01
+--track1:Z角度,-180,180,0,0.01
+--track2:重力方向,1,6,1,1
+--check0:マニュアル動作,0
+--dialog:カメラの方を向く/chk,_1=1;
+
+local Wcam = _1
+_1=nil
+local zoomsize = 100 / obj.getvalue("zoom")
+local alpha = 1 / obj.getvalue("alpha") * 0.7
+local US = obj.getoption("script_name",1)
+
+   
+if (US == "本体@投射")==false then
+   obj.setfont("メイリオ",56,4,0xffffff,0x231d1e)
+   obj.load(string.format("追加効果は本体の上につけてください"))
+   obj.draw(0,0,0,zoomsize,alpha+3,0,0,0)
+end
+
+
+if (Wcam==1) then
+   obj.setoption("billboard",3)
+else
+   obj.setoption("billboard",0)
+end
+
+
+TSCO = TSCO or {}
+TSCO[obj.layer] = {
+	COmanual = obj.check0,
+	COposition = obj.track0,
+        COangle = obj.track1,
+        COgravitydirection = obj.track2
+}

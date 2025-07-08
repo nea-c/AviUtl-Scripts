@@ -1,0 +1,40 @@
+--track@adaptQuantity:適応色数,2,16,4,1
+--track@seed:seed,1,10000,1,1
+--track@amount:強度,0,100,100
+--track@blendmode:合成モード,0,13,0,1
+--color@_1:color1,0x1fffcb
+--color@_2:color2,0xff531f
+--color@_3:color3,0xff1f54
+--color@_4:color4,0x46ec29
+--color@_5:color5,0x0
+--color@_6:color6,0x0
+--color@_7:color7,0x0
+--color@_8:color8,0x0
+--color@_9:color9,0x0
+--color@_10:color10,0x0
+--color@_11:color11,0x0
+--color@_12:color12,0x0
+--color@_13:color13,0x0
+--color@_14:color14,0x0
+--color@_15:color15,0x0
+--color@_16:color16,0x0
+
+local colors = { _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16}
+
+
+local randColor = obj.rand(1, adaptQuantity, obj.index, seed)
+local color
+
+
+for i = 1, #colors do
+    if (randColor == i) then
+        color = colors[i] or 0x0
+        break
+    end
+end
+
+if blendmode==13 then
+    obj.effect("単色化","強さ",amount,"color",color,"輝度を保持する",1)
+else
+    obj.effect("グラデーション","blend",blendmode,"強さ",amount,"color",color, "color2",color)
+end

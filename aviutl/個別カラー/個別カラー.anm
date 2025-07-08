@@ -1,0 +1,35 @@
+--track0:適応色数,2,16,4,1
+--track1:seed,1,10000,1,1
+--track2:強度,0,100,100
+--track3:合成モード,0,13,0,1
+--dialog:color1,_1=0x1fffcb; color2,_2=0xff531f; color3,_3=0xff1f54; color4,_4=0x46ec29; color5,_5=0x0; color6,_6=0x0; color7,_7=0x0; color8,_8=0x0; color9,_9=0x0; color10,_10=0x0; color11,_11=0x0; color12,_12=0x0; color13,_13=0x0; color14,_14=0x0; color15,_15=0x0; color16,_16=0x0;
+
+require("rikky_module")
+rikky_module.colordialog( 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
+
+local colors = { _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16}
+
+_1=nil _2=nil _3=nil _4=nil _5=nil _6=nil _7=nil _8=nil _9=nil _10=nil _11=nil _12=nil _13=nil _14=nil _15=nil _16=nil
+
+local adaptQuantity = obj.track0
+local seed = obj.track1
+local amount = obj.track2
+local blendmode = obj.track3
+
+
+local randColor = obj.randex(obj.index, seed)(1, adaptQuantity)
+local color
+
+
+for i = 1, #colors do
+    if (randColor == i) then
+        color = colors[i] or 0x0
+        break
+    end
+end
+
+if blendmode==13 then
+    obj.effect("単色化","強さ",amount,"color",color,"輝度を保持する",1)
+else
+    obj.effect("グラデーション","blend",blendmode,"強さ",amount,"color",color, "color2",color)
+end
