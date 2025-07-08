@@ -1,0 +1,228 @@
+-------------------------------------------------------
+@âÒì]
+-------------------------------------------------------
+--track0:X,-3600,3600,0,.01
+--track1:Y,-3600,3600,0,.01
+--track2:Z,-3600,3600,0,.01
+--dialog:ñ⁄ïWíÜêSâÒì]/chk,_1=0;é©êgÇäÓèÄÇ…Ç∑ÇÈ/chk,_2=0;
+
+local t0 = math.rad(obj.track0)
+local t1 = math.rad(obj.track1 + 90)
+local t2 = obj.track2
+local cam = obj.getoption("camera_param")
+local x, y, z = cam.x, cam.y, cam.z
+local tx, ty, tz = cam.tx, cam.ty, cam.tz
+local rz = cam.rz
+
+rz = rz + ( ( (obj.track0 + 90) % 360 ) > 180 and 180 or 0 )
+
+
+local focas = math.sqrt( (x - tx) ^ 2 + (y - ty) ^ 2 + (z - tz) ^ 2 )
+
+local function toBoolean(a)
+	if a == 1 then
+		return true
+	else
+		return false
+	end
+end
+
+local center = toBoolean(_1)
+local relative = toBoolean(_2)
+
+_1=nil _2=nil
+
+if (center) and (relative) then
+	local vx,vy,vz
+	local r,s,c
+	local m0_0,m0_1,m0_2,m1_0,m1_1,m1_2,m2_0,m2_1,m2_2
+	local x2,y2,z2
+	local l
+
+
+	x = cam.x-cam.tx
+	y = cam.y-cam.ty
+	z = cam.z-cam.tz
+
+
+	-- êÖïΩâÒì]
+	vx = cam.ux
+	vy = cam.uy
+	vz = cam.uz
+	r = obj.track1*math.pi/180
+	s = math.sin(r)
+	c = math.cos(r)
+
+	m0_0 = vx*vx*(1-c)+c
+	m0_1 = vx*vy*(1-c)-vz*s
+	m0_2 = vz*vx*(1-c)+vy*s
+
+	m1_0 = vx*vy*(1-c)+vz*s
+	m1_1 = vy*vy*(1-c)+c
+	m1_2 = vy*vz*(1-c)-vx*s
+
+	m2_0 = vz*vx*(1-c)-vy*s
+	m2_1 = vy*vz*(1-c)+vx*s
+	m2_2 = vz*vz*(1-c)+c
+	
+	x2 = m0_0*x+m0_1*y+m0_2*z
+	y2 = m1_0*x+m1_1*y+m1_2*z
+	z2 = m2_0*x+m2_1*y+m2_2*z
+
+
+	-- êÇíºâÒì]
+	l = math.sqrt(x2*x2+y2*y2+z2*z2)
+	if( l == 0 ) then return end
+	vx = x2/l
+	vy = y2/l
+	vz = z2/l
+	x = vy*cam.uz-vz*cam.uy
+	y = vz*cam.ux-vx*cam.uz
+	z = vx*cam.uy-vy*cam.ux
+	l = math.sqrt(x*x+y*y+z*z)
+	if( l == 0 ) then return end
+	vx = x/l
+	vy = y/l
+	vz = z/l
+	r = obj.track0*math.pi/180
+	s = math.sin(r)
+	c = math.cos(r)
+	m0_0 = vx*vx*(1-c)+c
+	m0_1 = vx*vy*(1-c)-vz*s
+	m0_2 = vz*vx*(1-c)+vy*s
+
+	m1_0 = vx*vy*(1-c)+vz*s
+	m1_1 = vy*vy*(1-c)+c
+	m1_2 = vy*vz*(1-c)-vx*s
+
+	m2_0 = vz*vx*(1-c)-vy*s
+	m2_1 = vy*vz*(1-c)+vx*s
+	m2_2 = vz*vz*(1-c)+c
+
+	cam.x = cam.tx + m0_0*x2+m0_1*y2+m0_2*z2
+	cam.y = cam.ty + m1_0*x2+m1_1*y2+m1_2*z2
+	cam.z = cam.tz + m2_0*x2+m2_1*y2+m2_2*z2
+
+	x = cam.ux
+	y = cam.uy
+	z = cam.uz
+
+	cam.ux = m0_0*x+m0_1*y+m0_2*z
+	cam.uy = m1_0*x+m1_1*y+m1_2*z
+	cam.uz = m2_0*x+m2_1*y+m2_2*z
+	
+elseif (center) and (not relative) then
+	cam.x = (focas * math.cos(t1) * math.cos(t0)) + tx
+	cam.y = (focas * math.sin(t0)) + ty
+	cam.z = (focas * math.cos(-t0) * math.sin(-t1)) + tz
+elseif (not center) and (relative) then
+	
+else
+	cam.tx = x + (focas * math.cos(t1) * math.cos(t0)) + tx
+	cam.ty = y + (focas * math.sin(t0)) + ty
+	cam.tz = z + (focas * math.cos(t0) * math.sin(t1)) + tz
+end
+
+cam.rz = rz + t2
+
+obj.setoption("camera_param",cam)
+
+
+
+
+
+
+
+-------------------------------------------------------
+@ç¿ïW
+-------------------------------------------------------
+--track0:X,-10000,10000,0,.01
+--track1:Y,-10000,10000,0,.01
+--track2:Z,-10000,10000,0,.01
+--dialog:ïΩçsà⁄ìÆ/chk,_1=0;ëäëŒ/chk,_2=0;
+
+local function toBoolean(a)
+	if a == 1 then
+		return true
+	else
+		return false
+	end
+end
+
+local parallel = toBoolean(_1)
+local relative = toBoolean(_2)
+
+_1=nil _2=nil
+
+local cam = obj.getoption("camera_param")
+
+local t = { obj.track0, obj.track1, obj.track2 }
+
+local vd = {}
+
+if (relative) then
+	local Vec3 = require("Vec3")
+	local vf = Vec3(
+		cam.tx - cam. x,
+		cam.ty - cam. y,
+		cam.tz - cam. z
+	):norm()
+	
+	local rz = math.rad(cam.rz)
+	local vr = Vec3(math.sin(rz), math.cos(rz), 0):cross(vf)
+	local vu = vf:cross(vr)
+		
+	vd = vr * t[1] + vu * t[2] + vf * t[3]
+	cam. x = cam. x + vd[1]
+	cam. y = cam. y + vd[2]
+	cam. z = cam. z + vd[3]
+else
+	cam.x, cam.y, cam.z = cam.x + t[1] , cam.y + t[2] , cam.z + t[3]
+	vd = t
+end
+
+if (parallel) then
+	cam.tx = cam.tx + vd[1]
+	cam.ty = cam.ty + vd[2]
+	cam.tz = cam.tz + vd[3]
+end
+obj.setoption("camera_param",cam)
+
+
+-------------------------------------------------------
+@ñ⁄ïWç¿ïW
+-------------------------------------------------------
+--track0:X,-10000,10000,0,.01
+--track1:Y,-10000,10000,0,.01
+--track2:Z,-10000,10000,0,.01
+
+
+local cam = obj.getoption("camera_param")
+cam.tx = cam.tx + obj.track0
+cam.ty = cam.ty + obj.track1
+cam.tz = cam.tz + obj.track2
+obj.setoption("camera_param",cam)
+
+
+-------------------------------------------------------
+@åXÇ´
+-------------------------------------------------------
+--track0:åXÇ´,-10000,10000,0,.01
+
+local cam = obj.getoption("camera_param")
+
+cam.rz = cam.rz + obj.track0
+obj.setoption("camera_param",cam)
+
+
+-------------------------------------------------------
+@éãñÏäp
+-------------------------------------------------------
+--track0:éãñÏäp,-1000,1000,0,.01
+
+local t0 = 120 - obj.track0
+local cam = obj.getoption("camera_param")
+
+cam.d = cam.d + t0
+
+obj.setoption("camera_param",cam)

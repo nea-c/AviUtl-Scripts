@@ -1,0 +1,71 @@
+--track0:Xｱｽﾍﾟｸﾄ,1,100,4,1
+--track1:Yｱｽﾍﾟｸﾄ,1,100,3,1
+
+--track3:文字ｻｲｽﾞ,0,1000,50,1
+--dialog:色/col,_1="0x000000";サイズ表示/chk,_2= 0;
+
+local col=_1
+local sizeVisible=_2
+
+_1=nil _2=nil
+
+local zoomsize = 100 / obj.getvalue("zoom")
+local alpha = 1 / obj.getvalue("alpha")
+local rz = obj.rz
+local aspX = obj.track0
+local aspY = obj.track1
+
+local scrMin = math.min(obj.screen_w, obj.screen_h)
+
+local updown = 0
+local leftright = 0
+
+if scrMin == obj.screen_w then
+    leftright = obj.screen_w
+    if aspX > aspY then
+        updown = leftright / aspX * aspY
+    elseif aspX < aspY then
+        updown = leftright / aspX * aspY
+        if updown > obj.screen_h then
+            updown = obj.screen_h
+            leftright = updown / aspY * aspX
+        end
+    else
+        updown = leftright
+    end
+elseif scrMin == obj.screen_h then
+    updown = obj.screen_h
+    if aspX > aspY then
+        leftright = updown / aspY * aspX
+        if leftright > obj.screen_w then
+            leftright = obj.screen_w
+            updown = leftright / aspX * aspY
+        end
+    elseif aspX < aspY then
+        leftright = updown / aspY * aspX
+    else
+        leftright = updown
+    end
+end
+
+
+updown = updown / 2
+leftright = leftright / 2
+
+--maskSize = 1000
+
+ --* maskAspect / -100 * 
+
+--obj.setoption("drawtarget","tempbuffer",obj.screen_w,obj.screen_h)
+
+obj.load("figure", "四角形", col, 1)
+obj.effect("領域拡張", "塗りつぶし", 1, "上", updown, "下", updown, "右", leftright, "左", leftright)
+obj.draw(0, 0, 0, 1, alpha, 0, 0, -rz)
+
+if (sizeVisible == 1) then
+    obj.setfont("メイリオ",obj.track3,4,0xffffff,0x231d1e)
+    obj.load(string.format("%d,%d",leftright*2,updown*2))
+    obj.draw(0, 0, 0, zoomsize, alpha, 0, 0, -rz)
+end
+
+--obj.load("tempbuffer")

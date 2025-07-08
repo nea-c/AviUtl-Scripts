@@ -1,0 +1,198 @@
+@Shadow
+--track0:量,0,1000,100,0.01
+--track1:基準位置,-100,100,100,0.1
+--track2:Number,1,1000,1,1
+--check0:高精度,0
+--dialog:影のみ/chk,_1=0;color/col,_2=0x747474;グラデーション/chk,_3=1;GradColor/col,_4=0xdddddd;出力時高精度化/chk,_5=1;
+
+local shadow_only=_1
+local shadowcol=_2
+local Grad=_3
+local gradcol=_4
+local saving_hi_grade=_5
+
+_1=nil _2=nil _3=nil _4=nil _5=nil
+
+if shadow_only==1 then obj.effect("単色化","color",shadowcol,"輝度を保持する",0) end
+obj.copybuffer("cache:OBX", "obj")
+
+local light_number = obj.track2
+if  (LightX == nil) or (LightY == nil) or (LightX[light_number] == nil) or (LightY[light_number] == nil) then
+    obj.setfont("メイリオ",56,4,0xffffff,0x231d1e)
+    obj.load(string.format("Light効果のデータが存在しません"))
+    obj.draw(0,0)
+elseif (obj.num>1 and obj.index==0) then
+    obj.setfont("メイリオ",56,4,0xffffff,0x231d1e)
+    obj.load(string.format("個別オブジェクト動作には対応していません"))
+    obj.draw(0,0)
+    
+elseif (obj.num>1) then
+    obj.effect("拡大率","拡大率",0)
+    obj.draw()
+else
+
+
+
+
+    local dx = LightX[light_number] - obj.x - obj.ox
+    local dy = LightY[light_number] - obj.y - obj.oy
+
+    local xyrad=math.atan2(dy,dx)
+    local l=dx*math.cos(xyrad)+dy*math.sin(xyrad)
+
+    dx = l*math.cos(xyrad+math.rad(-obj.rz))
+    dy = l*math.sin(xyrad+math.rad(-obj.rz))
+
+    local Br = obj.track0 * 0.25
+    local BasP = 0.01 * obj.track1
+    local Sbai = 500
+    Br = math.min(Br, 200 / (1 + BasP) - 0.1)
+    local userdata, w, h
+    local addX1, addX2, addY1, addY2 = 0, 0, 0, 0
+    local w, h = obj.getpixel()
+    local w2, h2 = w / 2, h / 2
+    Sbai = math.max(0, (Sbai - 1) / 2)
+    local iw, ih = w * Sbai, h * Sbai
+    local iBr1 = 1 / (1 - Br * (1 + BasP) / 200)
+    local iBr2 = 1 / (1 + Br * (1 - BasP) / 200)
+    addX1 = ((w2 > dx and iBr1 or iBr2) - 1) * (w2 - dx)
+    addX2 = ((-w2 < dx and iBr1 or iBr2) - 1) * (w2 + dx)
+    addY1 = ((h2 > dy and iBr1 or iBr2) - 1) * (h2 - dy)
+    addY2 = ((-h2 < dy and iBr1 or iBr2) - 1) * (h2 + dy)
+    addX1 = (addX1 > iw) and iw or addX1
+    addX2 = (addX2 > iw) and iw or addX2
+    addY1 = (addY1 > ih) and ih or addY1
+    addY2 = (addY2 > ih) and ih or addY2
+    addX1, addY1 = math.ceil(math.max(addX1, 1)), math.ceil(math.max(addY1, 1))
+    addX2, addY2 = math.ceil(math.max(addX2, 1)), math.ceil(math.max(addY2, 1))
+    obj.effect("領域拡張", "上", addY2, "下", addY1, "右", addX1, "左", addX2)
+    require("T_RotBlur_Module")
+    userdata, w, h = obj.getpixeldata()
+
+    T_RotBlur_Module.RadBlur(userdata, w, h, Br, dx + (addX2 - addX1) / 2, dy + (addY2 - addY1) / 2, BasP)
+    obj.putpixeldata(userdata)
+
+
+
+    obj.copybuffer("cache:Org","obj")
+
+    --obj.effect("領域拡張","上",iSz,"下",iSz,"右",iSz,"左",iSz)
+    require("T_Framing_Module")
+    local userdata,w,h=obj.getpixeldata()
+
+    if (obj.check0) or (obj.getinfo("saving") and saving_hi_grade==1) then
+        T_Framing_Module.FramingHi(userdata,w,h,0.1,0.1,0,0xffffff,0x0,0)
+    else
+        T_Framing_Module.Framing(userdata,w,h,0.1,0.1,0,0xffffff,0x0,0)
+    end
+    obj.putpixeldata(userdata)
+    obj.setoption("drawtarget","tempbuffer",w,h)
+
+    obj.copybuffer("tmp","obj")
+    obj.copybuffer("obj","cache:Org")
+    obj.draw()
+    obj.copybuffer("obj","tmp")
+    obj.setoption("blend",0)
+
+
+    --[[
+    obj.setoption("drawtarget","tempbuffer",w,h)
+
+    obj.effect("縁取り","サイズ",3,"ぼかし",0,"color",shadowcol)
+    obj.effect("境界ぼかし","範囲",2,"透明度の境界をぼかす",1)
+    obj.effect("縁取り","サイズ",2,"ぼかし",0,"color",shadowcol)
+    obj.draw()
+    ]]
+
+    local objPx = (w + addX2 - addX1) / 2 - (w / 2)
+    local objPy = (h + addY2 - addY1) / 2 - (h / 2)
+
+    obj.effect("境界ぼかし","範囲",1,"透明度の境界をぼかす",1)
+    obj.effect("単色化", "輝度を保持する", 0, "color", shadowcol)
+    obj.draw()
+
+
+
+    local L = math.abs( ( iBr1 + iBr2 ) * Br*2 * 2 )
+    local rad = math.atan2(dx,dy)
+    local deg = math.deg(rad) + 90
+    local grad_X = math.cos(math.rad(deg)) * L/2.7
+    local grad_Y = math.sin(math.rad(deg)) * L/2.7
+    if Grad==1 then
+        --obj.effect("グラデーション","no_color",1,"color2",gradcol,"角度",-deg-90,"幅",L,"中心X",grad_X,"中心Y",grad_Y)
+        if math.sin(math.rad(deg-180))<0 then
+		    obj.effect("グラデーション","no_color",1,"color2",gradcol,"角度",180,"幅",L,"中心X",grad_X,"中心Y",grad_Y)
+	    else
+    		obj.effect("グラデーション","no_color",1,"color2",gradcol,"角度",0,"幅",L,"中心X",grad_X,"中心Y",grad_Y)
+    	end
+    end
+    --obj.draw()
+
+    obj.copybuffer("tmp","obj")
+    obj.copybuffer("obj", "cache:OBX")
+    obj.draw(objPx,objPy)
+    obj.copybuffer("obj","tmp")
+
+
+    obj.setoption("antialias", 1)
+
+end
+
+@Light
+--track0:X,-9000,9000,-350,0.1
+--track1:Y,-9000,9000,-200,0.1
+--track2:Number,1,1000,1,1
+--track3:円移動,-3600,3600,0,0.01
+--check0:Info,1
+--dialog:出力時描画しない/chk,_1=1;Info Color/col,_2="0xff0000";Info Size,_3=20;Info Weight,_4=3;
+
+obj.effect("拡大率","拡大率",0)
+obj.draw()
+
+local SavingRemove=_1
+local col=_2
+local InfoSize=_3
+local InfoWeight=_4
+
+_1=nil _2=nil _3=nil _4=nil
+
+local xpos=obj.track0
+local ypos=obj.track1
+local deg=obj.track3
+local InfoOn=obj.check0
+local light_number = obj.track2
+local lpx,lpy=0,0
+local zoom=obj.getvalue("zoom")/100
+local xyrad=math.atan2(ypos,xpos)
+local l=xpos*math.cos(xyrad)+ypos*math.sin(xyrad)
+
+if (LightX == nil) then
+    LightX = {}
+end
+
+if (LightY == nil) then
+    LightY = {}
+end
+
+
+if(deg==0)then
+    lpx =  xpos
+    lpy =  ypos
+else
+    lpx=l*math.cos(xyrad+math.rad(deg))
+    lpy=l*math.sin(xyrad+math.rad(deg))
+end
+LightX[light_number] =  lpx
+LightY[light_number] =  lpy
+
+
+if(not obj.getinfo("saving")) or (SavingRemove==0) then
+    if (InfoOn) then
+        obj.load("figure","四角形",col,InfoWeight)
+        obj.effect("領域拡張","上",InfoSize,"下",InfoSize,"塗りつぶし",1)
+        obj.draw(lpx-obj.x,lpy-obj.y,-obj.z)
+        obj.load("figure","四角形",col,InfoWeight)
+        obj.effect("領域拡張","左",InfoSize,"右",InfoSize,"塗りつぶし",1)
+        obj.draw(lpx-obj.x,lpy-obj.y,-obj.z)
+    end
+end

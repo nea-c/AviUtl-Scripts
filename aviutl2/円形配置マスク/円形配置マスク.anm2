@@ -1,0 +1,29 @@
+--track@t0:円周,0,800,100,0.01
+--track@t1:半径,-2000,2000,100
+--track@t2:回転,-3600,3600,0
+--track@num:数,1,100,4,1
+--track@aspect:縦横比,-100,100,0,0.01
+--track@blur:ぼかし,0,1000,0,0.01
+--check@no_rotate:回転なし,0
+--track@shift_rz:個別回転,0,10000,0,0.01
+--track@shift_x:シフトX,-10000,10000,0,0.01
+--track@shift_y:シフトY,-10000,10000,0,0.01
+--figure@fig:図形,四角形
+--track@mask_size:サイズ,0,1000,100,1
+
+
+
+
+for i=1,(num or 4) do
+	local x = 0
+	local y = 0
+	local rz = shift_rz
+	local r = ((i-(num+1)/2)*t0/50/num + t2/180)*math.pi
+	x =  math.sin(r)*t1
+	y = -math.cos(r)*t1
+    r = r*180/math.pi
+	if( not no_rotate ) then
+		rz = rz+r
+    end
+    obj.effect("マスク","マスクの種類",fig,"X",x+shift_x,"Y",y+shift_y,"回転",rz,"サイズ",mask_size,"縦横比",aspect,"ぼかし",blur,"マスクの反転",1)
+end
