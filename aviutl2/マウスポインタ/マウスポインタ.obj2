@@ -1,0 +1,280 @@
+--track@tr_size:サイズ,  1, 100, 10,  1
+--track@cursor_type:タイプ,  1,  10,  1,  1
+--color@col0:色,0xffffff
+--color@col1:縁色,0x000000
+
+
+local function draw_dots(data, size)
+	if data==nil then
+		return
+	end
+	if #data==0 then
+		return
+	end
+
+	--データの高さと幅を取得
+	local h = #data
+	local c = 0
+	for i=1, #data do
+		c = math.max(c, #data[i])
+	end
+	local w = c
+
+	local divW, divH = (w * size)/2, (h * size)/2
+
+	obj.setoption("drawtarget", "tempbuffer", w * size, h * size)
+	for y=1,h do
+		for x=1,#data[y] do
+			local d = data[y][x]
+			if d~=nil and d~="nil" and d~="" then
+				obj.load("figure", "四角形", d,1)
+				obj.drawpoly((x-1)*size-divW,(y-1)*size-divH,0, x*size-divW,(y-1)*size-divH,0, x*size-divW,y*size-divH,0, (x-1)*size-divW,y*size-divH,0)
+			end
+		end
+	end
+
+	obj.load("tempbuffer")
+end
+
+
+
+local function get_data(p_type,o,m)
+  local data = {}
+  local i = "nil"
+  if p_type == 1 then
+    data = {
+      {m,i,i,i,i,i,i,i,i,i,i,i},
+      {m,m,i,i,i,i,i,i,i,i,i,i},
+      {m,o,m,i,i,i,i,i,i,i,i,i},
+      {m,o,o,m,i,i,i,i,i,i,i,i},
+      {m,o,o,o,m,i,i,i,i,i,i,i},
+      {m,o,o,o,o,m,i,i,i,i,i,i},
+      {m,o,o,o,o,o,m,i,i,i,i,i},
+      {m,o,o,o,o,o,o,m,i,i,i,i},
+      {m,o,o,o,o,o,o,o,m,i,i,i},
+      {m,o,o,o,o,o,o,o,o,m,i,i},
+      {m,o,o,o,o,o,o,o,o,o,m,i},
+      {m,o,o,o,o,o,o,o,o,o,o,m},
+      {m,o,o,o,o,o,o,m,m,m,m,m},
+      {m,o,o,o,m,o,o,m,i,i,i,i},
+      {m,o,o,m,i,m,o,o,m,i,i,i},
+      {m,o,m,i,i,m,o,o,m,i,i,i},
+      {m,m,i,i,i,i,m,o,o,m,i,i},
+      {i,i,i,i,i,i,m,o,o,m,i,i},
+      {i,i,i,i,i,i,i,m,m,i,i,i}
+    }
+  elseif p_type == 2 then
+    data = {
+      {m,i,i,i,i,i,i,i,i,i,i,i},
+      {m,m,i,i,i,i,i,i,i,i,i,i},
+      {m,o,m,i,i,i,i,i,i,i,i,i},
+      {m,o,o,m,i,i,i,i,i,i,i,i},
+      {m,o,o,o,m,i,i,i,i,i,i,i},
+      {m,o,o,o,o,m,i,i,i,i,i,i},
+      {m,o,o,o,o,o,m,i,i,i,i,i},
+      {m,o,o,o,o,o,o,m,i,i,i,i},
+      {m,o,o,o,o,o,o,o,m,i,i,i},
+      {m,o,o,o,o,o,o,o,o,m,i,i},
+      {m,o,o,o,o,o,o,o,o,o,m,i},
+      {m,o,o,o,o,o,o,m,m,m,m,m},
+      {m,o,o,o,m,o,o,m,i,i,i,i},
+      {m,o,o,m,m,o,o,m,i,i,i,i},
+      {m,o,m,i,i,m,o,o,m,i,i,i},
+      {m,m,i,i,i,m,o,o,m,i,i,i},
+      {m,i,i,i,i,i,m,o,o,m,i,i},
+      {i,i,i,i,i,i,m,o,o,m,i,i},
+      {i,i,i,i,i,i,i,m,o,o,m,i},
+      {i,i,i,i,i,i,i,m,o,o,m,i},
+      {i,i,i,i,i,i,i,i,m,m,i,i}
+    }
+  elseif p_type == 3 then
+    data = {
+      {i,i,i,i,i,i,m,m,i,i,i,i,i,i,i,i,i,i},
+      {i,i,i,i,i,m,o,o,m,i,i,i,i,i,i,i,i,i},
+      {i,i,i,i,i,m,o,o,m,i,i,i,i,i,i,i,i,i},
+      {i,i,i,i,i,m,o,o,m,i,i,i,i,i,i,i,i,i},
+      {i,i,i,i,i,m,o,o,m,i,i,i,i,i,i,i,i,i},
+      {i,i,i,i,i,m,o,o,m,m,m,i,i,i,i,i,i,i},
+      {i,i,i,i,i,m,o,o,m,o,o,m,m,m,i,i,i,i},
+      {i,i,i,i,i,m,o,o,m,o,o,m,o,o,m,m,m,i},
+      {i,i,i,i,i,m,o,o,m,o,o,m,o,o,m,o,o,m},
+      {i,i,i,i,i,m,o,o,m,o,o,m,o,o,m,o,o,m},
+      {i,i,i,i,i,m,o,o,m,o,o,m,o,o,m,o,o,m},
+      {i,i,i,i,i,m,o,o,o,o,o,o,o,o,o,o,o,m},
+      {i,m,m,i,i,m,o,o,o,o,o,o,o,o,o,o,o,m},
+      {m,o,o,m,m,m,o,o,o,o,o,o,o,o,o,o,o,m},
+      {m,o,o,o,o,m,o,o,o,o,o,o,o,o,o,o,o,m},
+      {i,m,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,m},
+      {i,i,m,o,o,o,o,o,o,o,o,o,o,o,o,o,o,m},
+      {i,i,i,m,o,o,o,o,o,o,o,o,o,o,o,o,o,m},
+      {i,i,i,m,o,o,o,o,o,o,o,o,o,o,o,o,o,m},
+      {i,i,i,i,m,o,o,o,o,o,o,o,o,o,o,o,m,i},
+      {i,i,i,i,i,m,o,o,o,o,o,o,o,o,o,o,m,i},
+      {i,i,i,i,i,i,m,o,o,o,o,o,o,o,o,m,i,i},
+      {i,i,i,i,i,i,i,m,m,o,o,o,o,m,m,i,i,i},
+      {i,i,i,i,i,i,i,i,i,m,m,m,m,i,i,i,i,i}
+    }
+  elseif p_type == 4 then
+    data = {
+      {i,i,i,i,i,m,m,i,i,i,i,i,i,i,i,i,i},
+      {i,i,i,i,m,o,o,m,i,i,i,i,i,i,i,i,i},
+      {i,i,i,i,m,o,o,m,i,i,i,i,i,i,i,i,i},
+      {i,i,i,i,m,o,o,m,i,i,i,i,i,i,i,i,i},
+      {i,i,i,i,m,o,o,m,i,i,i,i,i,i,i,i,i},
+      {i,i,i,i,m,o,o,m,m,m,i,i,i,i,i,i,i},
+      {i,i,i,i,m,o,o,m,o,o,m,m,m,i,i,i,i},
+      {i,i,i,i,m,o,o,m,o,o,m,o,o,m,m,i,i},
+      {i,i,i,i,m,o,o,m,o,o,m,o,o,m,o,m,i},
+      {m,m,m,i,m,o,o,m,o,o,m,o,o,m,o,o,m},
+      {m,o,o,m,m,o,o,o,o,o,o,o,o,m,o,o,m},
+      {m,o,o,o,m,o,o,o,o,o,o,o,o,o,o,o,m},
+      {i,m,o,o,o,o,o,o,o,o,o,o,o,o,o,o,m},
+      {i,i,m,o,o,o,o,o,o,o,o,o,o,o,o,o,m},
+      {i,i,m,o,o,o,o,o,o,o,o,o,o,o,o,o,m},
+      {i,i,i,m,o,o,o,o,o,o,o,o,o,o,o,o,m},
+      {i,i,i,m,o,o,o,o,o,o,o,o,o,o,o,m,i},
+      {i,i,i,i,m,o,o,o,o,o,o,o,o,o,o,m,i},
+      {i,i,i,i,m,o,o,o,o,o,o,o,o,o,o,m,i},
+      {i,i,i,i,i,m,o,o,o,o,o,o,o,o,m,i,i},
+      {i,i,i,i,i,m,o,o,o,o,o,o,o,o,m,i,i},
+      {i,i,i,i,i,m,m,m,m,m,m,m,m,m,m,i,i}
+    }
+  elseif p_type == 5 then
+    data = {
+      {m,m,m,i,m,m,m},
+      {i,i,i,m,i,i,i},
+      {i,i,i,m,i,i,i},
+      {i,i,i,m,i,i,i},
+      {i,i,i,m,i,i,i},
+      {i,i,i,m,i,i,i},
+      {i,i,i,m,i,i,i},
+      {i,i,i,m,i,i,i},
+      {i,i,i,m,i,i,i},
+      {i,i,i,m,i,i,i},
+      {i,i,i,m,i,i,i},
+      {i,i,i,m,i,i,i},
+      {i,i,i,m,i,i,i},
+      {i,i,i,m,i,i,i},
+      {i,i,i,m,i,i,i},
+      {m,m,m,i,m,m,m}
+    }
+  elseif p_type == 6 then
+    data = {
+      {i,i,i,i,m,m,i,i,i,i,i,i,i,i,i,i,i,m,m,i,i,i,i},
+      {i,i,i,m,o,m,i,i,i,i,i,i,i,i,i,i,i,m,o,m,i,i,i},
+      {i,i,m,o,o,m,i,i,i,i,i,i,i,i,i,i,i,m,o,o,m,i,i},
+      {i,m,o,o,o,m,m,m,m,m,m,m,m,m,m,m,m,m,o,o,o,m,i},
+      {m,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,m},
+      {i,m,o,o,o,m,m,m,m,m,m,m,m,m,m,m,m,m,o,o,o,m,i},
+      {i,i,m,o,o,m,i,i,i,i,i,i,i,i,i,i,i,m,o,o,m,i,i},
+      {i,i,i,m,o,m,i,i,i,i,i,i,i,i,i,i,i,m,o,m,i,i,i},
+      {i,i,i,i,m,m,i,i,i,i,i,i,i,i,i,i,i,m,m,i,i,i,i}
+    }
+  elseif p_type == 7 then
+    data = {
+      {i,i,i,i,i,i,i,i,i,i,i,m,i,i,i,i,i,i,i,i,i,i,i},
+      {i,i,i,i,i,i,i,i,i,i,m,o,m,i,i,i,i,i,i,i,i,i,i},
+      {i,i,i,i,i,i,i,i,i,m,o,o,o,m,i,i,i,i,i,i,i,i,i},
+      {i,i,i,i,i,i,i,i,m,o,o,o,o,o,m,i,i,i,i,i,i,i,i},
+      {i,i,i,i,i,i,i,m,o,o,o,o,o,o,o,m,i,i,i,i,i,i,i},
+      {i,i,i,i,i,i,i,m,m,m,m,o,m,m,m,m,i,i,i,i,i,i,i},
+      {i,i,i,i,i,i,i,i,i,i,m,o,m,i,i,i,i,i,i,i,i,i,i},
+      {i,i,i,i,m,m,i,i,i,i,m,o,m,i,i,i,i,m,m,i,i,i,i},
+      {i,i,i,m,o,m,i,i,i,i,m,o,m,i,i,i,i,m,o,m,i,i,i},
+      {i,i,m,o,o,m,i,i,i,i,m,o,m,i,i,i,i,m,o,o,m,i,i},
+      {i,m,o,o,o,m,m,m,m,m,m,o,m,m,m,m,m,m,o,o,o,m,i},
+      {m,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,m},
+      {i,m,o,o,o,m,m,m,m,m,m,o,m,m,m,m,m,m,o,o,o,m,i},
+      {i,i,m,o,o,m,i,i,i,i,m,o,m,i,i,i,i,m,o,o,m,i,i},
+      {i,i,i,m,o,m,i,i,i,i,m,o,m,i,i,i,i,m,o,m,i,i,i},
+      {i,i,i,i,m,m,i,i,i,i,m,o,m,i,i,i,i,m,m,i,i,i,i},
+      {i,i,i,i,i,i,i,i,i,i,m,o,m,i,i,i,i,i,i,i,i,i,i},
+      {i,i,i,i,i,i,i,m,m,m,m,o,m,m,m,m,i,i,i,i,i,i,i},
+      {i,i,i,i,i,i,i,m,o,o,o,o,o,o,o,m,i,i,i,i,i,i,i},
+      {i,i,i,i,i,i,i,i,m,o,o,o,o,o,m,i,i,i,i,i,i,i,i},
+      {i,i,i,i,i,i,i,i,i,m,o,o,o,m,i,i,i,i,i,i,i,i,i},
+      {i,i,i,i,i,i,i,i,i,i,m,o,m,i,i,i,i,i,i,i,i,i,i},
+      {i,i,i,i,i,i,i,i,i,i,i,m,i,i,i,i,i,i,i,i,i,i,i}
+    }
+  elseif p_type == 8 then
+    data = {
+      {i,i,i,i,i,i,i,i,i,i,m,m,m,m,m,m,m},
+      {i,i,i,i,i,i,i,i,i,i,m,o,o,o,o,o,m},
+      {i,i,i,i,i,i,i,i,i,i,i,m,o,o,o,o,m},
+      {i,i,i,i,i,i,i,i,i,i,i,i,m,o,o,o,m},
+      {i,i,i,i,i,i,i,i,i,i,i,m,o,m,o,o,m},
+      {i,i,i,i,i,i,i,i,i,i,m,o,m,i,m,o,m},
+      {i,i,i,i,i,i,i,i,i,m,o,m,i,i,i,m,m},
+      {i,i,i,i,i,i,i,i,m,o,m,i,i,i,i,i,i},
+      {i,i,i,i,i,i,i,m,o,m,i,i,i,i,i,i,i},
+      {i,i,i,i,i,i,m,o,m,i,i,i,i,i,i,i,i},
+      {m,m,i,i,i,m,o,m,i,i,i,i,i,i,i,i,i},
+      {m,o,m,i,m,o,m,i,i,i,i,i,i,i,i,i,i},
+      {m,o,o,m,o,m,i,i,i,i,i,i,i,i,i,i,i},
+      {m,o,o,o,m,i,i,i,i,i,i,i,i,i,i,i,i},
+      {m,o,o,o,o,m,i,i,i,i,i,i,i,i,i,i,i},
+      {m,o,o,o,o,o,m,i,i,i,i,i,i,i,i,i,i},
+      {m,m,m,m,m,m,m,i,i,i,i,i,i,i,i,i,i}
+    }
+  elseif p_type == 9 then
+    data = {
+      {i,i,i,i,i,i,i,m,m,i,i,i,i,i,i,i},
+      {i,i,i,i,i,i,m,o,o,m,i,i,i,i,i,i},
+      {i,i,i,i,i,i,m,o,o,m,i,i,i,i,i,i},
+      {i,i,i,i,i,i,m,o,o,m,i,i,i,i,i,i},
+      {i,i,i,i,i,i,m,o,o,m,i,i,i,i,i,i},
+      {i,i,i,i,m,m,m,o,o,m,i,i,i,i,i,i},
+      {i,i,i,m,o,o,m,o,o,m,m,m,i,i,i,i},
+      {i,i,i,m,o,o,m,o,o,m,o,o,m,m,m,i},
+      {i,i,i,m,o,o,m,o,o,m,o,o,m,o,o,m},
+      {i,i,i,m,o,o,m,o,o,m,o,o,m,o,o,m},
+      {i,i,m,m,o,o,m,o,o,m,o,o,m,o,o,m},
+      {i,m,o,m,o,o,o,o,o,o,o,o,o,o,o,m},
+      {m,o,o,m,o,o,o,o,o,o,o,o,o,o,o,m},
+      {m,o,o,m,o,o,o,o,o,o,o,o,o,o,o,m},
+      {m,o,o,m,o,o,o,o,o,o,o,o,o,o,o,m},
+      {m,o,o,o,o,o,o,o,o,o,o,o,o,o,o,m},
+      {m,o,o,o,o,o,o,o,o,o,o,o,o,o,o,m},
+      {i,m,o,o,o,o,o,o,o,o,o,o,o,o,o,m},
+      {i,m,o,o,o,o,o,o,o,o,o,o,o,o,o,m},
+      {i,i,m,o,o,o,o,o,o,o,o,o,o,o,m,i},
+      {i,i,i,m,o,o,o,o,o,o,o,o,o,o,m,i},
+      {i,i,i,i,m,o,o,o,o,o,o,o,o,m,i,i},
+      {i,i,i,i,i,m,m,o,o,o,o,m,m,i,i,i},
+      {i,i,i,i,i,i,i,m,m,m,m,i,i,i,i,i}
+    }
+  elseif p_type == 10 then
+    data = {
+      {i,i,i,i,i,i,i,m,m,i,i,i,i,i,i,i},
+      {i,i,i,i,i,i,m,o,o,m,i,i,i,i,i,i},
+      {i,i,i,i,i,i,m,o,o,m,i,i,i,i,i,i},
+      {i,i,i,i,i,i,m,o,o,m,i,i,i,i,i,i},
+      {i,i,i,i,i,i,m,o,o,m,i,i,i,i,i,i},
+      {i,i,i,i,m,m,m,o,o,m,i,i,i,i,i,i},
+      {i,i,i,m,o,o,m,o,o,m,m,m,i,i,i,i},
+      {i,i,i,m,o,o,m,o,o,m,o,o,m,m,i,i},
+      {i,i,m,m,o,o,m,o,o,m,o,o,m,o,m,i},
+      {i,m,o,m,o,o,m,o,o,m,o,o,m,o,o,m},
+      {m,o,o,m,o,o,o,o,o,o,o,o,m,o,o,m},
+      {m,o,o,m,o,o,o,o,o,o,o,o,o,o,o,m},
+      {m,o,o,o,o,o,o,o,o,o,o,o,o,o,o,m},
+      {i,m,o,o,o,o,o,o,o,o,o,o,o,o,o,m},
+      {i,m,o,o,o,o,o,o,o,o,o,o,o,o,o,m},
+      {i,i,m,o,o,o,o,o,o,o,o,o,o,o,o,m},
+      {i,i,m,o,o,o,o,o,o,o,o,o,o,o,m,i},
+      {i,i,i,m,o,o,o,o,o,o,o,o,o,o,m,i},
+      {i,i,i,m,o,o,o,o,o,o,o,o,o,o,m,i},
+      {i,i,i,i,m,o,o,o,o,o,o,o,o,m,i,i},
+      {i,i,i,i,m,o,o,o,o,o,o,o,o,m,i,i},
+      {i,i,i,i,m,m,m,m,m,m,m,m,m,m,i,i}
+    }
+  end
+
+  return data
+end
+
+
+
+
+
+draw_dots( get_data( cursor_type, col0, col1 ), tr_size)
