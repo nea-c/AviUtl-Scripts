@@ -1,0 +1,28 @@
+--track@progress:progress,-9000,9000,100,0.01
+--track@_x_min:x(min),-10000,10000,-160,0.01
+--track@_x_max:x(max),-10000,10000,160,0.01
+--track@_y_min:y(min),-10000,10000,-90,0.01
+--track@_y_max:y(max),-10000,10000,90,0.01
+--track@_z_min:z(min),-10000,10000,0,0.01
+--track@_z_max:z(max),-10000,10000,0,0.01
+--track@_rx_min:rx(min),-10000,10000,0,0.01
+--track@_rx_max:rx(max),-10000,10000,0,0.01
+--track@_ry_min:ry(min),-10000,10000,0,0.01
+--track@_ry_max:ry(max),-10000,10000,0,0.01
+--track@_rz_min:rz(min),-10000,10000,0,0.01
+--track@_rz_max:rz(max),-10000,10000,0,0.01
+--track@_zoom_min:zoom(min),0,10000,100,0.01
+--track@_zoom_max:zoom(max),0,10000,100,0.01
+--track@seed:seed,0,10000,0,1
+
+progress = progress / 100
+
+obj.ox = obj.ox + progress * obj.rand(_x_min, _x_max, obj.index, seed + 0)
+obj.oy = obj.oy + progress * obj.rand(_y_min, _y_max, obj.index, seed + 1)
+obj.oz = obj.oz + progress * obj.rand(_z_min, _z_max, obj.index, seed + 2)
+
+obj.rx = obj.rx + progress * obj.rand(_rx_min, _rx_max, obj.index, seed + 3)
+obj.ry = obj.ry + progress * obj.rand(_ry_min, _ry_max, obj.index, seed + 4)
+obj.rz = obj.rz + progress * obj.rand(_rz_min, _rz_max, obj.index, seed + 5)
+
+obj.zoom = math.max(0, obj.zoom + progress * obj.rand((_zoom_min - 100), (_zoom_max - 100), obj.index, seed + 6) / 100)
