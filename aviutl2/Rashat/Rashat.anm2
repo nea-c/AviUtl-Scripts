@@ -196,19 +196,19 @@ r = obj.rand(1, math.max(#enableDirection,1), seed, obj.index)
 ro = obj.rand(1, math.max(#enableDirection,1), seed, obj.index)
 a, ao = enableDirection[r], enableDirection[ro]
 if (obj.index ~= 0) then
-      if (a == NeAc_TANormalRand[obj.index-1][obj.layer][seed.."-"..seed][1] and not same_b) then
+      if (a == RashatDATAS[obj.index-1][obj.layer][seed.."-"..seed][1] and not same_b) then
             r = ((r + 1) > #enableDirection) and 1 or r+1
             a = enableDirection[r]
       end
-      if (ao == NeAc_TANormalRand[obj.index-1][obj.layer][seed.."-"..seed][2] and not same_b) then
+      if (ao == RashatDATAS[obj.index-1][obj.layer][seed.."-"..seed][2] and not same_b) then
             ro = ((ro + 1) > #enableDirection) and 1 or ro+1
             ao = enableDirection[ro]
       end
 end
-if NeAc_TANormalRand == nil then NeAc_TANormalRand = {} end
-if NeAc_TANormalRand[obj.index] == nil then NeAc_TANormalRand[obj.index] = {} end
-if NeAc_TANormalRand[obj.index][obj.layer] == nil then NeAc_TANormalRand[obj.index][obj.layer] = {} end
-NeAc_TANormalRand[obj.index][obj.layer][seed.."-"..seed] = {a, ao}
+if RashatDATAS == nil then RashatDATAS = {} end
+if RashatDATAS[obj.index] == nil then RashatDATAS[obj.index] = {} end
+if RashatDATAS[obj.index][obj.layer] == nil then RashatDATAS[obj.index][obj.layer] = {} end
+RashatDATAS[obj.index][obj.layer][seed.."-"..seed] = {a, ao}
 local pos = {(a=="x" and 1 or a=="-x" and -1 or 0) * vector, (a=="y" and 1 or a=="-y" and -1 or 0) * vector, (a=="z" and 1 or a=="-z" and -1 or 0) * vector}
 local poso = {(ao=="x" and 1 or ao=="-x" and -1 or 0) * vector, (ao=="y" and 1 or ao=="-y" and -1 or 0) * vector, (ao=="z" and 1 or ao=="-z" and -1 or 0) * vector}
 
