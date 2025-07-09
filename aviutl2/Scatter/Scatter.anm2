@@ -1,4 +1,4 @@
---track@progress:progress,-9000,9000,100,0.01
+--track@progress:progress,-10000,10000,100,0.01
 --track@_x_min:x(min),-10000,10000,-160,0.01
 --track@_x_max:x(max),-10000,10000,160,0.01
 --track@_y_min:y(min),-10000,10000,-90,0.01
