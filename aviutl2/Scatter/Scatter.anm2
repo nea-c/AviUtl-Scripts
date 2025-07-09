@@ -11,8 +11,8 @@
 --track@_ry_max:ry(max),-10000,10000,0,0.01
 --track@_rz_min:rz(min),-10000,10000,0,0.01
 --track@_rz_max:rz(max),-10000,10000,0,0.01
---track@_zoom_min:zoom(min),0,10000,100,0.01
---track@_zoom_max:zoom(max),0,10000,100,0.01
+--track@_zoom_min:zoom(min),0,1000,100,0.01
+--track@_zoom_max:zoom(max),0,1000,100,0.01
 --track@seed:seed,0,10000,0,1
 
 progress = progress / 100
