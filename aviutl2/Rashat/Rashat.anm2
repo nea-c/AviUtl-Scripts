@@ -1,0 +1,251 @@
+--track@tr_progress:in/out,-100,100,0,0.01
+--track@tr_delay:ズレ,0,100,10,0.01
+--track0:動き,0,100,0,0.001
+--track@seed:seed,0,9000,0,1
+--track@vector:移動距離,-10000,10000,100,0.01
+--value@input_enableDirection:有効方向指定,"x,-x,y,-y"
+--check@chk_same_b:被りあり,0
+--check@fd:フェード,0
+--check@io_d:in/out非表示,1
+--track@zm:拡大率,0,1000,0,0.01
+--track@bl:ぼかし,0,1000,0,0.01
+--track@order:order,0,4,0,1
+
+
+if  ( 0 < (obj.getoption("section_num") - 1) ) then
+    obj.setfont("メイリオ",56,4,0xffffff,0x231d1e)
+    obj.load(string.format("[Rashat] 中間点は使用できません"))
+    obj.draw(0,0)
+    return 0
+elseif ( not obj.getoption("multi_object") ) then
+    obj.setfont("メイリオ",56,4,0xffffff,0x231d1e)
+    obj.load(string.format("[Rashat] 個別オブジェクト動作専用です"))
+    obj.draw(0,0)
+    return 0
+end
+
+
+
+function split(str, delim)
+      if string.find(str, delim) == nil then
+          return { str }
+      end
+
+      local result = {}
+      local pat = "(.-)" .. delim .. "()"
+      local lastPos
+      for part, pos in string.gmatch(str, pat) do
+          table.insert(result, part)
+          lastPos = pos
+      end
+      table.insert(result, string.sub(str, lastPos))
+      return result
+end
+
+function sortDirection(list)
+
+      local data = {}
+      local data_return = {}
+
+      for index,key in pairs(list) do
+            data[key] = true
+      end
+
+      if data["x"] then
+            table.insert(data_return,"x")
+      end
+      if data["-x"] then
+            table.insert(data_return,"-x")
+      end
+      if data["y"] then
+            table.insert(data_return,"y")
+      end
+      if data["-y"] then
+            table.insert(data_return,"-y")
+      end
+      if data["z"] then
+            table.insert(data_return,"z")
+      end
+      if data["-z"] then
+            table.insert(data_return,"-z")
+      end
+
+      return data_return
+end
+
+
+local prog = tr_progress * 0.01
+local st = (prog < 0 and prog) or 0
+local ed = (prog > 0 and prog) or 0
+local delay = tr_delay * 0.01
+
+local enableDirection = sortDirection(split(input_enableDirection, ","))
+
+local same_b = (chk_same_b == 1)
+
+
+
+local function clamp(x)
+      return (x <= 0 and 0) or (x >= 1 and 1) or x
+end
+local function sequence(t, delay, index, num)
+      if (t < 0) then
+            t, index = -t, num - index
+      end
+      return clamp(t * (1 + delay * num) - delay * index)
+end
+
+local function shuffle_tbl(tbl, seed)
+      local count = #tbl
+      math.randomseed(seed or 0)
+      local j
+      for i = count, 2, -1 do
+            j = math.random(i)
+            tbl[i], tbl[j] = tbl[j], tbl[i]
+      end
+      return tbl
+end
+
+local function TA_spd(g)
+      g = g or 0
+      local l, i, t = obj.layer, obj.index, obj.time
+      -- local rate = 1 / obj.framerate
+      local k = {obj.x * g + obj.ox, obj.y * g + obj.oy, 0, obj.rz}
+      SPD = SPD or {}
+      SPD[l] = SPD[l] or {t = 0}
+      if SPD[l][i] == nil then
+            SPD[l][i] = k
+      end
+      local s = SPD[l][i][3]
+      local r = SPD[l][i][4]
+      local ending = (obj.time == obj.totaltime) and (SPD[l].t <= t)
+      if ending or (SPD[l].t < t) then
+            local x, y = k[1] - SPD[l][i][1], k[2] - SPD[l][i][2]
+            s = math.sqrt(x * x + y * y)
+            s = math.log(s / 10 + 1, 10)
+            if (s > 0) then
+                  r = math.deg(math.atan2(y, x)) + 90
+            end
+            SPD[l][i] = {k[1], k[2], s, r}
+            if (i == obj.num - 1) then
+                  SPD[l].t = t
+            end
+      elseif (SPD[l].t > t) then
+            SPD[l][i] = k
+            if (i == obj.num - 1) then
+                  SPD[l].t = t
+            end
+      end
+      return s, r
+end
+
+local Order = {
+      [0] = function()
+            return obj.index
+      end,
+      function()
+            return (obj.num - 1) - obj.index
+      end,
+      function()
+            return math.abs((obj.num) - obj.index * 2 - 1)
+      end,
+      function()
+            return obj.num - math.abs((obj.num) - obj.index * 2 - 1)
+      end,
+      function(seed)
+            local id = {}
+            for i = 1, obj.num do
+                  id[i] = i - 1
+            end
+            return shuffle_tbl(id, seed)[obj.index + 1]
+      end
+}
+
+
+
+Ease = function(t, mode)
+      if ( not (mode == "in") and not (mode == "out") ) then
+            return t
+      end
+
+      local motion = obj.getvalue(0, t * obj.totaltime) / 100
+
+      if (mode == "out") then
+            return 1 - motion
+      end
+
+      return motion
+end
+
+
+math.randomseed((seed or 0))
+
+local vs, ve = 0, 0
+if (st <= 1) then
+      vs = sequence(st, delay, Order[order % 5](seed), obj.num - 1)
+      vs = 1 - Ease(1 - vs, "in")
+end
+
+if (ed > 0) then
+      ed = -(1 - ed)
+      ve = sequence(ed, delay, Order[order % 5](seed or seed), obj.num - 1)
+      ve = 1 - Ease(1 - ve, "out")
+end
+local r, ro, a, ao
+r = obj.rand(1, math.max(#enableDirection,1), seed, obj.index)
+ro = obj.rand(1, math.max(#enableDirection,1), seed, obj.index)
+a, ao = enableDirection[r], enableDirection[ro]
+if (obj.index ~= 0) then
+      if (a == NeAc_TANormalRand[obj.index-1][obj.layer][seed.."-"..seed][1] and not same_b) then
+            r = ((r + 1) > #enableDirection) and 1 or r+1
+            a = enableDirection[r]
+      end
+      if (ao == NeAc_TANormalRand[obj.index-1][obj.layer][seed.."-"..seed][2] and not same_b) then
+            ro = ((ro + 1) > #enableDirection) and 1 or ro+1
+            ao = enableDirection[ro]
+      end
+end
+if NeAc_TANormalRand == nil then NeAc_TANormalRand = {} end
+if NeAc_TANormalRand[obj.index] == nil then NeAc_TANormalRand[obj.index] = {} end
+if NeAc_TANormalRand[obj.index][obj.layer] == nil then NeAc_TANormalRand[obj.index][obj.layer] = {} end
+NeAc_TANormalRand[obj.index][obj.layer][seed.."-"..seed] = {a, ao}
+local pos = {(a=="x" and 1 or a=="-x" and -1 or 0) * vector, (a=="y" and 1 or a=="-y" and -1 or 0) * vector, (a=="z" and 1 or a=="-z" and -1 or 0) * vector}
+local poso = {(ao=="x" and 1 or ao=="-x" and -1 or 0) * vector, (ao=="y" and 1 or ao=="-y" and -1 or 0) * vector, (ao=="z" and 1 or ao=="-z" and -1 or 0) * vector}
+
+local va = 1 - (1 - vs) * (1 - ve)
+obj.ox = obj.ox + pos[1] * vs + poso[1] * ve
+obj.oy = obj.oy + pos[2] * vs + poso[2] * ve
+obj.oz = obj.oz + pos[3] * vs + poso[3] * ve
+obj.zoom = obj.zoom + zm * 0.01 * va * vs + zm * 0.01 * ve
+obj.alpha = obj.alpha * ((fd == 1) and (1 - math.abs(va)) or ((io_d == 1) and (1 - ((math.ceil(math.abs(va)*1000)/1000 < 1) and 0 or 1) ) or 1))
+
+
+if (bl > 0) and (va > 0) then
+      obj.effect("ぼかし", "範囲", bl * va)
+elseif (bl < 0) then
+      local s, r = TA_spd(1)
+      local va0 = 1
+      obj.effect("色ずれ", "type", 4, "ずれ幅", -bl * 0.75 * va0, "強さ", s * 100, "角度", r)
+      obj.effect("方向ブラー", "範囲", -bl * s * va0, "角度", r)
+end
+
+-- 座標情報をPOSで垂れ流し
+if (obj.index == 0) then
+      POS = {}
+      POS.v = {}
+      -- 文字がスペースや特定の記号だと処理が飛ぶフォントがあり、
+      -- テーブルにnilが入るためシーケンスでなくなってしまう(=indexが連続していない)
+      -- なので適当な変数を用意してobj.indexの代わりに使う
+      i_index = 0
+end
+if (obj.ox) then
+      -- obj.indexより大きくならないようにする(スクリプト複数付けた場合の対策)
+      i_index = (i_index <= obj.index and (i_index + 1)) or i_index
+      POS[i_index * 3 - 2] = (obj.x + obj.ox)
+      POS[i_index * 3 - 1] = (obj.y + obj.oy)
+      POS[i_index * 3] = (obj.z + obj.oz)
+      POS.v[i_index] = {obj.x + obj.ox, obj.y + obj.oy, obj.z + obj.oz}
+end
+
+-- 結果を垂れ流し
+TA_N = va
