@@ -7,7 +7,7 @@
 --check@chk_same_b:被りあり,0
 --check@fd:フェード,0
 --check@io_d:in/out非表示,1
---track@zm:拡大率,0,1000,0,0.01
+--track@zm:拡大率,0,1000,100,0.01
 --track@bl:ぼかし,0,1000,0,0.01
 --track@order:order,0,4,0,1
 
@@ -216,6 +216,7 @@ local va = 1 - (1 - vs) * (1 - ve)
 obj.ox = obj.ox + pos[1] * vs + poso[1] * ve
 obj.oy = obj.oy + pos[2] * vs + poso[2] * ve
 obj.oz = obj.oz + pos[3] * vs + poso[3] * ve
+zm = zm - 100
 obj.zoom = obj.zoom + zm * 0.01 * va * vs + zm * 0.01 * ve
 obj.alpha = obj.alpha * ((fd == 1) and (1 - math.abs(va)) or ((io_d == 1) and (1 - ((math.ceil(math.abs(va)*1000)/1000 < 1) and 0 or 1) ) or 1))
 
