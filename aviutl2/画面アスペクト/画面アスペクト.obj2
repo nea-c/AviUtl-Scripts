@@ -1,5 +1,5 @@
---track0:Xｱｽﾍﾟｸﾄ,1,100,4,1
---track1:Yｱｽﾍﾟｸﾄ,1,100,3,1
+--track0:X比率,1,100,4,1
+--track1:Y比率,1,100,3,1
 --color@col:色,0xffffff
 --check@sizeVisible:サイズ表示,0
 --track@text_size:文字ｻｲｽﾞ,0,1000,100,1
