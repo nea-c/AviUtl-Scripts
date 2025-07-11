@@ -12,10 +12,6 @@
 
 
 
-local cx = obj.cx
-local cy = obj.cy
-
-
 if (lower_option == 1) then
     lower = upper
 end
