@@ -1,0 +1,46 @@
+--label:基本効果
+--track@upper:上,0,10000,0,1
+--track@lower:下,0,10000,0,1
+--select@lower_option:下オプション,通常動作=0,上パラメータを参照する=1
+--track@left:左,0,10000,0,1
+--select@left_option:左オプション,通常動作=0,上パラメータを参照する=1
+--track@right:右,0,10000,0,1
+--select@right_option:右オプション,通常動作=0,左パラメータを参照する=1
+--check@fill:塗りつぶし,0
+--check@pos_fix:オブジェクト位置固定,1
+--check@center_fix:中心位置固定,1
+
+
+
+local cx = obj.cx
+local cy = obj.cy
+
+
+if (lower_option == 1) then
+    lower = upper
+end
+
+if (left_option == 1) then
+    left = upper
+end
+
+if (right_option == 1) then
+    right = left
+end
+
+if (pos_fix == 1) and (center_fix == 1) then
+    obj.cx = obj.cx - (right - left) / 2
+    obj.cy = obj.cy - (lower - upper) / 2
+elseif (pos_fix == 0) and (center_fix == 1) then
+    obj.cx = obj.cx - (right - left) / 2
+    obj.cy = obj.cy - (lower - upper) / 2
+    obj.ox = obj.ox - (right - left) / 2
+    obj.oy = obj.oy - (lower - upper) / 2
+elseif (pos_fix == 1) and (center_fix == 0) then
+    obj.ox = obj.ox + (right - left) / 2
+    obj.oy = obj.oy + (lower - upper) / 2
+end
+
+
+
+obj.effect("領域拡張","上",upper,"下",lower,"左",left,"右",right,"塗りつぶし",fill)
