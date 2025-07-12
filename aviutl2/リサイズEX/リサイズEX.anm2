@@ -1,0 +1,72 @@
+--label:変形
+--track@upper:上,0,10000,50,0.01
+--track@lower:下,0,10000,50,0.01
+--select@lower_option:下オプション=1,通常動作=0,上パラメータを参照する=1
+--track@left:左,0,10000,50,0.01
+--select@left_option:左オプション,通常動作=0,上パラメータを参照する=1
+--track@right:右,0,10000,50,0.01
+--select@right_option:右オプション=1,通常動作=0,左パラメータを参照する=1
+--check@interpolation:補間なし,0
+--check@pxMode:ピクセル数でサイズ指定,0
+--check@center_fix:中心位置固定,0
+
+
+
+local resize_x = left + right
+local resize_y = upper + lower
+
+
+-- AviUtl2のリサイズに発生してるバグを疑似的に対策
+-- ピクセルモード時は、obj.wとリサイズ先の値が同じでxとyの値が同じじゃないときに+1
+-- そうでないときは+0.01
+if ((pxMode == 1) and
+    (math.floor(resize_x) == obj.w) and
+    not (math.floor(resize_x) == math.floor(resize_y))) then
+    resize_x = resize_x + 1
+else
+    resize_x = resize_x + 0.01
+end
+
+
+if (lower_option == 1) then
+    lower = upper
+end
+
+if (left_option == 1) then
+    left = upper
+end
+
+if (right_option == 1) then
+    right = left
+end
+
+
+
+local r_l = (right - left) / 2
+local l_u = (lower - upper) / 2
+local xyrad = math.atan2(l_u, r_l)
+local l = r_l * math.cos(xyrad) + l_u * math.sin(xyrad)
+local rad = math.rad(obj.getvalue("rz"))
+local zoom = obj.getvalue("zoom") / 100
+local add_x = l * math.cos(xyrad + rad) * zoom
+local add_y = l * math.sin(xyrad + rad) * zoom
+
+
+if (pxMode == 1) and (center_fix == 1) then
+    obj.cx = obj.cx - r_l
+    obj.cy = obj.cy - l_u
+elseif (pxMode == 1) and not (center_fix == 1) then
+    obj.ox = obj.ox + add_x
+    obj.oy = obj.oy + add_y
+elseif not (pxMode == 1) and (center_fix == 1) then
+    obj.cx = obj.cx - r_l * obj.w / 100
+    obj.cy = obj.cy - l_u * obj.h / 100
+elseif not (pxMode == 1) and not (center_fix == 1) then
+    obj.ox = obj.ox + add_x * obj.w / 100
+    obj.oy = obj.oy + add_y * obj.h / 100
+end
+
+
+
+obj.effect("リサイズ", "X", resize_x, "Y", resize_y, "補間なし", interpolation, "ピクセル数でサイズ指定", pxMode)
+

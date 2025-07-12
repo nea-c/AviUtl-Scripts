@@ -24,17 +24,29 @@ if (right_option == 1) then
     right = left
 end
 
+
+
+local r_l = (right - left) / 2
+local l_u = (lower - upper) / 2
+local xyrad = math.atan2(l_u, r_l)
+local l = r_l * math.cos(xyrad) + l_u * math.sin(xyrad)
+local rad = math.rad(obj.getvalue("rz"))
+local zoom = obj.getvalue("zoom") / 100
+local add_x = l * math.cos(xyrad + rad) * zoom
+local add_y = l * math.sin(xyrad + rad) * zoom
+
+
 if (pos_fix == 1) and (center_fix == 1) then
-    obj.cx = obj.cx - (right - left) / 2
-    obj.cy = obj.cy - (lower - upper) / 2
-elseif (pos_fix == 0) and (center_fix == 1) then
-    obj.cx = obj.cx - (right - left) / 2
-    obj.cy = obj.cy - (lower - upper) / 2
-    obj.ox = obj.ox - (right - left) / 2
-    obj.oy = obj.oy - (lower - upper) / 2
-elseif (pos_fix == 1) and (center_fix == 0) then
-    obj.ox = obj.ox + (right - left) / 2
-    obj.oy = obj.oy + (lower - upper) / 2
+    obj.cx = obj.cx - r_l
+    obj.cy = obj.cy - l_u
+elseif (pos_fix == 1) and not (center_fix == 1) then
+    obj.ox = obj.ox + add_x
+    obj.oy = obj.oy + add_y
+elseif not (pos_fix == 1) and (center_fix == 1) then
+    obj.cx = obj.cx - r_l
+    obj.cy = obj.cy - l_u
+    obj.ox = obj.ox - r_l
+    obj.oy = obj.oy - l_u
 end
 
 
