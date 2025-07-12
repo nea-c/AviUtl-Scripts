@@ -163,7 +163,8 @@ for amount_zi = 0, amount_z - 1 do
 		    obj.ox = obj.ox + def[1]
 		    obj.oy = obj.oy + def[2]
 		    obj.oz = obj.oz + def[3]
-		    -- RM.effect(((amount_xi) + (amount_yi * amount_x) + (amount_zi * amount_x * amount_y)), amount_x * amount_y * amount_z)
+        -- 個別オブジェクトのindex割り当てだったもの
+        -- RM.effect(((amount_xi) + (amount_yi * amount_x) + (amount_zi * amount_x * amount_y)), amount_x * amount_y * amount_z)
 		    obj.draw()
       else
         obj.draw(def[1], def[2], def[3])
