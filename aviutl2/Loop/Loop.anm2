@@ -1,0 +1,174 @@
+
+--track@amount_x:X個数,-1000,1000,3,1
+--track@amount_y:Y個数,-1000,1000,3,1
+--track@amount_z:Z個数,-1000,1000,1,1
+--select@align_x:X整列=2,無効=0,1列目で中央揃え=1,全体で中央揃え=2
+--select@align_y:Y整列=2,無効=0,1列目で中央揃え=1,全体で中央揃え=2
+--select@align_z:Z整列=2,無効=0,1列目で中央揃え=1,全体で中央揃え=2
+--check@min0minus2_x:X個数0以下時-2,0
+--check@min0minus2_y:Y個数0以下時-2,0
+--check@min0minus2_z:Z個数0以下時-2,0
+--track@space_x:X間隔,-10000,10000,100,0.01
+--track@space_y:Y間隔,-10000,10000,100,0.01
+--track@space_z:Z間隔,-10000,10000,100,0.01
+--track@offset_x:Xｵﾌｾｯﾄ,-10000,10000,0,0.01
+--track@offset_y:Yｵﾌｾｯﾄ,-10000,10000,0,0.01
+--track@offset_z:Zｵﾌｾｯﾄ,-10000,10000,0,0.01
+--check@indiv_objects:個別オブジェクト,0
+--check@IndMode:個別基準,0
+
+
+
+indiv_objects = indiv_objects == 1
+
+if  ( indiv_objects ) then
+    obj.setfont("メイリオ",56,4,0xffffff,0x231d1e)
+    obj.load(string.format("[Loop] 個別オブジェクト化は未対応です。"))
+    obj.draw(0,0)
+    return 0
+end
+
+
+local objdata = {}
+local keys = {"ox","oy","oz","rx","ry","rz","zoom","alpha"}
+for k, v in pairs(keys) do
+	objdata[v] = obj[v]
+end
+
+
+
+local align = { align_x, align_y, align_z }
+
+local reverse = { false, false, false }
+
+local ZeroBorder = { min0minus2_x == 1, min0minus2_y == 1, min0minus2_z == 1 }
+
+local spacing = { space_x, space_y, space_z }
+
+local offset = { offset_x / 100, offset_y / 100, offset_z / 100 }
+
+
+IndMode = IndMode == 1
+
+
+local gx, gy, gz
+local x, y, z = 0, 0, 0
+local def = {0,0,0}
+local ox, oy, oz = obj.ox, obj.oy, obj.oz
+local w, h = obj.w, obj.h
+local cx,cy,cz = 0,0,0
+
+if not indiv_objects then
+  obj.effect()
+end
+
+--描画しない条件
+if (not ZeroBorder[1] or not ZeroBorder[2] or not ZeroBorder[3]) then
+  if amount_x * amount_y * amount_z == 0 then
+    obj.draw(0,0,0,0,0)
+    return
+  end
+end
+
+if amount_x <= 0 then
+  if ZeroBorder[1] then
+    amount_x = amount_x - 2
+  end
+  reverse[1] = not reverse[1]
+end
+if amount_y <= 0 then
+  if ZeroBorder[2] then
+    amount_y = amount_y - 2
+  end
+  reverse[2] = not reverse[2]
+end
+if amount_z <= 0 then
+  if ZeroBorder[3] then
+    amount_z = amount_z - 2
+  end
+  reverse[3] = not reverse[3]
+end
+
+amount_x, amount_y, amount_z = math.abs(amount_x), math.abs(amount_y), math.abs(amount_z)
+
+if IndMode then
+  gx = spacing[1]
+  gy = spacing[2]
+  gz = spacing[3]
+else
+  gx = spacing[1] / 100 * w
+  gy = spacing[2] / 100 * h
+  gz = spacing[3] / 100 * math.max(w, h)
+end
+
+
+
+for amount_zi = 0, amount_z - 1 do
+  for amount_yi = 0, amount_y - 1 do
+    for amount_xi = 0, amount_x - 1 do
+
+
+      if align[1] >= 1 then
+        x = ox + gx * (amount_xi - (amount_x - 1) / 2)
+      else
+        x = ox + amount_xi * gx
+      end
+
+      if reverse[1] then
+        x = x * -1
+      end
+
+
+      if align[2] >= 1 then
+        y = oy + gy * (amount_yi - (amount_y - 1) / 2)
+      else
+        y = oy + amount_yi * gy
+      end
+
+      if reverse[2] then
+        y = y * -1
+      end
+
+
+      if align[3] >= 1 then
+        z = oz + gz * (amount_zi - (amount_z - 1) / 2)
+      else
+        z = oz + amount_zi * gz
+      end
+
+
+      if align[1]==2 then
+  			cx = gx * (offset[1] * (amount_y - 1)) / 2
+			end
+			if align[2]==2 then
+        cy = gy * (offset[2] * (amount_x - 1)) / 2
+	  	end
+		  if align[3]==2 then
+			  cz = gz * (offset[3] * (amount_x + amount_y - 2) / 2) / 2
+			end
+
+
+      def[1] = x + gx * (offset[1] * amount_yi) - cx
+      def[2] = y + gy * (offset[2] * amount_xi) - cy
+      def[3] = z + gz * (offset[3] * (amount_xi + amount_yi) / 2) - cz
+
+      if reverse[3] then
+        def[3] = def[3] * -1
+      end
+
+      if indiv_objects then
+		    for k, v in pairs(keys) do
+			    obj[v] = objdata[v]
+		    end
+		    obj.ox = obj.ox + def[1]
+		    obj.oy = obj.oy + def[2]
+		    obj.oz = obj.oz + def[3]
+		    -- RM.effect(((amount_xi) + (amount_yi * amount_x) + (amount_zi * amount_x * amount_y)), amount_x * amount_y * amount_z)
+		    obj.draw()
+      else
+        obj.draw(def[1], def[2], def[3])
+      end
+    end
+  end
+end
+
