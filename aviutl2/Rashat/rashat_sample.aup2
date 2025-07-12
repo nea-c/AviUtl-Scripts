@@ -1,5 +1,5 @@
 [project]
-file=D:\AviUtl\Projects\rashat_sample.aup2
+file=D:\AviUtl\ScriptsGithub\aviutl2\Rashat\rashat_sample.aup2
 display.scene=0
 [scene.0]
 scene=0
@@ -17,6 +17,7 @@ display.order=0
 display.camera=
 [0]
 layer=0
+focus=1
 frame=0,218
 [0.0]
 effect.name=テキスト
@@ -31,7 +32,7 @@ effect.name=テキスト
 文字揃え=中央揃え[中]
 B=0
 I=0
-テキスト=seedを同じにするとよくバグるので違うのにしようね
+テキスト=同時に複数使うときはseedを同じにするとよくバグるので違うのにしようね
 文字毎に個別オブジェクト=0
 移動座標上に表示=0
 オブジェクトの長さを自動調節=0
@@ -291,7 +292,6 @@ in/out非表示=1
 order=0
 [14]
 layer=3
-focus=1
 frame=187,206
 [14.0]
 effect.name=Rashat
