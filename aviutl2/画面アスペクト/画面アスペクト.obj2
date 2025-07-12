@@ -61,4 +61,3 @@ if (sizeVisible == 1) then
     obj.draw(0, 0, 0, zoomsize, alpha, 0, 0, -rz)
 end
 
---obj.load("tempbuffer")
