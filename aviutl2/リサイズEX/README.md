@@ -9,4 +9,4 @@
 ## 変更履歴 / Change log
 
 - r1
-    - AviUtl2へ移植
+    - AviUtl2へ移植。さらに機能追加
