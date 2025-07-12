@@ -1,0 +1,143 @@
+
+-------------------------------------------------------
+@回転
+-------------------------------------------------------
+--label:カメラ効果
+--track@tr_x:X,-3600,3600,0,.01
+--track@tr_y:Y,-3600,3600,0,.01
+--track@tr_z:Z,-3600,3600,0,.01
+--check@center:目標中心回転,0
+--check@relative:カメラ基準,0
+
+local t0 = math.rad(tr_x)
+local t1 = math.rad(tr_y + 90)
+local t2 = tr_z
+local cam = obj.getoption("camera_param")
+local x, y, z = cam.x, cam.y, cam.z
+local tx, ty, tz = cam.tx, cam.ty, cam.tz
+local rz = cam.rz
+
+rz = rz + ( ( (tr_x + 90) % 360 ) > 180 and 180 or 0 )
+
+
+local focus = math.sqrt( (x - tx) ^ 2 + (y - ty) ^ 2 + (z - tz) ^ 2 )
+
+
+local center = center == 1
+local relative = relative == 1
+
+
+if (center) and (relative) then
+
+elseif (center) and (not relative) then
+	cam.x = (focus * math.cos(t1) * math.cos(t0)) + tx
+	cam.y = (focus * math.sin(t0)) + ty
+	cam.z = (focus * math.cos(-t0) * math.sin(-t1)) + tz
+elseif (not center) and (relative) then
+
+else
+	cam.tx = x + (focus * math.cos(t1) * math.cos(t0)) + tx
+	cam.ty = y + (focus * math.sin(t0)) + ty
+	cam.tz = z + (focus * math.cos(t0) * math.sin(t1)) + tz
+end
+
+cam.rz = rz + t2
+
+obj.setoption("camera_param",cam)
+
+
+
+
+
+
+
+-------------------------------------------------------
+@座標
+-------------------------------------------------------
+--label:カメラ効果
+--track@tr_x:X,-10000,10000,0,.01
+--track@tr_y:Y,-10000,10000,0,.01
+--track@tr_z:Z,-10000,10000,0,.01
+--check@parallel:平行移動,0
+--check@relative:カメラ基準,0
+
+
+local parallel = parallel == 1
+local relative = relative == 1
+
+
+local cam = obj.getoption("camera_param")
+
+local t = { tr_x, tr_y, tr_z }
+
+local vd = {}
+
+if (relative) then
+	local Vec3 = require("Vec3")
+	local vf = Vec3(
+		cam.tx - cam. x,
+		cam.ty - cam. y,
+		cam.tz - cam. z
+	):norm()
+
+	local rz = math.rad(cam.rz)
+	local vr = Vec3(math.sin(rz), math.cos(rz), 0):cross(vf)
+	local vu = vf:cross(vr)
+
+	vd = vr * t[1] + vu * t[2] + vf * t[3]
+	cam. x = cam. x + vd[1]
+	cam. y = cam. y + vd[2]
+	cam. z = cam. z + vd[3]
+else
+	cam.x, cam.y, cam.z = cam.x + t[1] , cam.y + t[2] , cam.z + t[3]
+	vd = t
+end
+
+if (parallel) then
+	cam.tx = cam.tx + vd[1]
+	cam.ty = cam.ty + vd[2]
+	cam.tz = cam.tz + vd[3]
+end
+obj.setoption("camera_param",cam)
+
+
+-------------------------------------------------------
+@目標座標
+-------------------------------------------------------
+--label:カメラ効果
+--track@targetX:X,-10000,10000,0,.01
+--track@targetY:Y,-10000,10000,0,.01
+--track@targetZ:Z,-10000,10000,0,.01
+
+
+local cam = obj.getoption("camera_param")
+cam.tx = cam.tx + targetX
+cam.ty = cam.ty + targetY
+cam.tz = cam.tz + targetZ
+obj.setoption("camera_param",cam)
+
+
+-------------------------------------------------------
+@傾き
+-------------------------------------------------------
+--label:カメラ効果
+--track@RZ:傾き,-10000,10000,0,.01
+
+local cam = obj.getoption("camera_param")
+
+cam.rz = cam.rz + RZ
+obj.setoption("camera_param",cam)
+
+
+-------------------------------------------------------
+@視野角
+-------------------------------------------------------
+--label:カメラ効果
+--track@track0:視野角,-1000,1000,0,.01
+
+local FOV = 120 - track0
+local cam = obj.getoption("camera_param")
+
+cam.d = cam.d + FOV
+
+obj.setoption("camera_param",cam)
