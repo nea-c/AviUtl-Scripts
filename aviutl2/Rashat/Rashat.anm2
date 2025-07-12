@@ -17,11 +17,6 @@ if  ( 0 < (obj.getoption("section_num") - 1) ) then
     obj.load(string.format("[Rashat] 中間点は使用できません"))
     obj.draw(0,0)
     return 0
-elseif ( not obj.getoption("multi_object") ) then
-    obj.setfont("メイリオ",56,4,0xffffff,0x231d1e)
-    obj.load(string.format("[Rashat] 個別オブジェクト動作専用です"))
-    obj.draw(0,0)
-    return 0
 end
 
 
