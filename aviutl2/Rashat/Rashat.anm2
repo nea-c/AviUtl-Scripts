@@ -183,34 +183,28 @@ end
 
 if (ed > 0) then
       ed = -(1 - ed)
-      ve = sequence(ed, delay, Order[order % 5](seed or seed), obj.num - 1)
+      ve = sequence(ed, delay, Order[order % 5](seed), obj.num - 1)
       ve = 1 - Ease(1 - ve, "out")
 end
-local r, ro, a, ao
+local r, a
 r = obj.rand(1, math.max(#enableDirection,1), seed, obj.index)
-ro = obj.rand(1, math.max(#enableDirection,1), seed, obj.index)
-a, ao = enableDirection[r], enableDirection[ro]
+a = enableDirection[r]
 if (obj.index ~= 0) then
-      if (a == RashatDATAS[obj.index-1][obj.layer][seed.."-"..seed][1] and not same_b) then
+      if (a == RashatDATAS[obj.layer][obj.index-1][seed] and not same_b) then
             r = ((r + 1) > #enableDirection) and 1 or r+1
             a = enableDirection[r]
       end
-      if (ao == RashatDATAS[obj.index-1][obj.layer][seed.."-"..seed][2] and not same_b) then
-            ro = ((ro + 1) > #enableDirection) and 1 or ro+1
-            ao = enableDirection[ro]
-      end
 end
 if RashatDATAS == nil then RashatDATAS = {} end
-if RashatDATAS[obj.index] == nil then RashatDATAS[obj.index] = {} end
-if RashatDATAS[obj.index][obj.layer] == nil then RashatDATAS[obj.index][obj.layer] = {} end
-RashatDATAS[obj.index][obj.layer][seed.."-"..seed] = {a, ao}
+if RashatDATAS[obj.layer] == nil then RashatDATAS[obj.layer] = {} end
+if RashatDATAS[obj.layer][obj.index] == nil then RashatDATAS[obj.layer][obj.index] = {} end
+RashatDATAS[obj.layer][obj.index][seed] = a
 local pos = {(a=="x" and 1 or a=="-x" and -1 or 0) * vector, (a=="y" and 1 or a=="-y" and -1 or 0) * vector, (a=="z" and 1 or a=="-z" and -1 or 0) * vector}
-local poso = {(ao=="x" and 1 or ao=="-x" and -1 or 0) * vector, (ao=="y" and 1 or ao=="-y" and -1 or 0) * vector, (ao=="z" and 1 or ao=="-z" and -1 or 0) * vector}
 
 local va = 1 - (1 - vs) * (1 - ve)
-obj.ox = obj.ox + pos[1] * vs + poso[1] * ve
-obj.oy = obj.oy + pos[2] * vs + poso[2] * ve
-obj.oz = obj.oz + pos[3] * vs + poso[3] * ve
+obj.ox = obj.ox + pos[1] * vs + pos[1] * ve
+obj.oy = obj.oy + pos[2] * vs + pos[2] * ve
+obj.oz = obj.oz + pos[3] * vs + pos[3] * ve
 zm = zm - 100
 obj.zoom = obj.zoom + zm * 0.01 * va * vs + zm * 0.01 * ve
 obj.alpha = obj.alpha * ((fd == 1) and (1 - math.abs(va)) or ((io_d == 1) and (1 - ((math.ceil(math.abs(va)*1000)/1000 < 1) and 0 or 1) ) or 1))

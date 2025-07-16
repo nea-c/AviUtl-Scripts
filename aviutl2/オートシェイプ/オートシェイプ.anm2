@@ -1,0 +1,103 @@
+--track@tr_blur:サイズ,0,100,5,0.01
+--check@mbase:角度変更,0
+--check@mode:変形反転,0
+--check@aspect_modify:縦横比変形,0
+--track@speed:速度係数,0,1000,50,0.01
+
+mode = mode + 1
+mbase = mbase * 90
+
+
+speed = speed * 0.01
+local i, l, f, gv = obj.index, obj.layer, obj.frame, obj.getvalue
+local rate = 1 / obj.framerate
+local t = math.max(0, obj.time - rate)
+
+local sin, cos, tan = function(a)
+            return math.sin(math.rad(a))
+      end, function(a)
+            return math.cos(math.rad(a))
+      end, function(a)
+            return math.tan(math.rad(a))
+      end
+
+
+if (B_T == nil) then
+      B_T = {}
+end
+if (B_T[l] == nil) then
+      B_T[l] = {}
+end
+-- フレーム先頭の時は絶対リセット
+if (B_T[l][i] == nil or f == 0) then
+      B_T[l][i] = {ox = obj.ox, oy = obj.oy, oz = obj.oz, rz = 0, time = obj.time}
+end
+
+
+
+local gap = (obj.time - B_T[l][i].time) / rate
+local gapABS = math.abs(gap)
+if (gapABS < 1) then
+      gapABS = 1
+end
+
+local vc = {gv("x") + obj.ox, gv("y") + obj.oy, gv("z") + obj.oz}
+local vl = {gv("x", t) + B_T[l][i].ox, gv("y", t) + B_T[l][i].oy, gv("z", t) + B_T[l][i].oz}
+
+local x, y, z = vl[1] - vc[1], vl[2] - vc[2], vl[3] - vc[3]
+
+local V = math.sqrt(x * x + y * y) / gapABS
+V = V * speed
+B_T[l][i].ox = obj.ox
+B_T[l][i].oy = obj.oy
+B_T[l][i].oz = obj.oz
+B_T[l][i].time = obj.time
+B_T[l][i].V = V
+
+local r = 180 - mbase - gv("rz") + math.deg(math.atan2(y, x))
+B_T[l][i].rz = r
+
+local r_s = B_T[l][i].rz
+if (r_s >= 360) then
+      r_s = r_s - 360
+end
+local Blur = V * tr_blur * 0.1
+Blur = math.min(Blur, tr_blur * 2)
+if mode % 2 == 0 then
+      Blur = -Blur
+end
+
+if (aspect_modify == 1) then
+      if (r_s < 225 and r_s >= 45) then
+            if ((r < 315 and r >= 225) and (r_s < 315 and r_s >= 135)) then
+                  Blur = -Blur
+            end
+            if ((r < 45 or r >= 315) and (r_s < 135 or r_s >= 315)) then
+                  Blur = -Blur
+            end
+      else
+            Blur = -Blur
+            if ((r < 135 and r >= 45) and (r_s < 135 or r_s >= 315)) then
+                  Blur = -Blur
+            end
+            if ((r < 225 and r >= 135) and (r_s < 315 and r_s >= 135)) then
+                  Blur = -Blur
+            end
+      end
+
+      local xp1 = -(cos(r) * Blur)
+      local yp1 = -(sin(r) * Blur)
+      local xp2 = -(cos(r) * Blur)
+      local yp2 = -(sin(r) * Blur)
+      obj.effect("リサイズ", "X", 100 + xp1 + xp2 + yp1 + yp2, "Y", 100 - xp1 - xp2 - yp1 - yp2)
+else
+      local xp1 = -obj.w / 2 - (cos(r) * Blur)
+      local yp1 = -obj.h / 2 - (sin(r) * Blur)
+      local xp2 = -obj.w / 2 + (cos(r) * Blur)
+      local yp2 = obj.h / 2 - (sin(r) * Blur)
+      local pw=math.max(math.abs(xp1),math.abs(xp2))*2
+      local ph=math.max(math.abs(yp1),math.abs(yp2))*2
+      obj.setoption("drawtarget","tmp",pw,ph)
+      obj.drawpoly(xp1, yp1, 0, -xp2, -yp2, 0, -xp1, -yp1, 0, xp2, yp2, 0)
+      obj.copybuffer("obj","tmp")
+end
