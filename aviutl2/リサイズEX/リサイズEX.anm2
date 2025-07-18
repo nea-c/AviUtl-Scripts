@@ -11,6 +11,18 @@
 --check@center_fix:中心位置固定,0
 
 
+if (lower_option == 1) then
+    lower = upper
+end
+
+if (left_option == 1) then
+    left = upper
+end
+
+if (right_option == 1) then
+    right = left
+end
+
 
 local resize_x = left + right
 local resize_y = upper + lower
@@ -27,18 +39,6 @@ else
     resize_x = resize_x + 0.01
 end
 
-
-if (lower_option == 1) then
-    lower = upper
-end
-
-if (left_option == 1) then
-    left = upper
-end
-
-if (right_option == 1) then
-    right = left
-end
 
 
 
