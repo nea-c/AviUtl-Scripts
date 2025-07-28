@@ -28,16 +28,6 @@ local resize_x = left + right
 local resize_y = upper + lower
 
 
--- AviUtl2のリサイズに発生してるバグを疑似的に対策
--- ピクセルモード時は、obj.wとリサイズ先の値が同じでxとyの値が同じじゃないときに+1
--- そうでないときは+0.01
-if ((pxMode == 1) and
-    (math.floor(resize_x) == obj.w) and
-    not (math.floor(resize_x) == math.floor(resize_y))) then
-    resize_x = resize_x + 1
-else
-    resize_x = resize_x + 0.01
-end
 
 
 
