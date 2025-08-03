@@ -8,7 +8,7 @@
 --check@fd:フェード,0
 --check@io_d:in/out非表示,1
 --track@zm:拡大率,0,1000,100,0.01
---track@bl:ぼかし,0,1000,0,0.01
+--track@bl:ぼかし,-1000,1000,0,0.01
 --track@order:order,0,4,0,1
 
 
