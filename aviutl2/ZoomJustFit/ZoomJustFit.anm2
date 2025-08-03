@@ -1,0 +1,25 @@
+--label:基本効果
+local w, h = obj.getpixel()
+local screenW, screenH = obj.screen_w, obj.screen_h
+local screenMin = math.min(screenW, screenH)
+
+local sww = screenW / w
+local shh = screenH / h
+
+
+local zoom = 1
+if (screenMin == screenW) then
+    if (shh * w < screenW) then
+        zoom = shh
+    else
+        zoom = sww
+    end
+elseif (screenMin == screenH) then
+    if (sww * h < screenH) then
+        zoom = sww
+    else
+        zoom = shh
+    end
+end
+
+obj.zoom = zoom
