@@ -1,15 +1,15 @@
---track@tr_progress:In/Out,-100,100,0,0.01
---track@tr_delay:Delay,0,100,10,0.01
---track0:Motion,0,100,0,0.001
---track@seed:Seed,0,9000,0,1
---track@vector:Range,-10000,10000,100,0.01
---value@input_enableDirection:Direction,"x,-x,y,-y"
---check@chk_same_b:Duplication,0
---check@fd:Fade In/Out,0
---check@io_d:Hide In/Out,1
---track@zm:Zoom,0,1000,100,0.01
---track@bl:Blur,-1000,1000,0,0.01
---track@order:Order,0,4,0,1
+--track@tr_progress:in/out,-100,100,0,0.01
+--track@tr_delay:ズレ,0,100,10,0.01
+--track0:動き,0,100,0,0.001
+--track@seed:seed,0,9000,0,1
+--track@vector:移動距離,-10000,10000,100,0.01
+--value@input_enableDirection:有効方向指定,"x,-x,y,-y"
+--check@chk_same_b:被りあり,0
+--check@fd:フェード,0
+--check@io_d:in/out非表示,1
+--track@zm:拡大率,0,1000,100,0.01
+--track@bl:ぼかし,-1000,1000,0,0.01
+--track@order:order,0,4,0,1
 
 
 if  ( 0 < (obj.getoption("section_num") - 1) ) then
