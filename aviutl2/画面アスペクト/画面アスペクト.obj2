@@ -1,6 +1,8 @@
---track0:X比率,1,100,4,1
---track1:Y比率,1,100,3,1
+--track@aspX:X比率,1,100,4,1
+--track@aspY:Y比率,1,100,3,1
+--track@per:適応度,0,100,100,0.01
 --color@col:色,0xffffff
+--check@invert:反転,0
 --check@sizeVisible:サイズ表示,0
 --track@text_size:文字ｻｲｽﾞ,0,1000,100,1
 
@@ -9,55 +11,75 @@
 
 local zoomsize = 100 / obj.getvalue("zoom")
 local alpha = 1 / obj.getvalue("alpha")
-local rz = obj.rz
-local aspX = obj.track0
-local aspY = obj.track1
 
 local scrMin = math.min(obj.screen_w, obj.screen_h)
+per = per / 100
 
 local updown = 0
 local leftright = 0
 
+local function calc_1(max, min, per)
+    return min + (max - min) * (1 - per)
+end
+
+
 if scrMin == obj.screen_w then
     leftright = obj.screen_w
+    updown = leftright / aspX * aspY
+    updown = calc_1(obj.screen_h, updown, per)
     if aspX > aspY then
-        updown = leftright / aspX * aspY
     elseif aspX < aspY then
-        updown = leftright / aspX * aspY
         if updown > obj.screen_h then
             updown = obj.screen_h
             leftright = updown / aspY * aspX
+            leftright = calc_1(obj.screen_w, leftright, per)
         end
     else
         updown = leftright
     end
 elseif scrMin == obj.screen_h then
     updown = obj.screen_h
+    leftright = updown / aspY * aspX
+    leftright = calc_1(obj.screen_w, leftright, per)
     if aspX > aspY then
-        leftright = updown / aspY * aspX
         if leftright > obj.screen_w then
             leftright = obj.screen_w
             updown = leftright / aspX * aspY
+            updown = calc_1(obj.screen_h, updown, per)
         end
     elseif aspX < aspY then
-        leftright = updown / aspY * aspX
     else
         leftright = updown
     end
 end
 
-
 updown = updown / 2
 leftright = leftright / 2
 
 
+obj.setoption("drawtarget", "tempbuffer", obj.screen_w, obj.screen_h)
+
 obj.load("figure", "四角形", col, 1)
-obj.effect("領域拡張", "塗りつぶし", 1, "上", updown, "下", updown, "右", leftright, "左", leftright)
-obj.draw(0, 0, 0, 1, alpha, 0, 0, -rz)
+
+obj.drawpoly(
+    -leftright, -updown, 0,
+    leftright, -updown, 0,
+    leftright, updown, 0,
+    -leftright, updown, 0
+)
+
+obj.load("tempbuffer")
+
+if (invert == 1) then
+    obj.effect("反転", "透明度反転", 1)
+    obj.effect("単色化", "色", col, "輝度を保持する", 0)
+end
+
+obj.setoption("drawtarget", "framebuffer")
+obj.draw()
 
 if (sizeVisible == 1) then
     obj.setfont("メイリオ",text_size,4,0xffffff,0x231d1e)
     obj.load(string.format("%d,%d",leftright*2,updown*2))
-    obj.draw(0, 0, 0, zoomsize, alpha, 0, 0, -rz)
+    obj.draw()
 end
-
