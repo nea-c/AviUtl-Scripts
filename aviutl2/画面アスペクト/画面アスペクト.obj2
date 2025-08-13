@@ -3,8 +3,8 @@
 --track@per:適応度,0,100,100,0.01
 --color@col:色,0xffffff
 --check@invert:反転,0
---check@sizeVisible:サイズ表示,0
---track@text_size:文字ｻｲｽﾞ,0,1000,100,1
+--check@sizeVisible:ピクセル数表示,0
+--track@text_size:文字サイズ,0,1000,100,1
 
 
 
