@@ -1,4 +1,6 @@
 --label:基本効果
+--check@mode:モード変更,0
+
 local w, h = obj.getpixel()
 local screenW, screenH = obj.screen_w, obj.screen_h
 local screenMin = math.min(screenW, screenH)
@@ -8,17 +10,20 @@ local shh = screenH / h
 
 
 local zoom = 1
+local zoom_1 = (mode == 1) and shh or sww
+local zoom_2 = (mode == 1) and sww or shh
+
 if (screenMin == screenW) then
     if (shh * w < screenW) then
-        zoom = shh
+        zoom = zoom_2
     else
-        zoom = sww
+        zoom = zoom_1
     end
 elseif (screenMin == screenH) then
     if (sww * h < screenH) then
-        zoom = sww
+        zoom = zoom_1
     else
-        zoom = shh
+        zoom = zoom_2
     end
 end
 
