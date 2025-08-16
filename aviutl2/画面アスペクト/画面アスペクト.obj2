@@ -75,10 +75,11 @@ if (invert == 1) then
     obj.effect("単色化", "色", col, "輝度を保持する", 0)
 end
 
-obj.setoption("drawtarget", "framebuffer")
-obj.draw()
 
 if (sizeVisible == 1) then
+    obj.setoption("drawtarget", "framebuffer")
+    obj.effect()
+    obj.draw()
     obj.setfont("メイリオ",text_size,4,0xffffff,0x231d1e)
     obj.load(string.format("%d,%d",leftright*2,updown*2))
     obj.draw()
