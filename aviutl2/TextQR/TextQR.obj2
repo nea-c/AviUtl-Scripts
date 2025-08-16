@@ -1,0 +1,101 @@
+--[[
+このスクリプトはqrencode.luaを使用しています。
+
+
+
+License: 3-clause BSD license
+Copyright (c) 2012-2020, Patrick Gundlach (SPEEDATA GMBH) and contributors, see https://github.com/speedata/luaqrcode. All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+
+Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+Neither the name of SPEEDATA nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL SPEEDATA BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+
+https://speedata.github.io/luaqrcode/
+]]
+
+
+--value@text:テキスト,"text"
+--track@size:サイズ,1,256,25
+--color@color:色,0x000000
+--track@alpha:透明度,0,100,0,0.01
+--color@bg_color:背景色,0xffffff
+--track@bg_alpha:背景透明度,0,100,0,0.01
+
+
+local qrencode = require("qrencode")
+
+if (bg == 0) then bg_col = "nil" end
+alpha = 1 - alpha / 100
+bg_alpha = 1 - bg_alpha / 100
+
+local function draw_dots(data, size)
+	if data==nil then
+		return
+	end
+	if #data==0 then
+		return
+	end
+
+	--データの高さと幅を取得
+	local h = #data
+	local c = 0
+	for i=1, #data do
+		c = math.max(c, #data[i])
+	end
+	local w = c
+
+	local divW, divH = (w * size)/2, (h * size)/2
+
+	obj.setoption("drawtarget", "tempbuffer", w * size, h * size)
+	for y=1,h do
+		for x=1,#data[y] do
+			local d = data[y][x]
+			if d~=nil and d~="nil" and d~="" then
+				local s_color = (d == "main") and color or bg_color
+				local s_alpha = (d == "main") and alpha or bg_alpha
+				obj.load("figure", "四角形", s_color,1)
+				obj.drawpoly((x-1)*size-divW,(y-1)*size-divH,0, x*size-divW,(y-1)*size-divH,0, x*size-divW,y*size-divH,0, (x-1)*size-divW,y*size-divH,0,     0,0, obj.w,0, obj.w,obj.h, 0,obj.h,    s_alpha)
+			end
+		end
+	end
+	obj.load("tempbuffer")
+end
+
+
+local function matrix_to_string(tab)
+  local ret = {}
+
+  for i=1,#tab+2 do
+  	ret[i] = {}
+  end
+
+  for x=1,#tab+2 do
+  	for y=1,#tab+2 do
+			if (x==1 or x==#tab+2 or y==1 or y==#tab+2) then
+				ret[y][x] = "bg"
+			elseif tab[x-1][y-1] > 0 then
+				ret[y][x] = "main"
+      elseif tab[x-1][y-1] < 0 then
+				ret[y][x] = "bg"
+      else
+				ret[y][x] = nil
+    	end
+  	end
+  end
+
+  return ret
+end
+
+local ok, tab_or_message = qrencode.qrcode(text)
+if not ok then
+	obj.setfont("MS UI Gothic", size)
+  obj.load("text", tab_or_message)
+	obj.draw()
+else
+    draw_dots(matrix_to_string(tab_or_message), size)
+end
