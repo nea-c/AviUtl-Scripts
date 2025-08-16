@@ -5,7 +5,7 @@
 (元になったスクリプト)[https://shummg.work/archives/1530]
 
 
-`rencode.lua`はこのスクリプトと同じ場所に配置してください。
+`qrencode.lua`はこのスクリプトと同じ場所に配置してください。
 
 
 ## 最新 / Latest
