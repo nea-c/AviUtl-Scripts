@@ -4,7 +4,7 @@
 
 `qrencode.lua`はこのスクリプトと同じ場所に配置してください。
 
-![sample](sample.png)
+![sample](sample_image.png)
 
 ### [導入方法](https://github.com/nea-c/AviUtl-Scripts/archive/refs/heads/master.zip)
 
