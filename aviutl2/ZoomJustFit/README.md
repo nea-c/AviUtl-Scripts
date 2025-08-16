@@ -1,4 +1,5 @@
 # ZoomJustFit
+[一括ダウンロード](https://github.com/nea-c/AviUtl-Scripts/archive/refs/heads/master.zip)
 
 自動的にスクリーンサイズに合わせて拡縮させるスクリプト。
 
