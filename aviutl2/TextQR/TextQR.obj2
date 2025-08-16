@@ -97,5 +97,5 @@ if not ok then
   obj.load("text", tab_or_message)
 	obj.draw()
 else
-    draw_dots(matrix_to_string(tab_or_message), size)
+  draw_dots(matrix_to_string(tab_or_message), size)
 end
