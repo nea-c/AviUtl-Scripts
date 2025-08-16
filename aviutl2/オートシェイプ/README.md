@@ -6,6 +6,8 @@
 
 93氏の[オートブラー+](https://www.dropbox.com/sh/u73uud29hcxlply/AABH9ZhzL1P1kX-bWrL4asdDa?dl=0&preview=old_script_etc.zip)を参考にしています。
 
+### [導入方法](https://github.com/nea-c/AviUtl-Scripts/archive/refs/heads/master.zip)
+
 ## 最新 / Latest
 
 **r1**

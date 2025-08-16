@@ -1,12 +1,7 @@
+# 導入方法
 
-## 導入方法 / How to install
+1. [ダウンロード](https://github.com/nea-c/AviUtl-Scripts/archive/refs/heads/master.zip)を行う
 
-#### 参考
+2. 導入したいスクリプトを[導入方法](https://lineside0418.github.io/AviUtl2_Plugins/how-to-install)にしたがって導入
 
-- [導入方法](https://hallkun19.github.io/AviUtl2Wiki/how_to_install_script/)
-
-
-## 注意
-
-この中のスクリプトは、全て`AviUtl2 ExEdit2 beta4`で動作を確認しています。
-
+3. AviUtl ExEdit2を起動する

@@ -1,13 +1,15 @@
 # ZoomJustFit
-[一括ダウンロード](https://github.com/nea-c/AviUtl-Scripts/archive/refs/heads/master.zip)
 
 自動的にスクリーンサイズに合わせて拡縮させるスクリプト。
 
 動画オブジェクトに適応することを想定しています。
 
+### [導入方法](https://github.com/nea-c/AviUtl-Scripts/archive/refs/heads/master.zip)
+
 ## 最新 / Latest
 
 **r2**
+
 
 ## 各パラメータ
 

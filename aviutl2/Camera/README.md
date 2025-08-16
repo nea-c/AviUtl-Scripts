@@ -14,6 +14,8 @@
 
 - `Vec3.lua`はこのスクリプトと同じ階層においてください。
 
+### [導入方法](https://github.com/nea-c/AviUtl-Scripts/archive/refs/heads/master.zip)
+
 ## 最新 / Latest
 
 **r1**
