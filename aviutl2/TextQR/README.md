@@ -6,7 +6,13 @@
 
 ![sample](sample_image.png)
 
+
+このスクリプトには`LGPL-3.0ライセンス`が適応されます。
+
 ### [導入方法](https://github.com/nea-c/AviUtl-Scripts/blob/master/aviutl2/README.md)
+
+
+
 
 ## 最新 / Latest
 
