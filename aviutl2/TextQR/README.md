@@ -4,8 +4,7 @@
 
 `qrencode.lua`はこのスクリプトと同じ場所に配置してください。
 
-
-![alt text](image.png)
+![image](image.png)
 
 ## 最新 / Latest
 
