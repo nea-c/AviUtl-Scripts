@@ -2,9 +2,10 @@
 
 文字からQRコードを生成します。[[参考スクリプト]](https://shummg.work/archives/1530)
 
-
 `qrencode.lua`はこのスクリプトと同じ場所に配置してください。
 
+
+![alt text](image.png)
 
 ## 最新 / Latest
 
