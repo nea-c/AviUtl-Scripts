@@ -2,7 +2,7 @@
 
 文字からQRコードを生成します。
 
-(元になったスクリプト)[https://shummg.work/archives/1530]
+[元になったスクリプト](https://shummg.work/archives/1530)
 
 
 `qrencode.lua`はこのスクリプトと同じ場所に配置してください。
