@@ -87,27 +87,27 @@ end
 
 
 local function matrix_to_string(tab)
-  local ret = {}
+  local return_data = {}
 
   for i=1,#tab+2 do
-  	ret[i] = {}
+  	return_data[i] = {}
   end
 
   for x=1,#tab+2 do
   	for y=1,#tab+2 do
 			if (x==1 or x==#tab+2 or y==1 or y==#tab+2) then
-				ret[y][x] = "bg"
+				return_data[y][x] = "bg"
 			elseif tab[x-1][y-1] > 0 then
-				ret[y][x] = "main"
+				return_data[y][x] = "main"
       elseif tab[x-1][y-1] < 0 then
-				ret[y][x] = "bg"
+				return_data[y][x] = "bg"
       else
-				ret[y][x] = nil
+				return_data[y][x] = nil
     	end
   	end
   end
 
-  return ret
+  return return_data
 end
 
 local ok, tab_or_message = qrencode.qrcode(text)
