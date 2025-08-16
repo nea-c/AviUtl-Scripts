@@ -2,7 +2,7 @@
 
 リサイズをさらに細かく調整できるようにしたバージョン
 
-### [導入方法](https://github.com/nea-c/AviUtl-Scripts/archive/refs/heads/master.zip)
+### [導入方法](https://github.com/nea-c/AviUtl-Scripts/blob/master/aviutl2/README.md)
 
 ## 最新 / Latest
 
