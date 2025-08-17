@@ -1,14 +1,22 @@
 --track@centerX:中心X,-10000,10000,0,0.1
 --track@centerY:中心Y,-10000,10000,0,0.1
 --track@angle:角度,-10000,10000,0,0.01
+--select@mode_offset:オフセットタイプ=1,ピクセル=1,割合(スクリーン幅)=2,割合(スクリーン高さ)=3
 --track@offset:オフセット,-10000,10000,0,0.1
---select@mode:モード=1,ピクセル=1,割合(スクリーン幅)=2,割合(スクリーン高さ)=3
+--select@mode_width:幅タイプ=1,ピクセル=1,割合(スクリーン幅)=2,割合(スクリーン高さ)=3
 --track@width:幅,0,50000,0,0.01
 --color@color:色,0x000000
 
-if (mode == 2) then
+
+if (mode_offset == 2) then
+  offset = offset / 100 * obj.screen_w / 2
+elseif (mode_offset == 3) then
+  offset = offset / 100 * obj.screen_h / 2
+end
+
+if (mode_width == 2) then
   width = width / 100 * obj.screen_w / 2
-elseif (mode == 3) then
+elseif (mode_width == 3) then
   width = width / 100 * obj.screen_h / 2
 end
 

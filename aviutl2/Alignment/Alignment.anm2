@@ -1,4 +1,4 @@
---select@mode:モード=1,ピクセル=1,割合=2
+--select@mode:タイプ=1,ピクセル=1,割合=2
 --track@xpos:X位置,-10000,10000,0,0.01
 --track@ypos:Y位置,-10000,10000,0,0.01
 --check@PositionLock:オブジェクト位置固定,1
