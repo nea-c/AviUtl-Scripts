@@ -10,8 +10,16 @@
 --track@shift_y:シフトY,-10000,10000,0,0.01
 --figure@fig:図形,四角形
 --track@mask_size:サイズ,0,1000,100,1
+--check@invert_mask:マスクの反転,1
 
 
+
+obj.copybuffer("cache:save","obj")
+
+
+if (invert_mask == 0) then
+	obj.setoption("drawtarget", "tempbuffer", obj.getpixel())
+end
 
 
 for i=1,(num or 4) do
@@ -24,6 +32,20 @@ for i=1,(num or 4) do
     r = r*180/math.pi
 	if( no_rotate == 0 ) then
 		rz = rz+r
-    end
-    obj.effect("マスク","マスクの種類",fig,"X",x+shift_x,"Y",y+shift_y,"回転",rz,"サイズ",mask_size,"縦横比",aspect,"ぼかし",blur,"マスクの反転",1)
+  end
+	if (invert_mask == 0) then
+		obj.copybuffer("obj","cache:save")
+		obj.effect("マスク","マスクの種類",fig,"X",x+shift_x,"Y",y+shift_y,"回転",rz,"サイズ",mask_size,"縦横比",aspect,"ぼかし",blur,"マスクの反転",0)
+		obj.copybuffer("cache:save"..i,"obj")
+	else
+		obj.effect("マスク","マスクの種類",fig,"X",x+shift_x,"Y",y+shift_y,"回転",rz,"サイズ",mask_size,"縦横比",aspect,"ぼかし",blur,"マスクの反転",1)
+	end
+end
+
+if (invert_mask == 0) then
+	for i=1,(num or 4) do
+		obj.copybuffer("obj","cache:save"..i)
+		obj.draw()
+	end
+	obj.load("tempbuffer")
 end
