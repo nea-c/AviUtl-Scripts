@@ -1,0 +1,87 @@
+--label:アニメーション効果
+--track@start:開始位置,-1000,1000,0,0.01
+--track@step:再生速度,-1000,1000,1,0.01
+--track@centerX:中心X,-2000,2000,0,0.01
+--track@centerY:中心Y,-2000,2000,0,0.01
+--track@angle:角度,-3600,3600,0,0.01
+--track@v_angle:粒子角度,-3600,3600,-90,0.01
+--track@v_speed:粒子速度,0,1000,1.0,0.01
+--track@blur:ぼかし,0,100,10,1
+
+-- 粒子化前の部分のみ描画するPixelShader
+--[[pixelshader@psmain:
+Texture2D texture0 : register(t0);
+cbuffer constant0 : register(b0) {
+	float2 center;
+	float angle;
+	float time;
+	float blur;
+};
+float4 psmain(float4 input : SV_Position) : SV_Target {
+  float2 vec = float2(input.xy) - center;
+	float2 angleVec = normalize(float2(cos(radians(angle)), sin(radians(angle))));
+  float proj = dot(vec, angleVec);
+	if (proj > time + blur) {
+	  discard;
+  }
+
+	return texture0[int2(input.xy)] * smoothstep(0, blur, time - proj + blur);
+}
+]]
+
+-- 粒子化後の部分を加算合成するComputeShader
+--[[computeshader@csmain:
+RWTexture2D<half4> buffer : register(u0);
+Texture2D texture0 : register(t0);
+cbuffer constant0 : register(b0) {
+	float2 center;
+	float2 speed;
+	float angle;
+	float time;
+};
+[numthreads(1, 1, 1)]
+void csmain(uint2 pos : SV_DispatchThreadID) {
+  float2 vec = float2(pos.xy) - center;
+	float2 angleVec = normalize(float2(cos(radians(angle)), sin(radians(angle))));
+  float proj = dot(vec, angleVec);
+	if (proj <= time - 5) {
+	  return;
+  }
+
+	float anim = (time - proj) / 20;
+
+	float4 col = texture0[pos];
+	if (col.a <= 0) {
+		return;
+	}
+
+	float2 spd;
+	spd.x = (speed.x * 4) + sin(radians(pos.x * 2.5)) + sin(radians(pos.x * 9.0));
+	spd.y = (speed.y * 4) + cos(radians(pos.y * 2.8125)) + cos(radians(pos.y * 11.25));
+	int2 xy = round(float2(pos) + spd * (anim * anim));
+	// 同時アクセスする可能性があるのであまり良くない・・
+	col += buffer[xy];
+	col.a = saturate(col.a);
+	buffer[xy] += col;
+}
+]]
+
+
+local time = -obj.time * step * 100 - start
+
+
+local v_speedX = math.cos(math.rad(v_angle)) * v_speed
+local v_speedY = math.sin(math.rad(v_angle)) * v_speed
+
+obj.effect("オフスクリーン描画")
+obj.copybuffer("tempbuffer","object")
+centerX = centerX + obj.w/2
+centerY = centerY + obj.h/2
+-- 粒子化前の部分をフレームバッファに描画する
+obj.pixelshader("psmain","framebuffer","tempbuffer",{centerX,centerY,angle,time,blur},"draw")
+-- 粒子化後の部分をオブジェクトとする
+obj.clearbuffer("object")
+obj.computeshader("csmain","object","tempbuffer",{centerX,centerY,v_speedX,v_speedY,angle,time},obj.w,obj.h)
+if(blur > 0) then
+	obj.effect("ぼかし","範囲",blur,"サイズ固定",1)
+end
