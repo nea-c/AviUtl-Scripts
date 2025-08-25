@@ -9,7 +9,7 @@
 --track@shift_x:シフトX,-10000,10000,0,0.01
 --track@shift_y:シフトY,-10000,10000,0,0.01
 --figure@fig:図形,四角形
---track@mask_size:サイズ,0,1000,100,1
+--track@mask_size:サイズ,0,40000,100,1
 --check@invert_mask:マスクの反転,1
 
 
