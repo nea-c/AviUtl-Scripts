@@ -1,0 +1,15 @@
+--label:加工
+
+-- オブジェクトを保存
+obj.copybuffer("cache:save","obj")
+-- 後続の効果をかけて描画
+obj.effect()
+obj.draw()
+
+-- 保存したオブジェクトを上から再描画
+obj.copybuffer("obj","cache:save")
+obj.draw()
+
+
+
+
