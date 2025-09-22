@@ -1,0 +1,33 @@
+--label:加工
+--track@roughness:粗さ,1,20,4,0.1
+
+
+--[[pixelshader@dither:
+  Texture2D texture0 : register(t0);
+  SamplerState samplerState : register(s0);
+  cbuffer constant0 : register(b0) {
+    float roughness;
+  };
+
+  static const float4x4 bayerMatrix = {
+    0.0 / 16.0,  8.0 / 16.0,  2.0 / 16.0, 10.0 / 16.0,
+   12.0 / 16.0,  4.0 / 16.0, 14.0 / 16.0,  6.0 / 16.0,
+    3.0 / 16.0, 11.0 / 16.0,  1.0 / 16.0,  9.0 / 16.0,
+   15.0 / 16.0,  7.0 / 16.0, 13.0 / 16.0,  5.0 / 16.0
+  };
+
+  float4 dither(float4 input : SV_Position) : SV_Target {
+    float4 color = texture0[int2(input.xy)];
+    float threshold = bayerMatrix[input.y / roughness % 4][input.x / roughness % 4];
+
+    float3 dithered = floor(color.rgb + threshold);
+
+    // 値の制限
+    dithered = saturate(dithered);
+
+    return float4(dithered, color.a);
+  }
+]]
+
+obj.pixelshader("dither","object","object",{roughness})
+
