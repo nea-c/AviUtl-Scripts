@@ -6,7 +6,7 @@
 
 ### [導入方法](https://github.com/nea-c/AviUtl-Scripts/blob/master/aviutl2/README.md)
 
-![image](image.png)
+![sample](sample.png)
 
 
 ## 最新 / Latest
