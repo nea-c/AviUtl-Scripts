@@ -22,7 +22,6 @@
 
     float3 dithered = floor(color.rgb + threshold);
 
-    // 値の制限
     dithered = saturate(dithered);
 
     return float4(dithered, color.a);
